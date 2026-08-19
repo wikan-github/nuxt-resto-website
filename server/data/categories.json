@@ -1,0 +1,9 @@
+[
+  { "slug": "all", "label": "All" },
+  { "slug": "starters", "label": "Starters" },
+  { "slug": "mains", "label": "Mains" },
+  { "slug": "pasta", "label": "Pasta" },
+  { "slug": "pizza", "label": "Pizza" },
+  { "slug": "desserts", "label": "Desserts" },
+  { "slug": "drinks", "label": "Drinks" }
+]

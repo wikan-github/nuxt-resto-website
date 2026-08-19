@@ -140,48 +140,48 @@
 -->
 <script setup lang="ts">
 
-// ── Step 1: Get menu data from the composable ──
-// 📚 `useMenu()` is auto-imported from composables/useMenu.ts.
-//    It returns { categories, menuItems }.
-//    This is ES6 destructuring — it extracts properties from the returned object.
-const { categories, menuItems } = useMenu()
+// ── Step 1: Fetch menu data and categories from the server API ──
+//
+// 📚 LEARNING — `useFetch()` (Nuxt Data Fetching):
+// `useFetch('/api/menu')` sends a GET request to our server API route.
+// On the server (SSR), it reads the JSON file and returns the data.
+// On the client (navigation), it fetches via HTTP like normal.
+//
+// `useFetch` returns an object with: { data, pending, error }
+// - `data` is a Ref containing the response (reactive!)
+// - `pending` is true while the request is in progress
+// - `error` contains any error that occurred
+//
+// 📚 `MenuItem[]` and `Category[]` are the TypeScript types for the response.
+//    This ensures type safety — if the API returns something unexpected,
+//    TypeScript will catch it at compile time.
+const { data: menuItems } = await useFetch<MenuItem[]>('/api/menu')
+const { data: categories } = await useFetch<Category[]>('/api/categories')
 
 // ── Step 2: Create reactive state for the active category ──
+//
 // 📚 LEARNING — `ref()` (Reactive Reference):
 // `ref('all')` creates a reactive variable with initial value 'all'.
-//
-// "Reactive" means: when this value CHANGES, any part of the template
-// that uses it will AUTOMATICALLY re-render.
-//
-// For example, when the user clicks the "Pasta" tab:
-//   1. CategoryTabs emits `select` with value "pasta"
-//   2. The template updates: `activeCategory = $event` → activeCategory becomes "pasta"
-//   3. `filteredItems` (which depends on activeCategory) automatically recalculates
-//   4. The menu grid re-renders with only pasta dishes
-//
-// IMPORTANT: Access the value with `.value` in JavaScript: `activeCategory.value`
-// But in the TEMPLATE, you use it WITHOUT `.value`: `:active="activeCategory"`
+// When this value changes, `filteredItems` automatically recalculates.
 const activeCategory = ref('all')
 
 // ── Step 3: Computed property — automatically filters dishes ──
+//
 // 📚 LEARNING — `computed()`:
-// A computed property is like a derived value that recalculates AUTOMATICALLY
-// whenever its dependencies change.
+// A computed property recalculates AUTOMATICALLY whenever its dependencies change.
+// Here, it depends on `activeCategory.value` and `menuItems.value`.
 //
-// Here, `filteredItems` depends on `activeCategory.value` and `menuItems`.
-// When either changes, Vue runs this function again and updates the template.
-//
-// It's similar to a mathematical formula: if x changes, y = f(x) updates too.
-//
-// 📚 `readonly` is not used here because `ref()` exposes `.value`.
-//    In the template, Vue auto-unwraps refs, so you just write `filteredItems`.
+// 📚 SAFETY CHECK — `menuItems.value ?? []`:
+// During SSR or before the fetch completes, `menuItems.value` could be null.
+// The `??` (nullish coalescing) operator returns `[]` (empty array) as fallback.
 const filteredItems = computed(() => {
+  // Guard: if menuItems hasn't loaded yet, return an empty array
+  if (!menuItems.value) return []
+
   // If "All" is selected, show every dish
-  if (activeCategory.value === 'all') return menuItems
+  if (activeCategory.value === 'all') return menuItems.value
 
   // Otherwise, filter dishes where `item.category` matches the selected tab's slug
-  // 📚 `.filter()` is a JavaScript array method that creates a NEW array
-  //    containing only items that pass the test (return true).
-  return menuItems.filter(item => item.category === activeCategory.value)
+  return menuItems.value.filter(item => item.category === activeCategory.value)
 })
 </script>

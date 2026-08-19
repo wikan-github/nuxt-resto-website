@@ -157,25 +157,26 @@
 -->
 <script setup lang="ts">
 
-// ── Step 1: Get promotion data from the composable ──
-// 📚 `usePromotions()` is auto-imported from composables/usePromotions.ts.
-//    It returns { promotions } — an array of Promotion objects.
-const { promotions } = usePromotions()
+// ── Step 1: Fetch promotions from the server API ──
+//
+// 📚 LEARNING — `useFetch()` (Nuxt Data Fetching):
+// `useFetch('/api/promotions')` sends a GET request to our server API route.
+// During SSR, Nitro reads `server/data/promotions.json` and returns it.
+// During client-side navigation, it fetches via HTTP like normal.
+//
+// `data` is a Ref containing the response body (parsed JSON).
+// `pending` is true while the request is in progress.
+// `error` contains any error that occurred.
+const { data: promotions } = await useFetch<Promotion[]>('/api/promotions')
 
 // ── Step 2: Reactive state for the active filter category ──
-// 📚 `ref('all')` creates a reactive variable with initial value 'all'.
-//    When the user clicks a different category tab, this value changes,
-//    and `filteredPromos` automatically recalculates.
 const activeCategory = ref('all')
 
 // ── Step 3: Build the category tabs for the filter ──
 //
 // 📚 LEARNING — Array of Objects (manual definition):
-// Instead of fetching categories from a composable, we build the list
-// right here. This works fine for small, page-specific data.
-//
-// 📚 The spread operator `...` copies all elements from one array into another.
-//    We start with [{ slug: 'all', label: 'All' }] and add more categories.
+// These categories are page-specific (different from menu categories).
+// We define them inline since this page has its own set of promo categories.
 const promoCategories = [
   { slug: 'all', label: 'All' },
   { slug: 'food', label: 'Food' },
@@ -186,33 +187,26 @@ const promoCategories = [
 
 // ── Step 4: Computed — Featured Promotions ──
 //
+// 📚 SAFETY CHECK — `promotions.value ?? []`:
+// During SSR or before the fetch completes, `promotions.value` could be null.
+// The `??` (nullish coalescing) operator returns `[]` (empty array) as fallback.
+//
 // 📚 LEARNING — `.filter()` and `.slice()`:
-//
-// `.filter(callback)` creates a NEW array with only items that pass the test.
-//   The callback returns `true` to KEEP the item, `false` to DISCARD it.
-//   Here: keep items where `isFeatured === true`.
-//
-// `.slice(0, 2)` takes only the FIRST 2 items from the filtered array.
-//   `slice(start, end)` — start at index 0, stop BEFORE index 2.
-//   So we get at most 2 featured promotions.
-//
-// The full chain: `promotions.filter(...).slice(0, 2)` means:
-// "Find all featured promotions, then take only the first 2."
+// `.filter(p => p.isFeatured)` keeps only featured promos.
+// `.slice(0, 2)` takes only the first 2 from the filtered array.
 const featuredPromos = computed(() => {
-  return promotions.filter(p => p.isFeatured).slice(0, 2)
+  if (!promotions.value) return []
+  return promotions.value.filter(p => p.isFeatured).slice(0, 2)
 })
 
 // ── Step 5: Computed — Filtered Promotions ──
 //
-// 📚 LEARNING — Same filtering pattern as the menu page:
+// 📚 Same filtering pattern as the menu page:
 // If "All" is selected, show everything.
 // Otherwise, filter by the selected category slug.
-//
-// 📚 `computed()` caches its result. If `activeCategory` hasn't changed,
-//    Vue returns the previous result without re-running the filter.
-//    This is a performance optimization.
 const filteredPromos = computed(() => {
-  if (activeCategory.value === 'all') return promotions
-  return promotions.filter(p => p.category === activeCategory.value)
+  if (!promotions.value) return []
+  if (activeCategory.value === 'all') return promotions.value
+  return promotions.value.filter(p => p.category === activeCategory.value)
 })
 </script>
