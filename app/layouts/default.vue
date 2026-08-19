@@ -45,10 +45,37 @@
           <ul class="nav-links">
             <li><NuxtLink to="/">Home</NuxtLink></li>
             <li><NuxtLink to="/menu">Menu</NuxtLink></li>
+            <li><NuxtLink to="/promotions">Promos</NuxtLink></li>
             <li><NuxtLink to="/about">About Us</NuxtLink></li>
             <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
           </ul>
         </nav>
+
+        <!--
+          ════════════════════════════════════════════════════════════════════
+          CART ICON BUTTON
+          Shows a shopping cart icon with an animated badge displaying
+          the total number of items. Clicking it opens the cart drawer.
+
+          📚 LEARNING — Cart State Integration:
+          The `useCart()` composable is called here in the layout,
+          making the cart state available to this component.
+          The `cartItemCount` computed value auto-updates whenever
+          items are added/removed from the cart.
+
+          📚 The badge uses `v-if` to only show when there are items.
+             `v-if="cartItemCount > 0"` hides the badge when cart is empty.
+        -->
+        <button class="cart-icon-btn" @click="openCart" aria-label="Open cart">
+          <!-- Simple cart icon using SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <!-- Animated badge showing item count -->
+          <span v-if="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+        </button>
 
         <!-- CTA (Call to Action) button — links to WhatsApp -->
         <!--
@@ -115,6 +142,7 @@
               <li><NuxtLink to="/">Home</NuxtLink></li>
               <li><NuxtLink to="/about">About Us</NuxtLink></li>
               <li><NuxtLink to="/menu">Menu</NuxtLink></li>
+              <li><NuxtLink to="/promotions">Promos</NuxtLink></li>
               <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
             </ul>
           </div>
@@ -150,6 +178,38 @@
           </div>
         </div>
 
+        <!-- ═══════════════════════════════════════════════════════════════
+             GOOGLE MAP
+             Embedded map showing the restaurant's location in Ubud, Bali.
+             ═══════════════════════════════════════════════════════════════ -->
+        <!--
+          📚 LEARNING — `<iframe>` for Embedding External Content:
+          An <iframe> embeds another website inside your page.
+          - `src` — the URL of the content to embed (Google Maps embed URL)
+          - `width="100%"` — fill the full width of the parent container
+          - `style="border: 0"` — remove the default iframe border
+          - `allowfullscreen` — let users click "full screen" on the map
+          - `loading="lazy"` — delay loading until the user scrolls near it
+            (improves initial page load speed)
+          - `referrerpolicy="no-referrer-when-downgrade"` — security header
+            that prevents sending referrer data when switching to HTTP
+
+          📚 The `src` URL contains:
+          - `pb=!1m18!1m12...` — encoded map parameters (zoom, position, etc.)
+          - The coordinates point to Ubud, Bali (Monkey Forest Street area)
+        -->
+        <div class="footer-map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.6!2d115.262!3d-8.506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzAnMjEuNiJTIDExNcKwMTUnNDMuMiJF!5e0!3m2!1sen!2sid!4v1"
+            width="100%"
+            height="300"
+            style="border: 0; border-radius: 12px;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
         <!-- Copyright line -->
         <!--
           📚 LEARNING — Vue Expressions in Templates:
@@ -163,5 +223,36 @@
         </div>
       </div>
     </footer>
+
+    <!--
+      ════════════════════════════════════════════════════════════════════
+      CART & ORDER OVERLAY COMPONENTS
+      These components are mounted in the layout so they're available
+      on EVERY page. They use `<Teleport>` to render at the <body> level.
+
+      📚 LEARNING — Why mount these in the layout?
+      The CartDrawer and OrderModal need to work on ALL pages (menu, promos, etc.).
+      By placing them in the layout, they're always available without
+      needing to import them in every page separately.
+    -->
+    <CartDrawer />
+    <OrderModal />
   </div>
 </template>
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════╗
+  ║ SCRIPT SECTION                                                        ║
+  ╚═══════════════════════════════════════════════════════════════════════╝
+
+  📚 LEARNING — Layout Script:
+  The layout needs a script section to access the cart composable.
+  `useCart()` provides `cartItemCount` (for the badge) and `openCart` (for the click handler).
+  These are used in the template above (cart icon button).
+-->
+<script setup lang="ts">
+// ── Get cart state and functions from the composable ──
+// 📚 The cart icon in the header needs `cartItemCount` for the badge
+//    and `openCart` for the click handler.
+const { cartItemCount, openCart } = useCart()
+</script>

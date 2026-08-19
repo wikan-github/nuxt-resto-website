@@ -561,15 +561,20 @@ h1, h2, h3, h4 {
 /* Individual menu card.
    📚 `flex` + `justify-content: space-between` pushes the name/description
       to the left and the price to the right, with space between them.
-   The card now includes an image on the left side. */
+   The card now includes an image on the left side.
+
+   📚 Background is 5% darker than --color-surface (#ffffff → #f2f2f2)
+      to give each card subtle contrast against the page background (#f9f9f9).
+   📚 A thin semi-transparent border replaces the invisible one,
+      giving the card a defined edge without being visually heavy. */
 .menu-card {
   display: flex;
   align-items: flex-start;
-  background: var(--color-surface);
+  background: #f2f2f2;               /* 5% darker than #ffffff (surface) */
   border-radius: var(--radius-md);
   padding: 1rem;
   transition: box-shadow var(--transition);
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);  /* Subtle thin border around the card */
   gap: 1rem;           /* Space between image and text */
 }
 
@@ -769,6 +774,16 @@ h1, h2, h3, h4 {
   text-align: center;
 }
 
+/* ── Footer Google Map ──
+   📚 The map sits below the 4-column footer grid and above the copyright line.
+      `margin-top: 2.5rem` adds space between the grid and the map.
+      `margin-bottom: 1rem` adds space between the map and the copyright.
+      The iframe inside has `border-radius: 12px` for rounded corners. */
+.footer-map {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
 .footer-bottom p {
   font-family: var(--font-content);
   font-size: 0.8rem;
@@ -777,7 +792,805 @@ h1, h2, h3, h4 {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SECTION 14: Responsive Design
+   SECTION 14: Promo Cards
+   Styles for the promotions page cards and grids.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Featured Promo Grid ──
+   📚 Large 2-column layout for featured promotions.
+   Each card takes roughly half the width. */
+.featured-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* ── All Promotions Grid ──
+   3-column layout for the full list of promotions. */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* ── Individual Promo Card ──
+   📚 `overflow: hidden` clips the image to the rounded corners.
+      `transition: transform` animates the card lift on hover. */
+.promo-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: 1px solid transparent;
+}
+
+.promo-card:hover {
+  transform: translateY(-4px);  /* Lift the card up by 4px */
+  box-shadow: 0 8px 30px rgba(3, 72, 51, 0.08);
+  border-color: var(--color-green-light);
+}
+
+/* ── Promo Card Image Container ──
+   📚 `aspect-ratio: 16/10` forces a consistent image proportions.
+      The image fills the container and is cropped to fit. */
+.promo-card-img {
+  position: relative;          /* Needed for absolute children (badges) */
+  aspect-ratio: 16 / 10;      /* Fixed aspect ratio for consistency */
+  overflow: hidden;            /* Clip image to rounded corners */
+}
+
+.promo-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* Fill container, crop overflow */
+}
+
+/* ── Discount Badge ──
+   📚 `position: absolute` places this element relative to its parent
+      (which has `position: relative`). This overlays the badge on top
+      of the image without affecting the layout flow. */
+.promo-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--color-green);
+  color: #fff;
+  font-family: var(--font-content);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5px;
+  z-index: 2;  /* Above the image */
+}
+
+/* ── Featured Badge ──
+   Green accent badge shown on featured promotions. */
+.promo-featured-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-green-accent);
+  color: #fff;
+  font-family: var(--font-content);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+/* ── Promo Card Body (text below image) ── */
+.promo-card-body {
+  padding: 1.25rem;
+}
+
+/* Reuse the .category-tag class from menu cards for consistency */
+.promo-card-body .category-tag {
+  display: inline-block;
+  font-family: var(--font-content);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-green-accent);
+  margin-bottom: 0.4rem;
+}
+
+.promo-card-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.promo-card-desc {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--color-text-body);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* ── Price Row ──
+   📚 `display: flex` + `justify-content: space-between` puts the prices
+      on the left and the "valid until" date on the right. */
+.promo-card-pricing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.promo-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+/* Original price with strikethrough line */
+.promo-price-original {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: line-through;  /* Draws a line through the text */
+}
+
+/* Current/promo price — bold and green */
+.promo-price-current {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+/* "Valid until" date — small, subtle text */
+.promo-valid-until {
+  font-family: var(--font-content);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 16: Add to Cart Button
+   Button placed on menu and promo cards for adding items to the cart.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Add to Cart button: small pill-shaped button with green accent styling */
+.add-to-cart-btn {
+  font-family: var(--font-content);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-green);
+  background: transparent;
+  color: var(--color-green);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  /* Prevent button from growing beyond its content width */
+  flex-shrink: 0;
+}
+
+/* Hover state: filled green background with white text */
+.add-to-cart-btn:hover {
+  background: var(--color-green);
+  color: #fff;
+}
+
+/* Active/feedback state: shows "Added!" with a green filled background */
+.add-to-cart-btn.added {
+  background: var(--color-green-accent);
+  border-color: var(--color-green-accent);
+  color: #fff;
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 17: Menu Card Actions (Price + Add to Cart)
+   Wraps the price and add-to-cart button vertically on the right side.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Flex column: price on top, add-to-cart button below, aligned to the right */
+.menu-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 18: Cart Icon Button (Header)
+   The shopping cart icon button in the navigation header with item count badge.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Cart icon button: transparent background, positioned relative for badge */
+.cart-icon-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition);
+}
+
+/* Hover state: green icon color */
+.cart-icon-btn:hover {
+  color: var(--color-green);
+}
+
+/* Item count badge: small green circle with white number, positioned top-right */
+/* 📚 `position: absolute` + `top/right` places the badge relative to the button */
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: var(--color-green-accent);
+  color: #fff;
+  font-family: var(--font-content);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  /* 📚 `pointer-events: none` ensures clicks pass through to the button below */
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 19: Cart Drawer
+   Slide-out panel from the right side showing cart contents.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Dark semi-transparent backdrop behind the drawer */
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  /* 📚 Clicking the backdrop closes the cart drawer */
+  cursor: pointer;
+}
+
+/* The drawer panel: fixed to the right side, full height */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--color-surface);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  /* 📚 box-shadow creates a subtle shadow effect on the left side */
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Drawer header: title and close button */
+.cart-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Header title: Mulish font, green color */
+.cart-drawer-header h3 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+/* Close (X) button: no background, large font size */
+.cart-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.cart-close-btn:hover {
+  color: var(--color-text);
+}
+
+/* Empty state: centered text when cart has no items */
+.cart-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.cart-empty p {
+  font-family: var(--font-content);
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.cart-empty-hint {
+  font-size: 0.85rem !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* Scrollable body: contains the list of cart items */
+.cart-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+}
+
+/* Individual cart item row: image | info | quantity controls */
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Cart item thumbnail: 56x56 rounded image */
+.cart-item-img {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cart-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cart item info: name and price, takes remaining space */
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Item name: Mulish font, small size */
+.cart-item-info h4 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+  /* Prevent long names from overflowing */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Item price: green color */
+.cart-item-price {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+/* ── Order Type Label (in cart drawer items) ──
+   Small colored badge under the item name showing "Takeaway" or "Dine In".
+   📚 `font-size: 0.65rem` makes it a subtle label that doesn't dominate.
+      Color coding: takeaway = muted gray, dine-in = green accent. */
+.cart-item-order-type {
+  display: inline-block;
+  font-family: var(--font-content);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.2rem;
+}
+
+/* Takeaway label: subtle gray background */
+.cart-item-order-type.takeaway {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+/* Dine-in label: green accent background */
+.cart-item-order-type.dine-in {
+  background: var(--color-green-light);
+  color: var(--color-green);
+}
+
+/* ── Order Type Badge (in order modal summary) ──
+   Inline badge next to each item name in the order summary. */
+.order-summary-type {
+  display: inline-block;
+  font-family: var(--font-content);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-pill);
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
+
+/* Takeaway badge in order summary */
+.order-summary-type.takeaway {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+/* Dine-in badge in order summary */
+.order-summary-type.dine-in {
+  background: var(--color-green-light);
+  color: var(--color-green);
+}
+
+/* Quantity controls and remove button */
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* Quantity adjuster: [-] number [+] horizontal row */
+.cart-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  /* 📚 Border with rounded corners creates a compact control group */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem;
+}
+
+/* Quantity button: small circular buttons for +/- */
+.cart-qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-green-light);
+  color: var(--color-green);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  padding: 0;
+}
+
+.cart-qty-btn:hover {
+  background: var(--color-green);
+  color: #fff;
+}
+
+/* Quantity value: bold number between +/- buttons */
+.cart-qty-value {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+/* Remove button: small red text button */
+.cart-item-remove {
+  background: none;
+  border: none;
+  font-family: var(--font-content);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition);
+}
+
+.cart-item-remove:hover {
+  color: #d32f2f;
+}
+
+/* Drawer footer: total, order button, clear button */
+.cart-drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Total price row: label left, amount right */
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-total-label {
+  font-family: var(--font-content);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.cart-total-value {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+/* Order Now button: full-width green */
+.cart-order-btn {
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* Clear Cart button: full-width outline */
+.cart-clear-btn {
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 20: Order Modal
+   Modal overlay with form for collecting order details.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Dark backdrop behind the modal, same pattern as cart drawer */
+.order-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 300;
+  cursor: pointer;
+}
+
+/* Modal panel: centered on screen with max width and scroll */
+.order-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  max-width: 92vw;
+  max-height: 90vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  z-index: 301;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* 📚 Large shadow for a "floating" effect */
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal header: title and close button */
+.order-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-modal-header h3 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.order-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.order-close-btn:hover {
+  color: var(--color-text);
+}
+
+/* Order summary: compact list of items at the top of the modal */
+.order-summary {
+  padding: 1rem 1.5rem;
+  background: var(--color-green-light);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Single item row in the summary */
+.order-summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+}
+
+.order-summary-name {
+  color: var(--color-text-body);
+}
+
+.order-summary-price {
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Summary total: bold divider line above, larger text */
+.order-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  font-family: 'Mulish', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+/* Form section: padded area with the input fields */
+.order-form {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+/* Form group: label + input wrapper */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Label: small, uppercase, green text */
+.form-group label {
+  font-family: var(--font-content);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+/* Text input: clean border style matching the site's design */
+.form-group input,
+.form-group textarea {
+  font-family: var(--font-content);
+  font-size: 0.95rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition);
+  /* Prevent inputs from overflowing their container */
+  width: 100%;
+}
+
+/* Focus state: green border to indicate active field */
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-green);
+}
+
+/* Textarea: resizable, with slightly taller default */
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Submit button: full-width with top margin */
+.order-submit-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 21: Vue Transition Animations
+   Smooth slide/fade animations for the cart drawer and order modal.
+
+   📚 LEARNING — Vue `<Transition>`:
+   Vue automatically applies CSS classes during enter/leave animations:
+   - `*-enter-from` → starting state (before animation)
+   - `*-enter-active` → animation being applied
+   - `*-enter-to` → ending state (after animation)
+   - `*-leave-from` → starting state for leaving
+   - `*-leave-active` → animation being applied
+   - `*-leave-to` → ending state (element disappears)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Backdrop fade animation ── */
+.backdrop-enter-active,
+.backdrop-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.backdrop-enter-from,
+.backdrop-leave-to {
+  opacity: 0;
+}
+
+/* ── Cart drawer slide-from-right animation ── */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+  transform: translateX(100%);
+}
+
+/* ── Order modal scale + fade animation ── */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 15: Responsive Design
    Media queries adjust the layout for smaller screens.
 
    📚 LEARNING — Media Queries:
@@ -803,6 +1616,16 @@ h1, h2, h3, h4 {
   .about-row {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  /* Featured promos: 2 columns → 1 column */
+  .featured-promo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* All promos: 3 columns → 2 columns */
+  .promo-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   /* Footer goes from 4 columns to 2 columns */
@@ -835,6 +1658,11 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
   }
 
+  /* Promo grid goes from 2 columns to 1 column */
+  .promo-grid {
+    grid-template-columns: 1fr;
+  }
+
   /* Footer goes from 2 columns to 1 column */
   .footer-grid {
     grid-template-columns: 1fr;
@@ -844,5 +1672,27 @@ h1, h2, h3, h4 {
   /* Reduce section spacing on small screens */
   .section {
     padding: 3rem 0;
+  }
+
+  /* Cart drawer: narrower on phones */
+  .cart-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  /* Order modal: full width on phones */
+  .order-modal {
+    width: 95vw;
+    max-height: 95vh;
+  }
+
+  /* Cart item: tighter spacing on phones */
+  .cart-item {
+    gap: 0.5rem;
+  }
+
+  .cart-item-img {
+    width: 44px;
+    height: 44px;
   }
 }
