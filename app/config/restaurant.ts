@@ -27,8 +27,8 @@
 //
 // These coordinates are used by the Haversine formula in useLocation.ts
 // to calculate the distance between the user and the restaurant.
-export const RESTAURANT_LAT = -8.506 as const
-export const RESTAURANT_LNG = 115.262 as const
+export const RESTAURANT_LAT = -8.5183644 as const
+export const RESTAURANT_LNG = 115.26155 as const
 
 // ── Geofence Radius ──
 // The maximum distance (in meters) for a user to be considered "near" the restaurant.
