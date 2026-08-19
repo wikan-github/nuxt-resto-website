@@ -1,0 +1,848 @@
+/*
+  ============================================================================
+  main.css — Global Stylesheet
+  ============================================================================
+  This CSS file is loaded on EVERY page (configured in nuxt.config.ts).
+  It defines the visual design: colors, fonts, spacing, layout, and components.
+
+  📚 LEARNING — CSS Custom Properties (Variables):
+  CSS variables are defined with `--name: value` inside `:root { }`.
+  `:root` means "apply these to the entire document (the <html> element)".
+
+  To USE a variable: `color: var(--color-green)`
+  This is like a constant in programming — define once, use everywhere.
+
+  📚 Why use variables?
+  1. Change a color in ONE place, and it updates everywhere in the site.
+  2. Makes your CSS readable: `var(--color-green)` is clearer than `#034833`.
+  3. Easy to support dark mode later — just redefine the variables.
+*/
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 1: CSS Custom Properties (Design Tokens)
+   All colors, fonts, sizes, and transitions are defined here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Colors ── */
+  --color-bg: #f9f9f9;              /* Page background — soft off-white */
+  --color-surface: #ffffff;         /* Card backgrounds — pure white */
+  --color-green: #034833;           /* Primary brand color — deep forest green */
+  --color-green-light: #f1f5eb;     /* Light green tint — used for card backgrounds */
+  --color-green-accent: #83cd26;    /* Bright green — used for icons and accents */
+  --color-text: #111111;            /* Main text color — near black */
+  --color-text-body: #404040;       /* Body/description text — dark gray */
+  --color-text-muted: #636363;      /* Secondary text — medium gray */
+  --color-border: #e5e5e5;          /* Borders — light gray */
+
+  /* ── Fonts ──
+     📚 When you specify multiple font names, the browser tries each one.
+        If "Cardo" isn't available, it falls back to `serif` (system serif font).
+        This is called a "font stack". */
+  --font-heading: 'Cardo', serif;       /* Elegant serif → headings */
+  --font-body: 'Inter', sans-serif;     /* Clean sans-serif → body text */
+  --font-content: 'Mulish', sans-serif; /* Friendly sans-serif → UI elements */
+
+  /* ── Border Radii (rounded corners) ──
+     📚 `px` = pixels. Larger values = more rounded.
+        `100px` on a small button creates a "pill" shape (fully rounded). */
+  --radius-sm: 12px;     /* Small rounding */
+  --radius-md: 16px;     /* Medium rounding */
+  --radius-lg: 32px;     /* Large rounding — hero cards, CTA banners */
+  --radius-xl: 41px;     /* Extra large — green card sections */
+  --radius-pill: 100px;  /* Pill shape — buttons, tabs */
+
+  /* ── Layout ── */
+  --max-width: 1200px;   /* Max width of the main content area */
+
+  /* ── Animation ──
+     📚 `transition: 0.3s ease` means "animate property changes over 0.3 seconds
+        with smooth acceleration/deceleration (ease)". */
+  --transition: 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 2: CSS Reset
+   Browsers have default styles that differ across browsers.
+   This reset makes everything consistent.
+
+   📚 LEARNING — The Universal Selector `*`:
+   `*` selects ALL elements. `*::before` and `*::after` select pseudo-elements.
+   `box-sizing: border-box` means the `width` includes padding and border.
+   Without this, adding padding to an element makes it wider than expected.
+   ═══════════════════════════════════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;     /* Remove default browser margins */
+  padding: 0;    /* Remove default browser padding */
+}
+
+/* Smooth scrolling when clicking anchor links (e.g., #section) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Body: the visible content of the page */
+body {
+  font-family: var(--font-body);    /* Use Inter as the default font */
+  background: var(--color-bg);      /* Soft off-white background */
+  color: var(--color-text);         /* Near-black text */
+  line-height: 1.55;               /* Space between lines — more = easier to read */
+  /* Font smoothing makes text look crisp on Mac/iOS */
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;                  /* Base font size (16px) — other sizes use rem */
+}
+
+/* Remove underline from links, inherit parent text color */
+a {
+  text-decoration: none;
+  color: inherit;
+  /* 📚 transition: color means when the color changes (e.g., on hover),
+     it animates smoothly over 0.3 seconds instead of snapping instantly. */
+  transition: color var(--transition);
+}
+
+/* Images: don't overflow their container, display as block to remove gaps */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Headings: use Cardo (serif) font, lighter weight for elegance */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;     /* 400 = normal weight (not bold) */
+  line-height: 1.2;     /* Tighter line height for headings looks better */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 3: Utility Classes
+   Reusable classes used across multiple components.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Container: centers content and adds horizontal padding.
+   📚 `margin: 0 auto` centers a block element horizontally.
+   📚 `min(4rem, 5vw)` = use whichever is SMALLER: 4rem or 5% of viewport width.
+      This means on small screens, padding is smaller; on large screens, it caps at 4rem. */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 min(4rem, 5vw);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 4: Header
+   The navigation bar that stays at the top when scrolling.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Sticky header: stays fixed at the top when you scroll down.
+   📚 `position: sticky` = "stick to the top when the user scrolls past it".
+      It's like `position: fixed` but it only kicks in after you scroll. */
+.site-header {
+  position: sticky;
+  top: 0;               /* Stick to the very top of the viewport */
+  z-index: 100;         /* Make sure it appears ABOVE other content (higher = on top) */
+  background: rgba(249, 249, 249, 0.92); /* Semi-transparent off-white */
+  /* 📚 backdrop-filter: blur(14px) creates a frosted glass effect.
+     Content behind the header appears blurred. */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px); /* Safari support */
+}
+
+/* Flexbox layout for the header row: logo left, nav center, button right.
+   📚 `display: flex` turns an element into a flex container.
+      `justify-content: space-between` pushes children to the edges.
+      `align-items: center` vertically centers children. */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+/* Logo link: ensures the logo image is vertically centered */
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo image: 52px tall, circular shape.
+   📚 `width: auto` keeps the original aspect ratio based on the height.
+   `border-radius: 50%` makes a square image become a circle. */
+.logo-img {
+  height: 52px;
+  width: auto;
+  border-radius: 50%;
+}
+
+/* Navigation links row */
+/* 📚 `list-style: none` removes the bullet points from <ul> elements. */
+.nav-links {
+  display: flex;
+  gap: 2.5rem;       /* Space between each link */
+  list-style: none;  /* No bullet points */
+}
+
+/* Individual nav link styling */
+.nav-links a {
+  font-family: var(--font-content);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text);
+  position: relative;  /* Needed for the underline pseudo-element */
+  padding: 0.25rem 0;  /* Small vertical padding for a bigger click target */
+}
+
+/* ── Animated underline effect on nav links ──
+   📚 LEARNING — CSS Pseudo-elements (`::after`, `::before`):
+   `::after` creates a fake element AFTER the content of the link.
+   It's invisible (no content, no size) by default. We give it:
+   - A bottom border line (2px tall, green)
+   - Width of 0 (hidden initially)
+   - A transition so it animates when width changes to 100%
+
+   When the user hovers or the link is active (current page),
+   the width animates from 0 to 100%, creating a "slide in" underline. */
+.nav-links a::after {
+  content: '';            /* Required — empty content creates the pseudo-element */
+  position: absolute;    /* Positioned relative to the <a> tag (which has position: relative) */
+  bottom: 0;             /* Stick to the bottom of the link */
+  left: 0;               /* Start from the left edge */
+  width: 0;              /* Initially hidden (0 width) */
+  height: 2px;           /* Thin line */
+  background: var(--color-green);
+  transition: width var(--transition); /* Animate the width change */
+}
+
+/* Show the underline on hover OR when it's the active page link.
+   📚 `.router-link-active` is a class Vue Router automatically adds to
+      the <NuxtLink> whose `to` matches the current URL. */
+.nav-links a:hover::after,
+.nav-links a.router-link-active::after {
+  width: 100%;           /* Animate to full width */
+}
+
+.nav-links a:hover,
+.nav-links a.router-link-active {
+  color: var(--color-green); /* Green text when hovered or active */
+}
+
+/* CTA (Call to Action) button in the header.
+   Pill-shaped with green background. On hover, it becomes transparent. */
+.header-cta {
+  display: inline-block;
+  font-family: var(--font-content);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-pill);  /* Pill shape */
+  background: var(--color-green);
+  color: #fff;
+  border: 1px solid var(--color-green);
+  transition: all var(--transition);  /* Animate ALL properties on hover */
+}
+
+.header-cta:hover {
+  background: transparent;   /* Remove background on hover */
+  color: var(--color-green); /* Green text */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 5: Hero Section
+   The large banner at the top of the homepage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero {
+  padding: 4rem 0 3rem;  /* Top/bottom space around the hero */
+}
+
+/* Hero card: a large rounded rectangle with a background image.
+   📚 `overflow: hidden` clips any child content that goes beyond
+      the rounded corners — this is how rounded corners "work"
+      on images that would otherwise overflow. */
+.hero-card {
+  background: var(--color-green);
+  border-radius: var(--radius-lg);   /* 32px rounded corners */
+  overflow: hidden;
+  position: relative;   /* Needed so children can be positioned inside it */
+  min-height: 500px;    /* At least 500px tall */
+  display: flex;
+  align-items: flex-end; /* Push content to the bottom of the card */
+}
+
+/* Dark green gradient overlay on top of the hero image.
+   📚 `position: absolute` + `inset: 0` stretches the element to fill
+      its nearest `position: relative` parent completely.
+   📚 `inset: 0` is shorthand for `top: 0; right: 0; bottom: 0; left: 0;` */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  /* Gradient: semi-transparent green at top → more opaque at bottom.
+     This makes the text readable over the image. */
+  background: linear-gradient(to bottom, rgba(3, 72, 51, 0.3), rgba(3, 72, 51, 0.6));
+  z-index: 1;  /* Above the background image, below the text */
+}
+
+/* Hero text content area */
+.hero-content {
+  position: relative;  /* Above the gradient overlay */
+  z-index: 2;
+  /* `clamp(min, preferred, max)` = responsive size that grows with the viewport
+     but never goes below min or above max.
+     📚 Example: clamp(2rem, 5vw, 3.2rem)
+        On a 375px phone: 5vw = 18.75px → clamps to min: 2rem (32px)
+        On a 1200px desktop: 5vw = 60px → clamps to max: 3.2rem (51.2px) */
+  padding: 3rem clamp(2rem, 5vw, 4rem);
+  color: #fff;
+  width: 100%;
+}
+
+.hero h1 {
+  font-family: 'Mulish', sans-serif;  /* Override Cardo — use Mulish for hero */
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--color-green);           /* Deep forest green (#034833) */
+  max-width: 600px;  /* Don't let the heading get too wide */
+  margin-bottom: 1.5rem;
+}
+
+.hero p {
+  font-family: var(--font-content);
+  font-size: 1.05rem;
+  font-weight: 300;        /* Light weight for body text */
+  color: var(--color-text-body);       /* Dark gray (#404040) */
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 6: Buttons
+   Reusable button styles. Mix and match `.btn` with a color class.
+   Example: `<a class="btn btn-white">Click me</a>`
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Base button: styles shared by ALL buttons */
+.btn {
+  display: inline-block;  /* Behaves like a link (inline) but accepts padding/margin */
+  font-family: var(--font-content);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius-pill);   /* Pill shape */
+  border: 1px solid transparent;       /* Transparent border (prevents layout shift on hover) */
+  cursor: pointer;     /* Show hand cursor */
+  transition: all var(--transition);
+  text-align: center;
+}
+
+/* White button: white bg, green text. On hover → transparent bg, white text. */
+.btn-white {
+  background: #fff;
+  color: var(--color-green);
+  border-color: #fff;
+}
+
+.btn-white:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* Green button: green bg, white text. On hover → transparent bg, green text. */
+.btn-green {
+  background: var(--color-green);
+  color: #fff;
+  border-color: var(--color-green);
+}
+
+.btn-green:hover {
+  background: transparent;
+  color: var(--color-green);
+}
+
+/* Outline green button: transparent bg, green text. On hover → green bg, white text. */
+.btn-outline-green {
+  background: transparent;
+  color: var(--color-green);
+  border-color: var(--color-green);
+}
+
+.btn-outline-green:hover {
+  background: var(--color-green);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 7: Section Layouts
+   Common layout classes used across pages.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section {
+  padding: 4rem 0;  /* Vertical spacing between sections */
+}
+
+/* Small uppercase label above section titles (e.g., "OUR VALUES") */
+.section-label {
+  font-family: var(--font-content);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;       /* Space between characters */
+  text-transform: uppercase; /* Force ALL CAPS via CSS */
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+/* Large section heading */
+.section-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);  /* Responsive sizing */
+  font-weight: 700;
+  color: var(--color-green);
+  margin-bottom: 1rem;
+}
+
+/* Body text paragraph */
+.section-text {
+  font-family: var(--font-content);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--color-text-body);
+  line-height: 1.7;   /* Generous line height for readability */
+}
+
+/* Green card: a light-green background container with large rounded corners */
+.green-card {
+  background: var(--color-green-light);
+  border-radius: var(--radius-xl);
+  padding: clamp(2rem, 4vw, 3rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 8: Values Grid
+   The 3-column grid showing "Fresh Ingredients", "Expert Chefs", "Curated Drinks"
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 3 equal columns with 2rem gap between them.
+   📚 CSS Grid: `grid-template-columns: repeat(3, 1fr)`
+   `repeat(3, 1fr)` = create 3 columns, each taking 1 fraction of space. */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.value-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+/* Green circle icon container.
+   📚 `border-radius: 50%` on a square = perfect circle.
+   `display: flex` + `align-items: center` + `justify-content: center`
+   centers the emoji inside the circle. */
+.value-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--color-green-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  font-size: 1.5rem;
+}
+
+.value-card h3 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+.value-card p {
+  font-family: var(--font-content);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--color-text-body);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 9: About Row
+   The image + text side-by-side section on the homepage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 2-column grid: image on left, text on right.
+   📚 `1fr 1fr` = two equal columns.
+   `align-items: center` = vertically center the columns. */
+.about-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Image container with rounded corners.
+   📚 `aspect-ratio: 3 / 4` forces the element to be 3:4 proportions
+      (taller than wide), regardless of content size. */
+.about-img {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+}
+
+.about-img img {
+  width: 100%;
+  height: 100%;
+  /* 📚 `object-fit: cover` makes the image fill the container completely,
+     cropping parts that don't fit (like `background-size: cover`). */
+  object-fit: cover;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 10: Category Tabs
+   The filter buttons at the top of the menu page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Horizontal row of buttons that wraps to the next line on small screens.
+   📚 `flex-wrap: wrap` allows items to wrap onto the next line
+      when there's not enough horizontal space. */
+.category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+/* Individual tab button */
+.tab-btn {
+  font-family: var(--font-content);
+  padding: 0.55rem 1.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;    /* No background by default */
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.tab-btn:hover {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+
+/* Active tab: green background with white text.
+   📚 The `.active` class is toggled by JavaScript/Vue based on which
+      category the user has clicked. */
+.tab-btn.active {
+  background: var(--color-green);
+  color: #fff;
+  border-color: var(--color-green);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 11: Menu Grid
+   The 2-column grid of dish cards on the menu page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 2 equal columns for menu items.
+   📚 On mobile (below 767px), this switches to 1 column via the
+      media query at the bottom of this file. */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* Individual menu card.
+   📚 `flex` + `justify-content: space-between` pushes the name/description
+      to the left and the price to the right, with space between them.
+   The card now includes an image on the left side. */
+.menu-card {
+  display: flex;
+  align-items: flex-start;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  transition: box-shadow var(--transition);
+  border: 1px solid transparent;
+  gap: 1rem;           /* Space between image and text */
+}
+
+.menu-card:hover {
+  /* Subtle green shadow on hover */
+  box-shadow: 0 4px 24px rgba(3, 72, 51, 0.06);
+  border-color: var(--color-green-light);
+}
+
+/* ── Dish Image Container ──
+   📚 LEARNING — Image thumbnails in cards:
+   A fixed-size container with `overflow: hidden` and `border-radius`
+   creates a neat rounded thumbnail. `flex-shrink: 0` prevents the
+   image from being compressed when the text content is long. */
+.menu-card-img {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-sm);  /* 12px rounded corners */
+  overflow: hidden;                 /* Clips the image to the rounded shape */
+  flex-shrink: 0;                   /* Don't shrink — always keep 90x90 */
+}
+
+.menu-card-img img {
+  width: 100%;
+  height: 100%;
+  /* 📚 `object-fit: cover` makes the image fill the container completely,
+     cropping parts that don't fit (like `background-size: cover`). */
+  object-fit: cover;
+}
+
+/* The right side of the card: category tag, name, description, price */
+.menu-card-info {
+  flex: 1;  /* Takes all available space */
+  min-width: 0;  /* Prevents text from overflowing the container */
+}
+
+/* Small uppercase category label above the dish name */
+.menu-card-info .category-tag {
+  display: inline-block;
+  font-family: var(--font-content);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-green-accent);
+  margin-bottom: 0.35rem;
+}
+
+.menu-card-info h4 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-green);
+  margin-bottom: 0.3rem;
+}
+
+.menu-card-info p {
+  font-family: var(--font-content);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--color-text-body);
+  line-height: 1.5;
+}
+
+/* Price on the right side of the card.
+   📚 `white-space: nowrap` prevents the price from wrapping to a new line.
+   `flex-shrink: 0` keeps the price visible even on narrow screens. */
+.menu-card-price {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-green);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 12: CTA Banner
+   Full-width green banner with centered text and a button.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cta-banner {
+  background: var(--color-green);
+  border-radius: var(--radius-lg);
+  padding: 3.5rem clamp(2rem, 5vw, 4rem);
+  text-align: center;   /* Center all text inside */
+  color: #fff;
+}
+
+.cta-banner h2 {
+  font-family: 'Mulish', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.cta-banner p {
+  font-family: var(--font-content);
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8); /* White at 80% opacity */
+  margin-bottom: 1.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 13: Footer
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.site-footer {
+  background: var(--color-green);
+  color: #fff;
+  padding: 4rem 0 2rem;
+  margin-top: 4rem;  /* Space above the footer */
+}
+
+/* 4-column grid for footer content.
+   📚 `1.5fr 1fr 1fr 1.2fr` = 4 columns with proportional widths.
+      The first column (brand) is widest, the last (contact) is second widest. */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 2.5rem;
+}
+
+.footer-brand .logo-img {
+  height: 48px;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+}
+
+.footer-brand p {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);  /* 70% opacity white */
+  line-height: 1.6;
+}
+
+.footer-col h4 {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+/* Footer link list: vertical, no bullets, with gap between items.
+   📚 `flex-direction: column` makes flex items stack vertically. */
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-col ul a {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color var(--transition);
+}
+
+.footer-col ul a:hover {
+  color: var(--color-green-accent);  /* Bright green on hover */
+}
+
+/* Contact info items: label and value side by side */
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.footer-contact-item .label {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 600;      /* Bold label */
+  color: #fff;
+  min-width: 50px;       /* Fixed width so labels align neatly */
+}
+
+.footer-contact-item .value {
+  font-family: var(--font-content);
+  font-size: 0.85rem;
+  font-weight: 300;      /* Light value text */
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Horizontal divider line above the copyright */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-family: var(--font-content);
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);  /* 50% opacity — very subtle */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION 14: Responsive Design
+   Media queries adjust the layout for smaller screens.
+
+   📚 LEARNING — Media Queries:
+   `@media (max-width: 767px) { ... }` means "apply these styles ONLY
+   when the viewport width is 767px or less". This is how websites
+   become responsive — different styles for different screen sizes.
+
+   Common breakpoints:
+   - 991px: tablets
+   - 767px: large phones
+   - 479px: small phones
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Tablet breakpoint */
+@media (max-width: 991px) {
+  /* Stack the 3-column grid into 1 column on tablets */
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Stack the 2-column about row into 1 column */
+  .about-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Footer goes from 4 columns to 2 columns */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Phone breakpoint */
+@media (max-width: 767px) {
+  /* Shorter header on phones */
+  .header-inner {
+    height: 68px;
+  }
+
+  /* Hide the navigation links on phones.
+     📚 In a real project, you'd add a hamburger menu here.
+        For now, users can navigate via the footer links. */
+  .nav-links {
+    display: none;
+  }
+
+  /* Shorter hero on phones */
+  .hero-card {
+    min-height: 400px;
+  }
+
+  /* Menu grid goes from 2 columns to 1 column */
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer goes from 2 columns to 1 column */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Reduce section spacing on small screens */
+  .section {
+    padding: 3rem 0;
+  }
+}
