@@ -29,6 +29,7 @@
   --color-green: #034833;           /* Primary brand color — deep forest green */
   --color-green-light: #f1f5eb;     /* Light green tint — used for card backgrounds */
   --color-green-accent: #83cd26;    /* Bright green — used for icons and accents */
+  --color-hero-heading: #fff;        /* White text for hero heading — contrast over dark image overlay */
   --color-text: #111111;            /* Main text color — near black */
   --color-text-body: #404040;       /* Body/description text — dark gray */
   --color-text-muted: #636363;      /* Secondary text — medium gray */
@@ -303,7 +304,7 @@ h1, h2, h3, h4 {
   font-family: 'Mulish', sans-serif;  /* Override Cardo — use Mulish for hero */
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 700;
-  color: var(--color-green);           /* Deep forest green (#034833) */
+  color: var(--color-hero-heading);    /* White text for readability over hero image */
   max-width: 600px;  /* Don't let the heading get too wide */
   margin-bottom: 1.5rem;
 }
