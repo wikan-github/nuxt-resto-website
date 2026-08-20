@@ -126,7 +126,7 @@
       "nameLabel": "Nama Anda",
       "namePlaceholder": "John Doe",
       "emailLabel": "Email Anda",
-      "emailPlaceholder": "john@example.com",
+      "emailPlaceholder": "john{'@'}example.com",
       "subjectLabel": "Subjek",
       "subjectPlaceholder": "Pertanyaan reservasi",
       "messageLabel": "Pesan",

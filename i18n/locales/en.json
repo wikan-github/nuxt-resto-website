@@ -126,7 +126,7 @@
       "nameLabel": "Your Name",
       "namePlaceholder": "John Doe",
       "emailLabel": "Your Email",
-      "emailPlaceholder": "john@example.com",
+      "emailPlaceholder": "john{'@'}example.com",
       "subjectLabel": "Subject",
       "subjectPlaceholder": "Reservation inquiry",
       "messageLabel": "Message",
