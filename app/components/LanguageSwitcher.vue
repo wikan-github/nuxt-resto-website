@@ -24,19 +24,20 @@
       Loop through all configured locales and render a button for each.
       `locale` is a reactive ref from useI18n() — current language code.
     -->
+    <!--
+      Each button represents one language option.
+      - v-for: iterates over all configured locales
+      - :key: unique identifier for Vue's reactivity system
+      - :class: adds 'active' class when this locale matches the current one
+      - @click: calls setLocale() to switch language (updates URL + content)
+      - Content: displays locale code in uppercase (e.g., "EN", "ID")
+    -->
     <button
       v-for="loc in locales"
       :key="loc.code"
-      <!-- Dynamically bind: add 'active' class when this locale is selected -->
       :class="['lang-btn', { active: locale === loc.code }]"
-      <!--
-        On click: call setLocale() to switch language.
-        This updates the URL prefix, re-renders all $t() calls,
-        and stores the preference in a cookie.
-      -->
       @click="setLocale(loc.code)"
     >
-      <!-- Display the locale code in uppercase (e.g., "EN", "ID") -->
       {{ loc.code.toUpperCase() }}
     </button>
   </div>
