@@ -30,6 +30,7 @@
   --color-green-light: #f1f5eb;     /* Light green tint — used for card backgrounds */
   --color-green-accent: #83cd26;    /* Bright green — used for icons and accents */
   --color-hero-heading: #fff;        /* White text for hero heading — contrast over dark image overlay */
+  --color-hero-text: #fff;           /* White text for hero paragraph — contrast over dark image overlay */
   --color-text: #111111;            /* Main text color — near black */
   --color-text-body: #404040;       /* Body/description text — dark gray */
   --color-text-muted: #636363;      /* Secondary text — medium gray */
@@ -313,7 +314,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-content);
   font-size: 1.05rem;
   font-weight: 300;        /* Light weight for body text */
-  color: var(--color-text-body);       /* Dark gray (#404040) */
+  color: var(--color-hero-text);      /* White text for readability over hero image */
   max-width: 480px;
   margin-bottom: 2rem;
 }
