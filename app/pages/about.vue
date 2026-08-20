@@ -33,11 +33,12 @@
     <section class="hero" style="padding-bottom: 1rem;">
       <div class="container">
         <!-- Small uppercase label above the heading -->
-        <p class="section-label">Tropical View Ubud</p>
-        <!-- Main page title -->
-        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">About Us</h1>
-        <!-- Brief subtitle text -->
-        <p class="section-text">Learn about our journey, our passion for food, and our love for nature.</p>
+        <!-- i18n: Section label for the about page header -->
+        <p class="section-label">{{ $t('aboutPage.label') }}</p>
+        <!-- i18n: Main page title -->
+        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">{{ $t('aboutPage.title') }}</h1>
+        <!-- i18n: Brief subtitle describing the about page -->
+        <p class="section-text">{{ $t('aboutPage.subtitle') }}</p>
       </div>
     </section>
 
@@ -60,33 +61,31 @@
 
           <!-- Right column: our story text -->
           <div>
-            <p class="section-label">Our Story</p>
-            <h2 class="section-title">A Dream Born in Ubud</h2>
+            <!-- i18n: Label for the story section -->
+            <p class="section-label">{{ $t('aboutPage.story.label') }}</p>
+            <!-- i18n: Title of the story section -->
+            <h2 class="section-title">{{ $t('aboutPage.story.title') }}</h2>
 
             <!--
               📚 Multiple <p> tags with .section-text class create well-spaced
                  paragraphs of readable body text.
             -->
+            <!-- i18n: First paragraph of the story section -->
             <p class="section-text" style="margin-bottom: 1.5rem;">
-              Tropical View Ubud was born from a simple dream — to create a place where
-              guests could enjoy delicious food while being surrounded by the breathtaking
-              beauty of Ubud's rice terraces and tropical greenery.
+              {{ $t('aboutPage.story.paragraph1') }}
             </p>
+            <!-- i18n: Second paragraph of the story section -->
             <p class="section-text" style="margin-bottom: 1.5rem;">
-              Located on the famous Monkey Forest Street, our restaurant offers more than
-              just a meal. It offers an experience — the gentle sound of nature, warm
-              Balinese hospitality, and flavors that tell a story.
+              {{ $t('aboutPage.story.paragraph2') }}
             </p>
+            <!-- i18n: Third paragraph of the story section -->
             <p class="section-text" style="margin-bottom: 2rem;">
-              Since opening our doors, we have welcomed travelers from all over the world
-              who come seeking authentic Indonesian cuisine and a tranquil atmosphere.
-              Every dish we serve is prepared with locally sourced ingredients and
-              traditional Balinese spices.
+              {{ $t('aboutPage.story.paragraph3') }}
             </p>
 
-            <!-- Button linking to the menu page -->
+            <!-- Button linking to the menu page; i18n: Explore Our Menu button text -->
             <NuxtLink to="/menu" class="btn btn-outline-green">
-              Explore Our Menu
+              {{ $t('aboutPage.exploreMenuBtn') }}
             </NuxtLink>
           </div>
 
@@ -106,9 +105,12 @@
              It's the same style used on the homepage values section.
         -->
         <div class="green-card">
-          <p class="section-label">What We Stand For</p>
-          <h2 class="section-title">Our Mission & Values</h2>
-          <p class="section-text">Everything we do is guided by our commitment to quality, sustainability, and community.</p>
+          <!-- i18n: Label for the mission section -->
+          <p class="section-label">{{ $t('aboutPage.mission.label') }}</p>
+          <!-- i18n: Title of the mission section -->
+          <h2 class="section-title">{{ $t('aboutPage.mission.title') }}</h2>
+          <!-- i18n: Description of the mission section -->
+          <p class="section-text">{{ $t('aboutPage.mission.description') }}</p>
 
           <!-- 3-column grid of value cards -->
           <div class="values-grid">
@@ -116,32 +118,33 @@
             <!-- Value 1: Authentic Cuisine -->
             <div class="value-card">
               <div class="value-icon">🍽️</div>
-              <h3>Authentic Cuisine</h3>
+              <!-- i18n: Title of the Authentic Cuisine value card -->
+              <h3>{{ $t('aboutPage.mission.authenticCuisine.title') }}</h3>
+              <!-- i18n: Description of the Authentic Cuisine value -->
               <p>
-                We celebrate Indonesian culinary traditions while embracing international
-                flavors. Every dish is crafted with respect for authentic recipes and
-                the freshest local ingredients.
+                {{ $t('aboutPage.mission.authenticCuisine.description') }}
               </p>
             </div>
 
             <!-- Value 2: Sustainability -->
             <div class="value-card">
               <div class="value-icon">🌿</div>
-              <h3>Sustainability</h3>
+              <!-- i18n: Title of the Sustainability value card -->
+              <h3>{{ $t('aboutPage.mission.sustainability.title') }}</h3>
+              <!-- i18n: Description of the Sustainability value -->
               <p>
-                We source our ingredients from local farmers and producers, supporting
-                the Balinese community while minimizing our environmental footprint.
+                {{ $t('aboutPage.mission.sustainability.description') }}
               </p>
             </div>
 
             <!-- Value 3: Warm Hospitality -->
             <div class="value-card">
               <div class="value-icon">🤝</div>
-              <h3>Warm Hospitality</h3>
+              <!-- i18n: Title of the Warm Hospitality value card -->
+              <h3>{{ $t('aboutPage.mission.warmHospitality.title') }}</h3>
+              <!-- i18n: Description of the Warm Hospitality value -->
               <p>
-                Balinese hospitality is world-renowned for its warmth and generosity.
-                We treat every guest like family, ensuring your experience is
-                memorable from start to finish.
+                {{ $t('aboutPage.mission.warmHospitality.description') }}
               </p>
             </div>
 
@@ -166,27 +169,27 @@
 
           <!-- Left column: text content (swapped order) -->
           <div>
-            <p class="section-label">The Experience</p>
-            <h2 class="section-title">Dining With a View</h2>
+            <!-- i18n: Label for the experience section -->
+            <p class="section-label">{{ $t('aboutPage.experience.label') }}</p>
+            <!-- i18n: Title of the experience section -->
+            <h2 class="section-title">{{ $t('aboutPage.experience.title') }}</h2>
 
+            <!-- i18n: First paragraph of the experience section -->
             <p class="section-text" style="margin-bottom: 1.5rem;">
-              Imagine savoring a plate of Nasi Goreng while gazing at lush green rice
-              terraces stretching as far as the eye can see. At Tropical View Ubud,
-              every table offers a window into the soul of Bali.
+              {{ $t('aboutPage.experience.paragraph1') }}
             </p>
+            <!-- i18n: Second paragraph of the experience section -->
             <p class="section-text" style="margin-bottom: 1.5rem;">
-              Our restaurant is designed to blend seamlessly with nature. Open-air seating,
-              natural materials, and the gentle sounds of the tropical forest create an
-              atmosphere that calms the mind and delights the senses.
+              {{ $t('aboutPage.experience.paragraph2') }}
             </p>
+            <!-- i18n: Third paragraph of the experience section -->
             <p class="section-text" style="margin-bottom: 2rem;">
-              Whether you're enjoying a leisurely breakfast, a business lunch, or a
-              romantic dinner, the magic of Ubud surrounds you at every moment.
+              {{ $t('aboutPage.experience.paragraph3') }}
             </p>
 
-            <!-- Button linking to the contact page -->
+            <!-- Button linking to the contact page; i18n: Get in Touch button text -->
             <NuxtLink to="/contact" class="btn btn-green">
-              Get in Touch
+              {{ $t('aboutPage.contactBtn') }}
             </NuxtLink>
           </div>
 
@@ -209,8 +212,10 @@
     <section class="section">
       <div class="container">
         <div class="cta-banner">
-          <h2>Ready to Experience Tropical View?</h2>
-          <p>Book your table today and enjoy a dining experience you'll never forget.</p>
+          <!-- i18n: CTA banner title -->
+          <h2>{{ $t('aboutPage.ctaTitle') }}</h2>
+          <!-- i18n: CTA banner description -->
+          <p>{{ $t('aboutPage.ctaDescription') }}</p>
           <!-- External link to WhatsApp for reservations -->
           <a
             href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
@@ -218,7 +223,8 @@
             target="_blank"
             rel="noopener"
           >
-            Make a Reservation
+            <!-- i18n: Reservation button text in the CTA banner -->
+            {{ $t('aboutPage.reserveBtn') }}
           </a>
         </div>
       </div>

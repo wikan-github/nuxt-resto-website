@@ -45,15 +45,16 @@
 
         <!-- ═══ Drawer Header ═══ -->
         <div class="cart-drawer-header">
-          <h3>Your Order</h3>
+          <h3>{{ $t('cart.title') }}</h3>
           <!-- Close button: calls closeCart to hide the drawer -->
           <button class="cart-close-btn" @click="closeCart">&times;</button>
         </div>
 
         <!-- ═══ Empty State ═══ -->
         <div v-if="items.length === 0" class="cart-empty">
-          <p>Your cart is empty.</p>
-          <p class="cart-empty-hint">Browse our menu and add some delicious items!</p>
+          <p>{{ $t('cart.empty') }}</p>
+          <!-- i18n: Hint text encouraging users to browse the menu -->
+          <p class="cart-empty-hint">{{ $t('cart.emptyHint') }}</p>
         </div>
 
         <!-- ═══ Cart Items List ═══ -->
@@ -75,14 +76,16 @@
                 📚 ORDER TYPE LABEL — Shows "Takeaway" or "Dine In" under the item name.
                    This tells the customer which pricing mode was selected for this item.
               -->
+              <!-- i18n: Order type badge — switches between Dine In and Takeaway labels -->
               <span class="cart-item-order-type" :class="cartItem.orderType">
-                {{ cartItem.orderType === 'dine-in' ? 'Dine In' : 'Takeaway' }}
+                {{ cartItem.orderType === 'dine-in' ? $t('cart.dineIn') : $t('cart.takeaway') }}
               </span>
               <!--
                 📚 DUAL PRICING — Uses the stored orderType to get the correct price.
                    `getItemPrice(item, orderType)` returns takeaway or dine-in price.
               -->
-              <p class="cart-item-price">${{ getItemPrice(cartItem.item, cartItem.orderType) }}</p>
+              <!-- i18n: Currency symbol before item price -->
+              <p class="cart-item-price">{{ $t('common.currency') }}{{ getItemPrice(cartItem.item, cartItem.orderType) }}</p>
             </div>
 
             <!-- Quantity controls and remove button -->
@@ -108,7 +111,7 @@
                 class="cart-item-remove"
                 @click="removeFromCart(cartItem.item.id)"
               >
-                Remove
+                {{ $t('cart.remove') }}
               </button>
             </div>
           </div>
@@ -118,18 +121,19 @@
         <div v-if="items.length > 0" class="cart-drawer-footer">
           <!-- Total price row -->
           <div class="cart-total-row">
-            <span class="cart-total-label">Total</span>
-            <span class="cart-total-value">${{ cartTotal.toFixed(2) }}</span>
+            <!-- i18n: Total label and currency symbol -->
+            <span class="cart-total-label">{{ $t('cart.total') }}</span>
+            <span class="cart-total-value">{{ $t('common.currency') }}{{ cartTotal.toFixed(2) }}</span>
           </div>
 
           <!-- Order Now button: opens the order form modal -->
           <button class="btn btn-green cart-order-btn" @click="openOrderModal">
-            Order Now
+            {{ $t('cart.orderNow') }}
           </button>
 
           <!-- Clear Cart button: empties all items -->
           <button class="btn btn-outline-green cart-clear-btn" @click="clearCart">
-            Clear Cart
+            {{ $t('cart.clearCart') }}
           </button>
         </div>
       </div>

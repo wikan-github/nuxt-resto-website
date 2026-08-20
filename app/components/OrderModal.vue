@@ -34,7 +34,8 @@
 
         <!-- ═══ Modal Header ═══ -->
         <div class="order-modal-header">
-          <h3>Complete Your Order</h3>
+          <!-- i18n: Modal header title -->
+          <h3>{{ $t('order.title') }}</h3>
           <!-- Close button: X character -->
           <button class="order-close-btn" @click="closeOrderModal">&times;</button>
         </div>
@@ -53,17 +54,19 @@
             <span class="order-summary-name">
               {{ cartItem.quantity }}x {{ getItemName(cartItem.item) }}
               <!-- Order type badge: Takeaway or Dine In -->
+              <!-- i18n: Order type badge in summary -->
               <span class="order-summary-type" :class="cartItem.orderType">
-                {{ cartItem.orderType === 'dine-in' ? 'Dine In' : 'Takeaway' }}
+                {{ cartItem.orderType === 'dine-in' ? $t('cart.dineIn') : $t('cart.takeaway') }}
               </span>
             </span>
             <span class="order-summary-price">
-              ${{ (getItemPrice(cartItem.item, cartItem.orderType) * cartItem.quantity).toFixed(2) }}
+              {{ $t('common.currency') }}{{ (getItemPrice(cartItem.item, cartItem.orderType) * cartItem.quantity).toFixed(2) }}
             </span>
           </div>
+          <!-- i18n: Total row with currency -->
           <div class="order-summary-total">
-            <span>Total</span>
-            <span>${{ cartTotal.toFixed(2) }}</span>
+            <span>{{ $t('order.total') }}</span>
+            <span>{{ $t('common.currency') }}{{ cartTotal.toFixed(2) }}</span>
           </div>
         </div>
 
@@ -72,42 +75,46 @@
 
           <!-- Name field -->
           <div class="form-group">
-            <label for="order-name">Your Name</label>
+            <!-- i18n: Name field label and placeholder -->
+            <label for="order-name">{{ $t('order.nameLabel') }}</label>
             <input
               id="order-name"
               v-model="form.name"
               type="text"
-              placeholder="e.g., John Smith"
+              :placeholder="$t('order.namePlaceholder')"
               required
             />
           </div>
 
           <!-- WhatsApp Number field -->
           <div class="form-group">
-            <label for="order-whatsapp">WhatsApp Number</label>
+            <!-- i18n: WhatsApp number field label and placeholder -->
+            <label for="order-whatsapp">{{ $t('order.whatsappLabel') }}</label>
             <input
               id="order-whatsapp"
               v-model="form.whatsapp"
               type="tel"
-              placeholder="e.g., +62 812-3456-7890"
+              :placeholder="$t('order.whatsappPlaceholder')"
               required
             />
           </div>
 
           <!-- Delivery/Pickup Address field -->
           <div class="form-group">
+            <!-- i18n: Address label — switches between dine-in table and delivery address -->
             <label for="order-address">
-              {{ hasDineInItems ? 'Table Number / Address' : 'Delivery Address' }}
+              {{ hasDineInItems ? $t('order.addressLabel') : $t('order.addressLabelDelivery') }}
             </label>
             <!--
               📚 DYNAMIC PLACEHOLDER:
               If the order contains dine-in items, the placeholder asks for a table number.
               If it's all takeaway, the placeholder asks for a delivery address.
             -->
+            <!-- i18n: Address placeholder — dynamic based on order type -->
             <textarea
               id="order-address"
               v-model="form.address"
-              :placeholder="hasDineInItems ? 'e.g., Table 5 or your address...' : 'Enter your full delivery address...'"
+              :placeholder="hasDineInItems ? $t('order.addressPlaceholder') : $t('order.addressPlaceholderDelivery')"
               rows="3"
               required
             ></textarea>
@@ -119,7 +126,7 @@
             class="btn btn-green order-submit-btn"
             :disabled="isSubmitting"
           >
-            {{ isSubmitting ? 'Sending...' : 'Send Order via WhatsApp' }}
+            {{ isSubmitting ? $t('order.sending') : $t('order.sendBtn') }}
           </button>
         </form>
       </div>

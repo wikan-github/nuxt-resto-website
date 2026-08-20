@@ -36,7 +36,8 @@
       <!-- Discount badge overlay -->
       <span class="promo-badge">{{ promo.discount }}</span>
       <!-- Featured badge: only shown if promo.isFeatured is TRUE -->
-      <span v-if="promo.isFeatured" class="promo-featured-badge">Featured</span>
+      <!-- i18n: Featured badge — shown on featured promos -->
+      <span v-if="promo.isFeatured" class="promo-featured-badge">{{ $t('promoCard.featured') }}</span>
     </div>
 
     <!-- ═══ Text Content Section ═══ -->
@@ -57,11 +58,12 @@
       <div class="promo-card-pricing">
         <div class="promo-prices">
           <!-- Show original (strikethrough) price if it exists -->
+          <!-- i18n: Currency symbol for original price -->
           <span v-if="displayOriginalPrice !== null" class="promo-price-original">
-            ${{ displayOriginalPrice }}
+            {{ $t('common.currency') }}{{ displayOriginalPrice }}
           </span>
-          <!-- Always show the promo/current price -->
-          <span class="promo-price-current">${{ displayPromoPrice }}</span>
+          <!-- i18n: Currency symbol for promo price -->
+          <span class="promo-price-current">{{ $t('common.currency') }}{{ displayPromoPrice }}</span>
         </div>
 
         <!-- Add to Cart button for this promotion -->

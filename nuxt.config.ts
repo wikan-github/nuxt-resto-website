@@ -12,7 +12,6 @@
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
   // compatibilityDate locks the Nuxt behavior to a specific date.
   // This prevents surprises when you upgrade Nuxt later.
   // 📚 Think of it like a "minimum version guarantee" for API behavior.
@@ -81,4 +80,35 @@ export default defineNuxtConfig({
       ],
     },
   },
+
+  // ── i18n: Internationalization (multi-language support) ──
+  // 📚 This module enables dual-language support (English + Indonesian).
+  //    Translation files are stored in i18n/locales/ directory.
+  //    Uses lazy loading — only the active language is downloaded.
+  i18n: {
+    // locales: array of supported languages with their config
+    locales: [
+      {
+        code: 'en',              // Language code used throughout the app
+        name: 'English',         // Display name in language switcher
+        file: 'en.json',         // Translation file in i18n/locales/
+      },
+      {
+        code: 'id',              // Indonesian language code
+        name: 'Bahasa Indonesia', // Display name in language switcher
+        file: 'id.json',         // Translation file in i18n/locales/
+      },
+    ],
+    defaultLocale: 'en',         // Default language (no URL prefix)
+    strategy: 'prefix_except_default', // URLs: /menu (EN), /id/menu (ID)
+    lazy: true,                  // Lazy-load translations (performance)
+    langDir: 'locales/',         // Directory for translation JSON files
+    detectBrowserLanguage: {
+      useCookie: true,           // Store language preference in cookie
+      cookieKey: 'i18n_lang',   // Cookie name for language preference
+      redirectOn: 'root',       // Only redirect on first visit (root path)
+    },
+  },
+
+  modules: ['@nuxtjs/i18n'],
 })

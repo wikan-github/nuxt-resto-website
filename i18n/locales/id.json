@@ -1,0 +1,208 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "menu": "Menu",
+    "promos": "Promo",
+    "about": "Tentang Kami",
+    "contact": "Hubungi Kami",
+    "reserve": "Pesan Sekarang",
+    "openCart": "Buka keranjang"
+  },
+  "hero": {
+    "title": "Rasakan Ketenangan Alam di Jantung Ubud",
+    "subtitle": "Nikmati masakan Indonesia dan internasional yang autentik dikelilingi oleh pemandangan sawah yang asri dan keramahan Bali yang hangat.",
+    "reserveBtn": "Buat Reservasi"
+  },
+  "values": {
+    "label": "Nilai Kami",
+    "title": "Makanan lezat yang bermakna",
+    "description": "Kami berkomitmen untuk memberikan pengalaman yang autentik dan tenang yang mencerminkan keindahan alam dan kehangatan keramahan Bali.",
+    "freshIngredients": {
+      "title": "Bahan Segar",
+      "description": "Hasil pertanian lokal dan rempah-rempah Bali tradisional dalam setiap hidangan."
+    },
+    "expertChefs": {
+      "title": "Koki Ahli",
+      "description": "Tim kuliner kami membawa semangat dan presisi dalam setiap piring yang kami sajikan."
+    },
+    "curatedDrinks": {
+      "title": "Minuman Pilihan",
+      "description": "Kopi khusus, smoothie segar, anggur, dan koktail buatan tangan."
+    }
+  },
+  "about": {
+    "label": "Tropical View Ubud",
+    "title": "Oasis Rasa di Jantung Ubud",
+    "description1": "Tropical View Ubud menawarkan pengalaman makan yang unik di tengah suasana alam yang menenangkan di Ubud. Berlokasi strategis di Jalan Monkey Forest, kami menyajikan berbagai masakan Indonesia dan internasional, termasuk Nasi Goreng, Bebek Goreng, dan Rib-Eye Steak.",
+    "description2": "Dengan pemandangan sawah yang indah dan desain yang nyaman, tempat ini sempurna untuk menikmati sarapan, makan siang, atau makan malam. Kami buka setiap hari dari jam 7:00 hingga 22:00.",
+    "viewMenuBtn": "Lihat Menu Kami"
+  },
+  "cta": {
+    "title": "Dapatkan Penawaran Terbaik Kami dengan Cepat",
+    "description": "Apakah Anda siap mencoba hidangan yang akan melengkapi perjalanan Anda? Tropical View Ubud akan memberikan yang Anda butuhkan!",
+    "reserveBtn": "Buat Reservasi"
+  },
+  "aboutPage": {
+    "label": "Tropical View Ubud",
+    "title": "Tentang Kami",
+    "subtitle": "Pelajari tentang perjalanan kami, semangat kami untuk makanan, dan cinta kami terhadap alam.",
+    "story": {
+      "label": "Cerita Kami",
+      "title": "Sebuah Mimpi Lahir di Ubud",
+      "paragraph1": "Tropical View Ubud lahir dari mimpi sederhana — untuk menciptakan tempat di mana para tamu dapat menikmati makanan lezat sambil dikelilingi oleh keindahan menakjubkan sawah terasering Ubud dan pepohonan tropis.",
+      "paragraph2": "Terletak di Jalan Monkey Forest yang terkenal, restoran kami menawarkan lebih dari sekadar makanan. Ini menawarkan pengalaman — suara alam yang lembut, keramahan Bali yang hangat, dan cita rasa yang bercerita.",
+      "paragraph3": "Sejak membuka pintu kami, kami telah menyambut wisatawan dari seluruh dunia yang datang mencari masakan Indonesia yang autentik dan suasana yang tenang. Setiap hidangan yang kami sajikan disiapkan dengan bahan-bahan lokal dan rempah-rempah Bali tradisional."
+    },
+    "exploreMenuBtn": "Jelajahi Menu Kami",
+    "mission": {
+      "label": "Apa yang Kami Yakini",
+      "title": "Misi & Nilai Kami",
+      "description": "Semua yang kami lakukan dipandu oleh komitmen kami terhadap kualitas, keberlanjutan, dan komunitas.",
+      "authenticCuisine": {
+        "title": "Masakan Autentik",
+        "description": "Kami merayakan tradisi kuliner Indonesia sambil mengadopsi cita rasa internasional. Setiap hidangan dibuat dengan menghormati resep autentik dan bahan-bahan lokal ter segar."
+      },
+      "sustainability": {
+        "title": "Keberlanjutan",
+        "description": "Kami mendapatkan bahan dari petani dan produsen lokal, mendukung komunitas Bali singga meminimalkan jejak lingkungan kami."
+      },
+      "warmHospitality": {
+        "title": "Keramahan yang Hangat",
+        "description": "Keramahan Bali terkenal di seluruh dunia karena kehangatan dan kemurahan hatinya. Kami memperlakukan setiap tamu seperti keluarga, memastikan pengalaman Anda berkesan dari awal hingga akhir."
+      }
+    },
+    "experience": {
+      "label": "Pengalaman",
+      "title": "Makan dengan Pemandangan",
+      "paragraph1": "Bayangkan menikmati semangkuk Nasi Goreng sambil memandang hamparan sawah hijau yang membentang sejauh mata memandang. Di Tropical View Ubud, setiap meja menawarkan jendela ke jiwa Bali.",
+      "paragraph2": "Restoran kami dirancang untuk menyatu dengan alam. Tempat duduk terbuka, bahan alami, dan suara lembut hutan tropis menciptakan suasana yang menenangkan pikiran dan menyenangkan indra.",
+      "paragraph3": "Apakah Anda menikmati sarapan santai, makan siang bisnis, atau makan malam romantis, keajaiban Ubud mengelilingi Anda di setiap momen."
+    },
+    "contactBtn": "Hubungi Kami",
+    "ctaTitle": "Siap Merasakan Tropical View?",
+    "ctaDescription": "Pesan meja Anda hari ini dan nikmati pengalaman makan yang tak terlupakan.",
+    "reserveBtn": "Buat Reservasi"
+  },
+  "menuPage": {
+    "label": "Tropical View Ubud",
+    "title": "Menu Kami",
+    "description": "Jelajahi pilihan hidangan Indonesia dan internasional autentik yang kami kurasi.",
+    "noItems": "Tidak ada item dalam kategori ini.",
+    "helpTitle": "Butuh Bantuan Memilih?",
+    "helpDescription": "Staf kami dengan senang hati membantu Anda menemukan hidangan yang sempurna. Hubungi kami kapan saja!",
+    "chatBtn": "Chat di WhatsApp"
+  },
+  "promotionsPage": {
+    "label": "Penawaran Spesial",
+    "title": "Promosi Menu",
+    "description": "Manfaatkan penawaran eksklusif, happy hour, dan spesial musiman kami.",
+    "featured": {
+      "label": "Jangan Sampai Ketinggalan",
+      "title": "Penawaran Unggulan"
+    },
+    "all": {
+      "label": "Lihat Semua",
+      "title": "Semua Promosi"
+    },
+    "noPromos": "Tidak ada promosi dalam kategori ini saat ini. Cek kembali segera!",
+    "ctaTitle": "Siap Mendapatkan Penawaran Ini?",
+    "ctaDescription": "Hubungi kami sekarang untuk memesan meja atau bertanya tentang promosi kami saat ini.",
+    "chatBtn": "Chat di WhatsApp"
+  },
+  "contactPage": {
+    "label": "Hubungi Kami",
+    "title": "Hubungi Kami",
+    "subtitle": "Punya pertanyaan atau ingin membuat reservasi? Kami senang mendengar dari Anda.",
+    "info": {
+      "phone": "Telepon",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "chatBtn": "Chat dengan kami",
+      "address": "Alamat",
+      "addressText": "Jalan Monkey Forest, Ubud, Gianyar, Bali 80571, Indonesia"
+    },
+    "form": {
+      "title": "Kirim Pesan kepada Kami",
+      "nameLabel": "Nama Anda",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email Anda",
+      "emailPlaceholder": "john@example.com",
+      "subjectLabel": "Subjek",
+      "subjectPlaceholder": "Pertanyaan reservasi",
+      "messageLabel": "Pesan",
+      "messagePlaceholder": "Ceritakan bagaimana kami bisa membantu...",
+      "sendBtn": "Kirim Pesan"
+    },
+    "hours": {
+      "title": "Jam Buka",
+      "monday": "Senin",
+      "tuesday": "Selasa",
+      "wednesday": "Rabu",
+      "thursday": "Kamis",
+      "friday": "Jumat",
+      "saturday": "Sabtu",
+      "sunday": "Minggu",
+      "time": "07:00 – 22:00"
+    },
+    "whatsappBtn": "Pesan via WhatsApp",
+    "location": {
+      "label": "Temukan Kami",
+      "title": "Lokasi Kami"
+    },
+    "ctaTitle": "Kami Menantikan Kedatangan Anda",
+    "ctaDescription": "Apakah itu makan santai atau perayaan spesial, Tropical View Ubud adalah tujuan yang sempurna.",
+    "bookBtn": "Pesan Meja Anda"
+  },
+  "cart": {
+    "title": "Pesanan Anda",
+    "empty": "Keranjang Anda kosong.",
+    "emptyHint": "Jelajahi menu kami dan tambahkan hidangan lezat!",
+    "dineIn": "Makan di Tempat",
+    "takeaway": "Bawa Pulang",
+    "total": "Total",
+    "remove": "Hapus",
+    "orderNow": "Pesan Sekarang",
+    "clearCart": "Kosongkan Keranjang"
+  },
+  "order": {
+    "title": "Selesaikan Pesanan Anda",
+    "total": "Total",
+    "nameLabel": "Nama Anda",
+    "namePlaceholder": "mis., Budi Santoso",
+    "whatsappLabel": "Nomor WhatsApp",
+    "whatsappPlaceholder": "mis., +62 812-3456-7890",
+    "addressLabel": "Nomor Meja / Alamat",
+    "addressLabelDelivery": "Alamat Pengiriman",
+    "addressPlaceholder": "mis., Meja 5 atau alamat Anda...",
+    "addressPlaceholderDelivery": "Masukkan alamat pengiriman lengkap Anda...",
+    "sending": "Mengirim...",
+    "sendBtn": "Kirim Pesanan via WhatsApp"
+  },
+  "menuCard": {
+    "currency": "$"
+  },
+  "promoCard": {
+    "featured": "Unggulan",
+    "currency": "$"
+  },
+  "addToCart": {
+    "added": "Ditambahkan!",
+    "dineIn": "Makan di Tempat",
+    "takeAway": "Bawa Pulang"
+  },
+  "footer": {
+    "description": "Pengalaman makan yang unik di tengah suasana alam yang menenangkan di Ubud. Masakan Indonesia dan internasional, kopi khusus, dan koktail.",
+    "usefulLinks": "Tautan Berguna",
+    "openingHours": "Jam Buka",
+    "monSun": "Sen – Min",
+    "time": "07:00 – 22:00",
+    "contactUs": "Hubungi Kami",
+    "phone": "Telepon",
+    "wa": "WA",
+    "email": "Email",
+    "copyright": "Tropical View Ubud. Hak Cipta Dilindungi."
+  },
+  "common": {
+    "currency": "$"
+  }
+}

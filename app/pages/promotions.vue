@@ -24,12 +24,12 @@
          ════════════════════════════════════════════════════════════════════ -->
     <section class="hero" style="padding-bottom: 1rem;">
       <div class="container">
-        <!-- Small uppercase green label -->
-        <p class="section-label">Special Offers</p>
-        <!-- Main heading — uses clamp() for responsive font sizing -->
-        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">Menu Promotions</h1>
-        <!-- Subtitle text -->
-        <p class="section-text">Take advantage of our exclusive deals, happy hours, and seasonal specials.</p>
+        <!-- i18n: Small uppercase label for the promotions section -->
+        <p class="section-label">{{ $t('promotionsPage.label') }}</p>
+        <!-- i18n: Main heading for the promotions page -->
+        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">{{ $t('promotionsPage.title') }}</h1>
+        <!-- i18n: Descriptive subtitle about available promotions -->
+        <p class="section-text">{{ $t('promotionsPage.description') }}</p>
       </div>
     </section>
 
@@ -49,8 +49,10 @@
           This prevents showing an empty "Featured" heading with no cards.
         -->
         <div v-if="featuredPromos.length > 0">
-          <p class="section-label">Don't Miss Out</p>
-          <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">Featured Offers</h2>
+          <!-- i18n: Label for the featured promotions section -->
+          <p class="section-label">{{ $t('promotionsPage.featured.label') }}</p>
+          <!-- i18n: Title for the featured promotions section -->
+          <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">{{ $t('promotionsPage.featured.title') }}</h2>
 
           <!--
             📚 `.featured-promo-grid` uses CSS Grid with large cards.
@@ -81,8 +83,10 @@
          ════════════════════════════════════════════════════════════════════ -->
     <section class="section">
       <div class="container">
-        <p class="section-label">Browse All</p>
-        <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">All Promotions</h2>
+        <!-- i18n: Label for the full promotions list section -->
+        <p class="section-label">{{ $t('promotionsPage.all.label') }}</p>
+        <!-- i18n: Title for the full promotions list section -->
+        <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">{{ $t('promotionsPage.all.title') }}</h2>
 
         <!-- Category filter tabs -->
         <!--
@@ -115,7 +119,7 @@
           v-if="filteredPromos.length === 0"
           style="text-align: center; color: var(--color-text-muted); margin-top: 3rem; font-family: var(--font-content);"
         >
-          No promotions in this category right now. Check back soon!
+          {{ $t('promotionsPage.noPromos') }}
         </p>
       </div>
     </section>
@@ -127,15 +131,18 @@
     <section class="section">
       <div class="container">
         <div class="cta-banner">
-          <h2>Ready to Grab These Deals?</h2>
-          <p>Contact us now to reserve your table or ask about any of our current promotions.</p>
+          <!-- i18n: CTA heading encouraging users to act on promotions -->
+          <h2>{{ $t('promotionsPage.ctaTitle') }}</h2>
+          <!-- i18n: CTA description inviting contact for reservations or questions -->
+          <p>{{ $t('promotionsPage.ctaDescription') }}</p>
           <a
             href="https://wa.me/6281338774969?text=Hello,%20I%20want%20to%20know%20about%20your%20promotions"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
           >
-            Chat on WhatsApp
+            <!-- i18n: Button label for WhatsApp contact link -->
+            {{ $t('promotionsPage.chatBtn') }}
           </a>
         </div>
       </div>

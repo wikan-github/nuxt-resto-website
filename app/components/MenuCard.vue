@@ -42,7 +42,8 @@
       The `displayPrice` computed property handles this logic.
     -->
     <div class="menu-card-actions">
-      <div class="menu-card-price">${{ displayPrice }}</div>
+      <!-- i18n: Currency symbol before display price -->
+      <div class="menu-card-price">{{ $t('common.currency') }}{{ displayPrice }}</div>
       <AddToCartButton :item="item" item-type="menu" />
     </div>
   </div>

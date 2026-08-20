@@ -1,0 +1,208 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "promos": "Promos",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "reserve": "Reserve Now",
+    "openCart": "Open cart"
+  },
+  "hero": {
+    "title": "Embrace Nature's Serenity in the Heart of Ubud",
+    "subtitle": "Experience authentic Indonesian and international cuisine surrounded by lush rice field views and warm Balinese hospitality.",
+    "reserveBtn": "Make a Reservation"
+  },
+  "values": {
+    "label": "Our Values",
+    "title": "Delicious food with meaning",
+    "description": "We are committed to providing an authentic and serene experience that reflects the beauty of nature and the warmth of Balinese hospitality.",
+    "freshIngredients": {
+      "title": "Fresh Ingredients",
+      "description": "Locally sourced produce and traditional Balinese spices in every dish."
+    },
+    "expertChefs": {
+      "title": "Expert Chefs",
+      "description": "Our culinary team brings passion and precision to every plate we serve."
+    },
+    "curatedDrinks": {
+      "title": "Curated Drinks",
+      "description": "Specialty coffee, fresh smoothies, wine, and handcrafted cocktails."
+    }
+  },
+  "about": {
+    "label": "Tropical View Ubud",
+    "title": "An Oasis of Taste in the Heart of Ubud",
+    "description1": "Tropical View Ubud offers a unique dining experience amidst the calming natural atmosphere of Ubud. Strategically located on Monkey Forest Street, we serve various Indonesian and international dishes, including Nasi Goreng, Crispy Fried Duck, and Rib-Eye Steak.",
+    "description2": "With beautiful rice field views and a comfortable design, this place is perfect for enjoying breakfast, lunch, or dinner. We are open daily from 7:00 to 22:00.",
+    "viewMenuBtn": "View Our Menus"
+  },
+  "cta": {
+    "title": "Get Our Best Offers Quickly",
+    "description": "Are you ready to try a dish that will complete your trip? Tropical View Ubud will provide what you need!",
+    "reserveBtn": "Make a Reservation"
+  },
+  "aboutPage": {
+    "label": "Tropical View Ubud",
+    "title": "About Us",
+    "subtitle": "Learn about our journey, our passion for food, and our love for nature.",
+    "story": {
+      "label": "Our Story",
+      "title": "A Dream Born in Ubud",
+      "paragraph1": "Tropical View Ubud was born from a simple dream — to create a place where guests could enjoy delicious food while being surrounded by the breathtaking beauty of Ubud's rice terraces and tropical greenery.",
+      "paragraph2": "Located on the famous Monkey Forest Street, our restaurant offers more than just a meal. It offers an experience — the gentle sound of nature, warm Balinese hospitality, and flavors that tell a story.",
+      "paragraph3": "Since opening our doors, we have welcomed travelers from all over the world who come seeking authentic Indonesian cuisine and a tranquil atmosphere. Every dish we serve is prepared with locally sourced ingredients and traditional Balinese spices."
+    },
+    "exploreMenuBtn": "Explore Our Menu",
+    "mission": {
+      "label": "What We Stand For",
+      "title": "Our Mission & Values",
+      "description": "Everything we do is guided by our commitment to quality, sustainability, and community.",
+      "authenticCuisine": {
+        "title": "Authentic Cuisine",
+        "description": "We celebrate Indonesian culinary traditions while embracing international flavors. Every dish is crafted with respect for authentic recipes and the freshest local ingredients."
+      },
+      "sustainability": {
+        "title": "Sustainability",
+        "description": "We source our ingredients from local farmers and producers, supporting the Balinese community while minimizing our environmental footprint."
+      },
+      "warmHospitality": {
+        "title": "Warm Hospitality",
+        "description": "Balinese hospitality is world-renowned for its warmth and generosity. We treat every guest like family, ensuring your experience is memorable from start to finish."
+      }
+    },
+    "experience": {
+      "label": "The Experience",
+      "title": "Dining With a View",
+      "paragraph1": "Imagine savoring a plate of Nasi Goreng while gazing at lush green rice terraces stretching as far as the eye can see. At Tropical View Ubud, every table offers a window into the soul of Bali.",
+      "paragraph2": "Our restaurant is designed to blend seamlessly with nature. Open-air seating, natural materials, and the gentle sounds of the tropical forest create an atmosphere that calms the mind and delights the senses.",
+      "paragraph3": "Whether you're enjoying a leisurely breakfast, a business lunch, or a romantic dinner, the magic of Ubud surrounds you at every moment."
+    },
+    "contactBtn": "Get in Touch",
+    "ctaTitle": "Ready to Experience Tropical View?",
+    "ctaDescription": "Book your table today and enjoy a dining experience you'll never forget.",
+    "reserveBtn": "Make a Reservation"
+  },
+  "menuPage": {
+    "label": "Tropical View Ubud",
+    "title": "Our Menu",
+    "description": "Explore our curated selection of authentic Indonesian and international dishes.",
+    "noItems": "No items found in this category.",
+    "helpTitle": "Need Help Choosing?",
+    "helpDescription": "Our staff is happy to help you find the perfect dish. Contact us anytime!",
+    "chatBtn": "Chat on WhatsApp"
+  },
+  "promotionsPage": {
+    "label": "Special Offers",
+    "title": "Menu Promotions",
+    "description": "Take advantage of our exclusive deals, happy hours, and seasonal specials.",
+    "featured": {
+      "label": "Don't Miss Out",
+      "title": "Featured Offers"
+    },
+    "all": {
+      "label": "Browse All",
+      "title": "All Promotions"
+    },
+    "noPromos": "No promotions in this category right now. Check back soon!",
+    "ctaTitle": "Ready to Grab These Deals?",
+    "ctaDescription": "Contact us now to reserve your table or ask about any of our current promotions.",
+    "chatBtn": "Chat on WhatsApp"
+  },
+  "contactPage": {
+    "label": "Get in Touch",
+    "title": "Contact Us",
+    "subtitle": "Have a question or want to make a reservation? We'd love to hear from you.",
+    "info": {
+      "phone": "Phone",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "chatBtn": "Chat with us",
+      "address": "Address",
+      "addressText": "Monkey Forest Street, Ubud, Gianyar, Bali 80571, Indonesia"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "nameLabel": "Your Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Your Email",
+      "emailPlaceholder": "john@example.com",
+      "subjectLabel": "Subject",
+      "subjectPlaceholder": "Reservation inquiry",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell us how we can help...",
+      "sendBtn": "Send Message"
+    },
+    "hours": {
+      "title": "Opening Hours",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "time": "7:00 AM – 10:00 PM"
+    },
+    "whatsappBtn": "Reserve via WhatsApp",
+    "location": {
+      "label": "Find Us",
+      "title": "Our Location"
+    },
+    "ctaTitle": "We Look Forward to Welcoming You",
+    "ctaDescription": "Whether it's a casual meal or a special celebration, Tropical View Ubud is the perfect destination.",
+    "bookBtn": "Book Your Table"
+  },
+  "cart": {
+    "title": "Your Order",
+    "empty": "Your cart is empty.",
+    "emptyHint": "Browse our menu and add some delicious items!",
+    "dineIn": "Dine In",
+    "takeaway": "Takeaway",
+    "total": "Total",
+    "remove": "Remove",
+    "orderNow": "Order Now",
+    "clearCart": "Clear Cart"
+  },
+  "order": {
+    "title": "Complete Your Order",
+    "total": "Total",
+    "nameLabel": "Your Name",
+    "namePlaceholder": "e.g., John Smith",
+    "whatsappLabel": "WhatsApp Number",
+    "whatsappPlaceholder": "e.g., +62 812-3456-7890",
+    "addressLabel": "Table Number / Address",
+    "addressLabelDelivery": "Delivery Address",
+    "addressPlaceholder": "e.g., Table 5 or your address...",
+    "addressPlaceholderDelivery": "Enter your full delivery address...",
+    "sending": "Sending...",
+    "sendBtn": "Send Order via WhatsApp"
+  },
+  "menuCard": {
+    "currency": "$"
+  },
+  "promoCard": {
+    "featured": "Featured",
+    "currency": "$"
+  },
+  "addToCart": {
+    "added": "Added!",
+    "dineIn": "Dine In",
+    "takeAway": "Take Away"
+  },
+  "footer": {
+    "description": "A unique dining experience amidst the calming natural atmosphere of Ubud. Indonesian and international dishes, specialty coffee, and cocktails.",
+    "usefulLinks": "Useful Links",
+    "openingHours": "Opening Hours",
+    "monSun": "Mon – Sun",
+    "time": "7:00 AM – 10:00 PM",
+    "contactUs": "Contact Us",
+    "phone": "Phone",
+    "wa": "WA",
+    "email": "Email",
+    "copyright": "Tropical View Ubud. All Rights Reserved."
+  },
+  "common": {
+    "currency": "$"
+  }
+}

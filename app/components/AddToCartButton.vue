@@ -44,7 +44,8 @@
         - "Take Away" if user is far from restaurant
         - "Dine In" if user is within 10 meters
     -->
-    <span v-if="showFeedback">Added! &#10003;</span>
+    <!-- i18n: "Added!" feedback text shown briefly after adding to cart -->
+    <span v-if="showFeedback">{{ $t('addToCart.added') }} &#10003;</span>
     <span v-else>{{ currentOrderTypeLabel }}</span>
   </button>
 </template>
@@ -55,6 +56,9 @@ import type { MenuItem } from '~/composables/useMenu'
 import type { Promotion } from '~/composables/usePromotions'
 // Import OrderType from the central config for type safety
 import type { OrderType } from '~/config/restaurant'
+
+// i18n: Import useI18n and destructure `t` for translation calls in script
+const { t } = useI18n()
 
 // ── Props ──
 // 📚 `defineProps` returns a typed, reactive props object.
@@ -82,14 +86,15 @@ const currentOrderType = computed<OrderType>(() => {
 
 /**
  * currentOrderTypeLabel: the human-readable button text.
- * - 'takeaway' → "Take Away"
- * - 'dine-in' → "Dine In"
+ * - 'takeaway' → translated "Take Away"
+ * - 'dine-in' → translated "Dine In"
  *
  * 📚 This is separate from `currentOrderType` so we can display friendly text
  *    while passing the technical value to the cart.
  */
+// i18n: Use t() for translated order type labels in script
 const currentOrderTypeLabel = computed(() => {
-  return currentOrderType.value === 'dine-in' ? 'Dine In' : 'Take Away'
+  return currentOrderType.value === 'dine-in' ? t('addToCart.dineIn') : t('addToCart.takeAway')
 })
 
 // ── Local state for button feedback ──

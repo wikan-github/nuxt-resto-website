@@ -43,13 +43,24 @@
         <!-- Navigation links -->
         <nav>
           <ul class="nav-links">
-            <li><NuxtLink to="/">Home</NuxtLink></li>
-            <li><NuxtLink to="/menu">Menu</NuxtLink></li>
-            <li><NuxtLink to="/promotions">Promos</NuxtLink></li>
-            <li><NuxtLink to="/about">About Us</NuxtLink></li>
-            <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
+            <!-- i18n: Translates "Home" nav link label via nav.home key -->
+            <li><NuxtLink to="/">{{ $t('nav.home') }}</NuxtLink></li>
+            <!-- i18n: Translates "Menu" nav link label via nav.menu key -->
+            <li><NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink></li>
+            <!-- i18n: Translates "Promos" nav link label via nav.promos key -->
+            <li><NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink></li>
+            <!-- i18n: Translates "About Us" nav link label via nav.about key -->
+            <li><NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink></li>
+            <!-- i18n: Translates "Contact Us" nav link label via nav.contact key -->
+            <li><NuxtLink to="/contact">{{ $t('nav.contact') }}</NuxtLink></li>
           </ul>
         </nav>
+
+        <!--
+          Language Switcher: Toggle between English (EN) and Bahasa Indonesia (ID).
+          Auto-imported by Nuxt — no import needed.
+        -->
+        <LanguageSwitcher />
 
         <!--
           ════════════════════════════════════════════════════════════════════
@@ -66,7 +77,8 @@
           📚 The badge uses `v-if` to only show when there are items.
              `v-if="cartItemCount > 0"` hides the badge when cart is empty.
         -->
-        <button class="cart-icon-btn" @click="openCart" aria-label="Open cart">
+        <!-- i18n: Translates "Open cart" aria-label for accessibility via nav.openCart key -->
+        <button class="cart-icon-btn" @click="openCart" :aria-label="$t('nav.openCart')">
           <!-- Simple cart icon using SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="21" r="1" />
@@ -89,7 +101,8 @@
           target="_blank"
           rel="noopener"
         >
-          Reserve Now
+        <!-- i18n: Translates "Reserve Now" CTA button text via nav.reserve key -->
+          {{ $t('nav.reserve') }}
         </a>
       </div>
     </header>
@@ -132,47 +145,61 @@
           <!-- Column 1: Brand logo and description -->
           <div class="footer-brand">
             <img src="/images/logo.png" alt="Tropical View Ubud" class="logo-img" />
-            <p>A unique dining experience amidst the calming natural atmosphere of Ubud. Indonesian and international dishes, specialty coffee, and cocktails.</p>
+            <!-- i18n: Translates the footer brand description paragraph via footer.description key -->
+            <p>{{ $t('footer.description') }}</p>
           </div>
 
           <!-- Column 2: Navigation links -->
           <div class="footer-col">
-            <h4>Useful Links</h4>
+            <!-- i18n: Translates "Useful Links" footer section heading via footer.usefulLinks key -->
+            <h4>{{ $t('footer.usefulLinks') }}</h4>
             <ul>
-              <li><NuxtLink to="/">Home</NuxtLink></li>
-              <li><NuxtLink to="/about">About Us</NuxtLink></li>
-              <li><NuxtLink to="/menu">Menu</NuxtLink></li>
-              <li><NuxtLink to="/promotions">Promos</NuxtLink></li>
-              <li><NuxtLink to="/contact">Contact Us</NuxtLink></li>
+              <!-- i18n: Translates "Home" footer link via nav.home key -->
+              <li><NuxtLink to="/">{{ $t('nav.home') }}</NuxtLink></li>
+              <!-- i18n: Translates "About Us" footer link via nav.about key -->
+              <li><NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink></li>
+              <!-- i18n: Translates "Menu" footer link via nav.menu key -->
+              <li><NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink></li>
+              <!-- i18n: Translates "Promos" footer link via nav.promos key -->
+              <li><NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink></li>
+              <!-- i18n: Translates "Contact Us" footer link via nav.contact key -->
+              <li><NuxtLink to="/contact">{{ $t('nav.contact') }}</NuxtLink></li>
             </ul>
           </div>
 
           <!-- Column 3: Opening hours -->
           <div class="footer-col">
-            <h4>Opening Hours</h4>
+            <!-- i18n: Translates "Opening Hours" footer section heading via footer.openingHours key -->
+            <h4>{{ $t('footer.openingHours') }}</h4>
             <ul>
-              <li><a href="#">Mon – Sun</a></li>
-              <li><a href="#">7:00 AM – 10:00 PM</a></li>
+              <!-- i18n: Translates "Mon – Sun" opening days text via footer.monSun key -->
+              <li><a href="#">{{ $t('footer.monSun') }}</a></li>
+              <!-- i18n: Translates "7:00 AM – 10:00 PM" opening time text via footer.time key -->
+              <li><a href="#">{{ $t('footer.time') }}</a></li>
             </ul>
           </div>
 
           <!-- Column 4: Contact details -->
           <div class="footer-col">
-            <h4>Contact Us</h4>
+            <!-- i18n: Translates "Contact Us" footer section heading via footer.contactUs key -->
+            <h4>{{ $t('footer.contactUs') }}</h4>
             <!--
               📚 Each contact item uses flexbox (`display: flex` in CSS)
                  to place the label and value side by side.
             -->
             <div class="footer-contact-item">
-              <span class="label">Phone</span>
+              <!-- i18n: Translates "Phone" contact label via footer.phone key -->
+              <span class="label">{{ $t('footer.phone') }}</span>
               <span class="value">+62 813-3877-4969</span>
             </div>
             <div class="footer-contact-item">
-              <span class="label">WA</span>
+              <!-- i18n: Translates "WA" (WhatsApp) contact label via footer.wa key -->
+              <span class="label">{{ $t('footer.wa') }}</span>
               <span class="value">+62 813-3877-4969</span>
             </div>
             <div class="footer-contact-item">
-              <span class="label">Email</span>
+              <!-- i18n: Translates "Email" contact label via footer.email key -->
+              <span class="label">{{ $t('footer.email') }}</span>
               <span class="value">tropicalview19@gmail.com</span>
             </div>
           </div>
@@ -219,7 +246,8 @@
           "© 2026 Tropical View Ubud. All Rights Reserved."
         -->
         <div class="footer-bottom">
-          <p>&copy; {{ new Date().getFullYear() }} Tropical View Ubud. All Rights Reserved.</p>
+          <!-- i18n: Translates copyright text including restaurant name and rights notice via footer.copyright key -->
+          <p>&copy; {{ new Date().getFullYear() }} {{ $t('footer.copyright') }}</p>
         </div>
       </div>
     </footer>

@@ -26,9 +26,12 @@
          ════════════════════════════════════════════════════════════════════ -->
     <section class="hero" style="padding-bottom: 1rem;">
       <div class="container">
-        <p class="section-label">Get in Touch</p>
-        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">Contact Us</h1>
-        <p class="section-text">Have a question or want to make a reservation? We'd love to hear from you.</p>
+        <!-- i18n: page label above the main title -->
+        <p class="section-label">{{ $t('contactPage.label') }}</p>
+        <!-- i18n: main page heading -->
+        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">{{ $t('contactPage.title') }}</h1>
+        <!-- i18n: subtitle / introductory text -->
+        <p class="section-text">{{ $t('contactPage.subtitle') }}</p>
       </div>
     </section>
 
@@ -48,21 +51,24 @@
           <!-- Card 1: Phone -->
           <div class="contact-info-card">
             <div class="contact-icon">📞</div>
-            <h4>Phone</h4>
+            <!-- i18n: phone info card heading -->
+            <h4>{{ $t('contactPage.info.phone') }}</h4>
             <p>+62 813-3877-4969</p>
           </div>
 
           <!-- Card 2: Email -->
           <div class="contact-info-card">
             <div class="contact-icon">✉️</div>
-            <h4>Email</h4>
+            <!-- i18n: email info card heading -->
+            <h4>{{ $t('contactPage.info.email') }}</h4>
             <p>tropicalview19@gmail.com</p>
           </div>
 
           <!-- Card 3: WhatsApp (external link) -->
           <div class="contact-info-card">
             <div class="contact-icon">💬</div>
-            <h4>WhatsApp</h4>
+            <!-- i18n: whatsapp info card heading -->
+            <h4>{{ $t('contactPage.info.whatsapp') }}</h4>
             <!--
               📚 `wa.me/` is WhatsApp's click-to-chat URL.
                  The `?text=` parameter pre-fills the first message.
@@ -74,15 +80,18 @@
               rel="noopener"
               class="contact-link"
             >
-              Chat with us
+              <!-- i18n: whatsapp chat link text -->
+              {{ $t('contactPage.info.chatBtn') }}
             </a>
           </div>
 
           <!-- Card 4: Address -->
           <div class="contact-info-card">
             <div class="contact-icon">📍</div>
-            <h4>Address</h4>
-            <p>Monkey Forest Street, Ubud, Gianyar, Bali 80571, Indonesia</p>
+            <!-- i18n: address info card heading -->
+            <h4>{{ $t('contactPage.info.address') }}</h4>
+            <!-- i18n: full address text -->
+            <p>{{ $t('contactPage.info.addressText') }}</p>
           </div>
 
         </div>
@@ -104,7 +113,8 @@
 
           <!-- ── LEFT COLUMN: Contact Form ── -->
           <div class="contact-form-wrapper">
-            <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">Send Us a Message</h2>
+            <!-- i18n: contact form heading -->
+            <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">{{ $t('contactPage.form.title') }}</h2>
 
             <!--
               📚 LEARNING — The <form> Element:
@@ -121,7 +131,8 @@
 
               <!-- Name field -->
               <div class="form-group">
-                <label for="name">Your Name</label>
+                <!-- i18n: name field label -->
+                <label for="name">{{ $t('contactPage.form.nameLabel') }}</label>
                 <!--
                   📚 LEARNING — `v-model` (Two-Way Data Binding):
                   `v-model="form.name"` binds this input to the `form.name` property.
@@ -137,70 +148,79 @@
                   `id="name"` and `for="name"` link the <label> to the <input>.
                   Clicking the label focuses the input (accessibility best practice).
                 -->
+                <!-- i18n: name input placeholder text -->
                 <input
                   id="name"
                   v-model="form.name"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="{{ $t('contactPage.form.namePlaceholder') }}"
                   required
                 />
               </div>
 
               <!-- Email field -->
               <div class="form-group">
-                <label for="email">Your Email</label>
+                <!-- i18n: email field label -->
+                <label for="email">{{ $t('contactPage.form.emailLabel') }}</label>
                 <!--
                   `type="email"` validates that the input looks like an email address.
                   `placeholder` shows gray hint text inside the empty input.
                   `required` means the form cannot be submitted if this is empty.
                 -->
+                <!-- i18n: email input placeholder text -->
                 <input
                   id="email"
                   v-model="form.email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="{{ $t('contactPage.form.emailPlaceholder') }}"
                   required
                 />
               </div>
 
               <!-- Subject field -->
               <div class="form-group">
-                <label for="subject">Subject</label>
+                <!-- i18n: subject field label -->
+                <label for="subject">{{ $t('contactPage.form.subjectLabel') }}</label>
+                <!-- i18n: subject input placeholder text -->
                 <input
                   id="subject"
                   v-model="form.subject"
                   type="text"
-                  placeholder="Reservation inquiry"
+                  placeholder="{{ $t('contactPage.form.subjectPlaceholder') }}"
                   required
                 />
               </div>
 
               <!-- Message field (multiline textarea) -->
               <div class="form-group">
-                <label for="message">Message</label>
+                <!-- i18n: message field label -->
+                <label for="message">{{ $t('contactPage.form.messageLabel') }}</label>
                 <!--
                   📚 `<textarea>` is for multi-line text input (unlike <input>
                      which is single-line). It grows vertically as the user types.
                 -->
+                <!-- i18n: message textarea placeholder text -->
                 <textarea
                   id="message"
                   v-model="form.message"
                   rows="5"
-                  placeholder="Tell us how we can help..."
+                  placeholder="{{ $t('contactPage.form.messagePlaceholder') }}"
                   required
                 ></textarea>
               </div>
 
               <!-- Submit button -->
               <button type="submit" class="btn btn-green" style="width: 100%;">
-                Send Message
+                <!-- i18n: form submit button text -->
+                {{ $t('contactPage.form.sendBtn') }}
               </button>
             </form>
           </div>
 
           <!-- ── RIGHT COLUMN: Opening Hours + Social ── -->
           <div>
-            <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">Opening Hours</h2>
+            <!-- i18n: opening hours section heading -->
+            <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">{{ $t('contactPage.hours.title') }}</h2>
 
             <!--
               📚 Reuses the .green-card class for a styled container
@@ -213,32 +233,46 @@
               -->
               <div class="hours-list">
                 <div class="hours-row">
-                  <span class="hours-day">Monday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: monday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.monday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Tuesday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: tuesday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.tuesday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Wednesday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: wednesday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.wednesday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Thursday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: thursday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.thursday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Friday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: friday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.friday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Saturday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: saturday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.saturday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
                 <div class="hours-row">
-                  <span class="hours-day">Sunday</span>
-                  <span class="hours-time">7:00 AM – 10:00 PM</span>
+                  <!-- i18n: sunday day name -->
+                  <span class="hours-day">{{ $t('contactPage.hours.sunday') }}</span>
+                  <!-- i18n: opening hours time range -->
+                  <span class="hours-time">{{ $t('contactPage.hours.time') }}</span>
                 </div>
               </div>
             </div>
@@ -251,7 +285,8 @@
               target="_blank"
               rel="noopener"
             >
-              Reserve via WhatsApp
+              <!-- i18n: whatsapp reservation button text -->
+              {{ $t('contactPage.whatsappBtn') }}
             </a>
           </div>
 
@@ -265,8 +300,10 @@
          ════════════════════════════════════════════════════════════════════ -->
     <section class="section" style="padding-top: 0;">
       <div class="container">
-        <p class="section-label">Find Us</p>
-        <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">Our Location</h2>
+        <!-- i18n: location section label -->
+        <p class="section-label">{{ $t('contactPage.location.label') }}</p>
+        <!-- i18n: location section heading -->
+        <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">{{ $t('contactPage.location.title') }}</h2>
 
         <!--
           📚 LEARNING — `<iframe>` for embedding external content:
@@ -300,15 +337,18 @@
     <section class="section">
       <div class="container">
         <div class="cta-banner">
-          <h2>We Look Forward to Welcoming You</h2>
-          <p>Whether it's a casual meal or a special celebration, Tropical View Ubud is the perfect destination.</p>
+          <!-- i18n: call-to-action banner heading -->
+          <h2>{{ $t('contactPage.ctaTitle') }}</h2>
+          <!-- i18n: call-to-action banner description -->
+          <p>{{ $t('contactPage.ctaDescription') }}</p>
           <a
             href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
           >
-            Book Your Table
+            <!-- i18n: book table button text -->
+            {{ $t('contactPage.bookBtn') }}
           </a>
         </div>
       </div>

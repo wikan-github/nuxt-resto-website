@@ -49,8 +49,10 @@
 
           <!-- Text content, positioned at the bottom of the card -->
           <div class="hero-content">
-            <h1>Embrace Nature's Serenity in the Heart of Ubud</h1>
-            <p>Experience authentic Indonesian and international cuisine surrounded by lush rice field views and warm Balinese hospitality.</p>
+            <!-- Hero heading — translated via i18n key 'hero.title' -->
+            <h1>{{ $t('hero.title') }}</h1>
+            <!-- Hero subtitle — translated via i18n key 'hero.subtitle' -->
+            <p>{{ $t('hero.subtitle') }}</p>
             <!-- External link to WhatsApp for reservations -->
             <a
               href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
@@ -58,7 +60,8 @@
               target="_blank"
               rel="noopener"
             >
-              Make a Reservation
+              <!-- Hero button label — translated via i18n key 'hero.reserveBtn' -->
+              {{ $t('hero.reserveBtn') }}
             </a>
           </div>
         </div>
@@ -76,14 +79,14 @@
              background (#f1f5eb) and large rounded corners (41px).
         -->
         <div class="green-card">
-          <!-- Small uppercase label: "OUR VALUES" -->
-          <p class="section-label">Our Values</p>
+          <!-- Small uppercase label — translated via i18n key 'values.label' -->
+          <p class="section-label">{{ $t('values.label') }}</p>
 
-          <!-- Large heading -->
-          <h2 class="section-title">Delicious food with meaning</h2>
+          <!-- Large heading — translated via i18n key 'values.title' -->
+          <h2 class="section-title">{{ $t('values.title') }}</h2>
 
-          <!-- Description text -->
-          <p class="section-text">We are committed to providing an authentic and serene experience that reflects the beauty of nature and the warmth of Balinese hospitality.</p>
+          <!-- Description text — translated via i18n key 'values.description' -->
+          <p class="section-text">{{ $t('values.description') }}</p>
 
           <!-- 3-column grid of value cards -->
           <div class="values-grid">
@@ -91,22 +94,28 @@
             <!-- Card 1: Fresh Ingredients -->
             <div class="value-card">
               <div class="value-icon">🌿</div>
-              <h3>Fresh Ingredients</h3>
-              <p>Locally sourced produce and traditional Balinese spices in every dish.</p>
+              <!-- Card title — translated via i18n key 'values.freshIngredients.title' -->
+              <h3>{{ $t('values.freshIngredients.title') }}</h3>
+              <!-- Card description — translated via i18n key 'values.freshIngredients.description' -->
+              <p>{{ $t('values.freshIngredients.description') }}</p>
             </div>
 
             <!-- Card 2: Expert Chefs -->
             <div class="value-card">
               <div class="value-icon">🍳</div>
-              <h3>Expert Chefs</h3>
-              <p>Our culinary team brings passion and precision to every plate we serve.</p>
+              <!-- Card title — translated via i18n key 'values.expertChefs.title' -->
+              <h3>{{ $t('values.expertChefs.title') }}</h3>
+              <!-- Card description — translated via i18n key 'values.expertChefs.description' -->
+              <p>{{ $t('values.expertChefs.description') }}</p>
             </div>
 
             <!-- Card 3: Curated Drinks -->
             <div class="value-card">
               <div class="value-icon">🍹</div>
-              <h3>Curated Drinks</h3>
-              <p>Specialty coffee, fresh smoothies, wine, and handcrafted cocktails.</p>
+              <!-- Card title — translated via i18n key 'values.curatedDrinks.title' -->
+              <h3>{{ $t('values.curatedDrinks.title') }}</h3>
+              <!-- Card description — translated via i18n key 'values.curatedDrinks.description' -->
+              <p>{{ $t('values.curatedDrinks.description') }}</p>
             </div>
 
           </div>
@@ -137,8 +146,10 @@
 
           <!-- Right column: text content -->
           <div>
-            <p class="section-label">Tropical View Ubud</p>
-            <h2 class="section-title">An Oasis of Taste in the Heart of Ubud</h2>
+            <!-- About section label — translated via i18n key 'about.label' -->
+            <p class="section-label">{{ $t('about.label') }}</p>
+            <!-- About section title — translated via i18n key 'about.title' -->
+            <h2 class="section-title">{{ $t('about.title') }}</h2>
 
             <!--
               📚 Inline style: `style="margin-bottom: 1.5rem;"` adds space
@@ -151,11 +162,13 @@
                    screen readers and search engines this text is important.
                    Don't use <strong> just for visual bold — use CSS for that.
               -->
-              <strong>Tropical View Ubud</strong> offers a unique dining experience amidst the calming natural atmosphere of Ubud. Strategically located on Monkey Forest Street, we serve various Indonesian and international dishes, including Nasi Goreng, Crispy Fried Duck, and Rib-Eye Steak.
+              <!-- First about description — translated via i18n key 'about.description1' -->
+              <strong>{{ $t('about.description1') }}</strong>
             </p>
 
+            <!-- Second about description — translated via i18n key 'about.description2' -->
             <p class="section-text" style="margin-bottom: 2rem;">
-              With beautiful rice field views and a comfortable design, this place is perfect for enjoying breakfast, lunch, or dinner. We are open daily from 7:00 to 22:00.
+              {{ $t('about.description2') }}
             </p>
 
             <!--
@@ -163,7 +176,8 @@
                  This does client-side navigation (no page reload).
             -->
             <NuxtLink to="/menu" class="btn btn-outline-green">
-              View Our Menus
+              <!-- About menu button — translated via i18n key 'about.viewMenuBtn' -->
+              {{ $t('about.viewMenuBtn') }}
             </NuxtLink>
           </div>
 
@@ -178,15 +192,18 @@
     <section class="section">
       <div class="container">
         <div class="cta-banner">
-          <h2>Get Our Best Offers Quickly</h2>
-          <p>Are you ready to try a dish that will complete your trip? Tropical View Ubud will provide what you need!</p>
+          <!-- CTA heading — translated via i18n key 'cta.title' -->
+          <h2>{{ $t('cta.title') }}</h2>
+          <!-- CTA description — translated via i18n key 'cta.description' -->
+          <p>{{ $t('cta.description') }}</p>
           <a
             href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
           >
-            Make a Reservation
+            <!-- CTA button label — translated via i18n key 'cta.reserveBtn' -->
+            {{ $t('cta.reserveBtn') }}
           </a>
         </div>
       </div>

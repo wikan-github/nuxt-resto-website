@@ -22,9 +22,12 @@
          ════════════════════════════════════════════════════════════════════ -->
     <section class="hero" style="padding-bottom: 1rem;">
       <div class="container">
-        <p class="section-label">Tropical View Ubud</p>
-        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">Our Menu</h1>
-        <p class="section-text">Explore our curated selection of authentic Indonesian and international dishes.</p>
+        <!-- i18n: Small uppercase label identifying the restaurant brand -->
+        <p class="section-label">{{ $t('menuPage.label') }}</p>
+        <!-- i18n: Main heading for the menu page -->
+        <h1 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">{{ $t('menuPage.title') }}</h1>
+        <!-- i18n: Descriptive subtitle about the menu offerings -->
+        <p class="section-text">{{ $t('menuPage.description') }}</p>
       </div>
     </section>
 
@@ -96,7 +99,7 @@
           v-if="filteredItems.length === 0"
           style="text-align: center; color: var(--color-text-muted); margin-top: 3rem; font-family: var(--font-content);"
         >
-          No items found in this category.
+          {{ $t('menuPage.noItems') }}
         </p>
       </div>
     </section>
@@ -108,15 +111,18 @@
     <section class="section">
       <div class="container">
         <div class="cta-banner">
-          <h2>Need Help Choosing?</h2>
-          <p>Our staff is happy to help you find the perfect dish. Contact us anytime!</p>
+          <!-- i18n: CTA section heading prompting users to seek help -->
+          <h2>{{ $t('menuPage.helpTitle') }}</h2>
+          <!-- i18n: CTA section description offering staff assistance -->
+          <p>{{ $t('menuPage.helpDescription') }}</p>
           <a
             href="https://wa.me/6281338774969?text=Hello,%20I%20need%20help%20with%20the%20menu"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
           >
-            Chat on WhatsApp
+            <!-- i18n: Button label for WhatsApp contact link -->
+            {{ $t('menuPage.chatBtn') }}
           </a>
         </div>
       </div>
