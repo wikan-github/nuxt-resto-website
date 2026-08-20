@@ -190,8 +190,10 @@ export function useLocation() {
   function requestLocation() {
     // Check if the browser supports geolocation
     if (!navigator.geolocation) {
-      locationError.value = 'Geolocation is not supported by this browser'
-      return
+      locationError.value = 'Geolocation is not supported by this browser'; 
+      console.log('Browser mendukung Geolocation');
+      
+      return;
     }
 
     // Set loading state to true while waiting for the browser response
@@ -202,10 +204,22 @@ export function useLocation() {
       // Called when the user grants permission and the position is obtained.
       (position) => {
         // Extract latitude and longitude from the position object
+        const userLat = position.coords.latitude
+        const userLng = position.coords.longitude
+
         userLocation.value = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+          latitude: userLat,
+          longitude: userLng,
         }
+
+        const distance = calculateDistance(userLat, userLng, RESTAURANT_LAT, RESTAURANT_LNG)
+
+        console.log('--- Location Info ---')
+        console.log(`User Location:      Lat ${userLat}, Lng ${userLng}`)
+        console.log(`Restaurant Location: Lat ${RESTAURANT_LAT}, Lng ${RESTAURANT_LNG}`)
+        console.log(`Distance to Restaurant: ${distance.toFixed(2)} meters`)
+        console.log('---------------------')
+
         // Clear any previous error and loading state
         locationError.value = null
         isLocationLoading.value = false
@@ -248,8 +262,8 @@ export function useLocation() {
   //    request the user's location. This means the proximity check happens
   //    as soon as the page loads — no manual trigger needed.
   //    We only request if we don't already have a location (avoids duplicates).
-  if (!userLocation.value && !isLocationLoading.value) {
-    // Use `if` guard because useState is only available during setup
+  if (import.meta.client && !userLocation.value && !isLocationLoading.value) {
+    // Only request location in the browser — navigator is undefined during SSR
     requestLocation()
   }
 
