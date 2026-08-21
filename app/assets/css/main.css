@@ -29,6 +29,9 @@
   --color-green: #034833;           /* Primary brand color — deep forest green */
   --color-green-light: #f1f5eb;     /* Light green tint — used for card backgrounds */
   --color-green-accent: #83cd26;    /* Bright green — used for icons and accents */
+  --color-cta-hover: #82cc26;       /* Lime green — header "Reserve" button hover background.
+                                       Text on it must be DARK (white fails contrast ~1.9:1),
+                                       so .header-cta:hover pairs it with --color-green text */
   --color-hero-heading: #fff;        /* White text for hero heading — contrast over dark image overlay */
   --color-hero-text: #fff;           /* White text for hero paragraph — contrast over dark image overlay */
   --color-text: #111111;            /* Main text color — near black */
@@ -273,24 +276,41 @@ h1, h2, h3, h4 {
   color: var(--color-green); /* Green text when hovered or active */
 }
 
-/* CTA (Call to Action) button in the header.
-   Pill-shaped with green background. On hover, it becomes transparent. */
+/* CTA (Call to Action) button in the header — "Reserve".
+   Deliberately SMALL and CUTE: compact padding + smaller type make it a
+   tidy pill that doesn't fight with the nav links, and the soft shadow
+   gives it a gentle "candy button" presence. On hover it turns lime
+   green (#82cc26) with dark text and lifts slightly. */
 .header-cta {
   display: inline-block;
   font-family: var(--font-content);
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 0.6rem 1.5rem;
+  font-size: 0.8rem;                  /* Smaller type for a daintier button */
+  font-weight: 600;                   /* Semi-bold so small text stays crisp */
+  padding: 0.38rem 1rem;              /* Tighter box → visibly smaller pill */
   border-radius: var(--radius-pill);  /* Pill shape */
   background: var(--color-green);
   color: #fff;
   border: 1px solid var(--color-green);
-  transition: all var(--transition);  /* Animate ALL properties on hover */
+  /* Animate color/border/shadow/transform on hover.
+     📚 `transform` is included so the hover "lift" animates smoothly. */
+  transition: all var(--transition);
+  /* Soft drop shadow floating the pill off the header background */
+  box-shadow: 0 2px 6px rgba(3, 72, 51, 0.25);
 }
 
 .header-cta:hover {
-  background: transparent;   /* Remove background on hover */
-  color: var(--color-green); /* Green text */
+  /* Lime green fill on hover (exact value requested: #82cc26) */
+  background: var(--color-cta-hover);
+  /* Border matches the fill so the pill reads as one solid candy shape */
+  border-color: var(--color-cta-hover);
+  /* ADAPTED TEXT COLOR: dark forest green instead of white —
+     #82cc26 is too light for white text (~1.9:1 contrast, fails WCAG),
+     while #034833 on lime reaches ~6.5:1 and stays on-brand */
+  color: var(--color-green);
+  /* Cute micro-interaction: the button lifts toward the cursor… */
+  transform: translateY(-2px);
+  /* …and glows with a soft lime shadow that matches the new fill */
+  box-shadow: 0 4px 12px rgba(130, 204, 38, 0.45);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
