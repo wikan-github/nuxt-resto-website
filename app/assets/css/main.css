@@ -745,6 +745,16 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: 1.2fr 1fr 1.4fr;
   gap: 2.5rem;
+  /* Top-align every column at its NATURAL content height.
+     📚 CRITICAL for the dynamic map height: the default
+        `align-items: stretch` would stretch brand/contact to the row
+        height — which is inflated by the map's own fallback height —
+        so the script's offsetHeight measurements would read the
+        STRETCHED sizes (a feedback loop: map 300px → columns stretched
+        to 300px → measured max = 300px → map stays 300px). With `start`,
+        each column keeps its true content height and Math.max(brand,
+        contact) measures honestly. */
+  align-items: start;
 }
 
 .footer-brand .logo-img {
