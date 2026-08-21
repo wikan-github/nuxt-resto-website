@@ -155,12 +155,19 @@
                   `id="name"` and `for="name"` link the <label> to the <input>.
                   Clicking the label focuses the input (accessibility best practice).
                 -->
-                <!-- i18n: name input placeholder text -->
+                <!--
+                  📚 i18n in ATTRIBUTES must use v-bind (`:placeholder`):
+                     Mustache interpolation only works for TEXT CONTENT
+                     between tags — inside a plain HTML attribute it is
+                     treated as a literal string. The v-bind shorthand
+                     `:` evaluates $t() as JavaScript and binds the
+                     translated string to the attribute.
+                -->
                 <input
                   id="name"
                   v-model="form.name"
                   type="text"
-                  placeholder="{{ $t('contactPage.form.namePlaceholder') }}"
+                  :placeholder="$t('contactPage.form.namePlaceholder')"
                   required
                 />
               </div>
@@ -174,12 +181,16 @@
                   `placeholder` shows gray hint text inside the empty input.
                   `required` means the form cannot be submitted if this is empty.
                 -->
-                <!-- i18n: email input placeholder text -->
+                <!--
+                  📚 v-bind (`:placeholder`) evaluates $t() as JavaScript —
+                     a plain (un-bound) attribute would render the raw template text
+                     the raw mustache text instead of the translation.
+                -->
                 <input
                   id="email"
                   v-model="form.email"
                   type="email"
-                  placeholder="{{ $t('contactPage.form.emailPlaceholder') }}"
+                  :placeholder="$t('contactPage.form.emailPlaceholder')"
                   required
                 />
               </div>
@@ -188,12 +199,16 @@
               <div class="form-group">
                 <!-- i18n: subject field label -->
                 <label for="subject">{{ $t('contactPage.form.subjectLabel') }}</label>
-                <!-- i18n: subject input placeholder text -->
+                <!--
+                  📚 v-bind (`:placeholder`) evaluates $t() as JavaScript —
+                     a plain (un-bound) attribute would render the raw template text
+                     the raw mustache text instead of the translation.
+                -->
                 <input
                   id="subject"
                   v-model="form.subject"
                   type="text"
-                  placeholder="{{ $t('contactPage.form.subjectPlaceholder') }}"
+                  :placeholder="$t('contactPage.form.subjectPlaceholder')"
                   required
                 />
               </div>
@@ -206,12 +221,17 @@
                   📚 `<textarea>` is for multi-line text input (unlike <input>
                      which is single-line). It grows vertically as the user types.
                 -->
-                <!-- i18n: message textarea placeholder text -->
+                <!--
+                  📚 v-bind (`:placeholder`) evaluates $t() as JavaScript —
+                     a plain (un-bound) attribute would render the raw template text
+                     the raw mustache text instead of the translation.
+                     Works identically on <textarea> as on <input>.
+                -->
                 <textarea
                   id="message"
                   v-model="form.message"
                   rows="5"
-                  placeholder="{{ $t('contactPage.form.messagePlaceholder') }}"
+                  :placeholder="$t('contactPage.form.messagePlaceholder')"
                   required
                 ></textarea>
               </div>
