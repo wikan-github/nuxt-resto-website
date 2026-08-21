@@ -74,38 +74,67 @@ const { locale, locales, setLocale } = useI18n()
 }
 
 /*
-  Base button style: transparent background, no border, small rounded corners.
-  Cursor pointer indicates it's clickable.
+  Base button style for INACTIVE language options (e.g. "EN" when "ID" is active).
+
+  ⚠️ CONTEXT FIX: This component renders inside the sticky header
+  (main.css → .site-header), whose background is LIGHT off-white:
+    background: rgba(249, 249, 249, 0.92)
+  The previous colors (rgba(255,255,255,...) white text + white border)
+  were designed for a DARK hero background — on the light header they
+  rendered white-on-white and became invisible, making it hard to see
+  and switch languages. All colors below now use dark theme tokens.
 */
 .lang-btn {
+  /* Transparent fill so the light header shows through the button */
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.7);
+  /* Light gray border token (#e5e5e5) — subtle but visible on the off-white header */
+  border: 1px solid var(--color-border);
+  /* Medium gray text token (#636363) — clearly readable, yet visually
+     "dimmer" than the active button so the current language stands out */
+  color: var(--color-text-muted);
+  /* Compact pill padding sized for a small header control */
   padding: 4px 10px;
+  /* Soft rounded corners matching the site's button style */
   border-radius: 6px;
+  /* Small font size keeps the switcher compact inside the 80px-tall header */
   font-size: 0.75rem;
+  /* Semi-bold weight so the two-letter codes stay legible at small size */
   font-weight: 600;
+  /* Pointer cursor signals the buttons are clickable */
   cursor: pointer;
+  /* Smoothly animate color/border changes between inactive/hover/active states */
   transition: all 0.2s ease;
+  /* Same content font used across the site for visual consistency */
   font-family: var(--font-content);
+  /* Slight letter spacing improves readability of uppercase codes ("EN", "ID") */
   letter-spacing: 0.5px;
 }
 
 /*
-  Hover state: white border and text for better visibility.
+  Hover state for INACTIVE buttons: brand green border + text.
+  Green is used instead of the old white because it stays visible
+  on the light header and matches the nav link hover color
+  (main.css → .nav-links a:hover), keeping feedback consistent.
 */
 .lang-btn:hover {
-  border-color: rgba(255, 255, 255, 0.8);
-  color: #fff;
+  /* Deep forest green border signals interactivity on hover */
+  border-color: var(--color-green);
+  /* Deep forest green text gives clear, accessible hover feedback */
+  color: var(--color-green);
 }
 
 /*
-  Active state: solid white background with dark text.
-  Clearly indicates which language is currently selected.
+  Active state: the CURRENTLY SELECTED language.
+  Solid white pill with deep green text — high contrast against both
+  the light header AND the transparent inactive buttons, so users can
+  tell at a glance which language they are viewing.
 */
 .lang-btn.active {
+  /* Pure white fill makes the active pill pop out of the header */
   background: #fff;
+  /* Dark green text on white passes contrast requirements */
   color: var(--color-green);
+  /* White border blends the pill into its own filled background */
   border-color: #fff;
 }
 </style>
