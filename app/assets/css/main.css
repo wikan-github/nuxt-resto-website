@@ -34,6 +34,15 @@
   --color-text: #111111;            /* Main text color — near black */
   --color-text-body: #404040;       /* Body/description text — dark gray */
   --color-text-muted: #636363;      /* Secondary text — medium gray */
+
+  /* ── Menu Page (individual, NOT shared) ──
+     These are dedicated variables for the /menu page header ONLY.
+     They were separated from the shared vars (--color-green,
+     --color-text-body) because the shared values were invisible
+     against the dark hero background on that page.
+     Changing them must never affect other pages. */
+  --color-menu-title: #000000;        /* Menu page "Our Menu" heading — pure black for contrast */
+  --color-menu-description: #000000;  /* Menu page subtitle paragraph — pure black for contrast */
   --color-border: #e5e5e5;          /* Borders — light gray */
 
   /* ── Fonts ──

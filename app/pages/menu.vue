@@ -191,3 +191,33 @@ const filteredItems = computed(() => {
   return menuItems.value.filter(item => item.category === activeCategory.value)
 })
 </script>
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════╗
+  ║ STYLE SECTION (scoped)                                                ║
+  ╚═══════════════════════════════════════════════════════════════════════╝
+
+  📚 LEARNING — `<style scoped>`:
+  The `scoped` attribute tells Vue to attach a unique data attribute
+  (e.g., data-v-a1b2c3) to every element in THIS component and rewrite
+  each selector to match only that attribute.
+
+  Result: these rules override the shared global classes (.section-title,
+  .section-text from main.css) but ONLY on the /menu page — other pages
+  that reuse the same classes are completely unaffected.
+-->
+<style scoped>
+/* Override the shared ".section-title" class for the menu page header only */
+.section-title {
+  /* Use the dedicated black variable instead of the shared --color-green,
+     so "Our Menu" is readable against the dark hero background */
+  color: var(--color-menu-title);
+}
+
+/* Override the shared ".section-text" class for the menu page header only */
+.section-text {
+  /* Use the dedicated black variable instead of the shared --color-text-body,
+     so the description paragraph stays visible on the dark hero background */
+  color: var(--color-menu-description);
+}
+</style>
