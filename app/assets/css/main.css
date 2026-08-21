@@ -65,6 +65,17 @@
   --color-contact-title: #000000;           /* Contact page "Contact Us" heading — pure black for contrast */
   --color-contact-description: #000000;     /* Contact page subtitle paragraph — pure black for contrast */
 
+  /* ── About Page (individual, NOT shared) ──
+     Dedicated variables for the /about page header ONLY.
+     The shared .hero h1 / .hero p rules use --color-hero-heading /
+     --color-hero-text (white), which is invisible on this page's
+     plain light background — these black vars fix that without
+     touching the homepage hero styling. */
+  --color-about-label: #000000;             /* About page brand label — pure black for contrast */
+  --color-about-title: #000000;             /* About page "About Us" heading — pure black for contrast */
+  --color-about-description: #000000;       /* About page subtitle paragraph — pure black for contrast */
+
+
   --color-border: #e5e5e5;          /* Borders — light gray */
 
   /* ── Fonts ──

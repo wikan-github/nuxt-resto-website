@@ -30,7 +30,14 @@
          The top section with the page title "About Us".
          Reuses existing CSS classes: .hero, .section-label, .section-title, .section-text
          ════════════════════════════════════════════════════════════════════ -->
-    <section class="hero" style="padding-bottom: 1rem;">
+    <!--
+      📚 The extra "about-header" class lets the scoped styles at the
+         bottom of this file target ONLY this header section. Without it,
+         the global `.hero h1` / `.hero p` rules (white text for the dark
+         homepage hero) would win and paint these labels invisible on the
+         plain light background of this page.
+    -->
+    <section class="hero about-header" style="padding-bottom: 1rem;">
       <div class="container">
         <!-- Small uppercase label above the heading -->
         <!-- i18n: Section label for the about page header -->
@@ -245,3 +252,58 @@
     const title = ref('About Us')
     </script>
 -->
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════╗
+  ║ SCOPED STYLE                                                          ║
+  ╚═══════════════════════════════════════════════════════════════════════╝
+
+  📚 LEARNING — `<style scoped>`:
+  Adding `scoped` to a <style> tag means these CSS rules ONLY apply
+  to THIS component. Vue attaches a unique data attribute to every
+  element here and rewrites each selector to match only that attribute,
+  so nothing leaks into other pages.
+
+  📚 LEARNING — Why the header overrides below are needed:
+  The global stylesheet (main.css) has `.hero h1` and `.hero p` rules that
+  paint text WHITE (via --color-hero-heading / --color-hero-text). That is
+  correct for the homepage hero, which sits on a dark image card — but this
+  page reuses the `.hero` class on a plain light background, so the header
+  text ("Tropical View Ubud" label, "About Us" title, and the subtitle)
+  was invisible.
+
+  Each override rule below pairs the `.about-header` wrapper class with
+  a scoped attribute selector, giving HIGHER specificity than the global
+  `.hero h1` / `.hero p` rules, while still applying ONLY to this page's
+  header. Colors come from dedicated black variables defined in main.css
+  (NOT the shared white hero variables).
+-->
+<style scoped>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Page Header Color Fixes
+   Restore visible dark text for the label, "About Us" heading, and the
+   subtitle paragraph inside the light-background page header.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Fix the small uppercase brand label in the page header */
+.about-header .section-label {
+  /* Dedicated black variable instead of the shared white hero text color
+     that `.hero p` would otherwise apply to this <p> element */
+  color: var(--color-about-label);
+}
+
+/* Fix the main heading ("About Us") in the page header */
+.about-header .section-title {
+  /* Dedicated black variable instead of the shared white hero heading color
+     that `.hero h1` would otherwise apply to this <h1> element */
+  color: var(--color-about-title);
+}
+
+/* Fix the subtitle paragraph in the page header */
+.about-header .section-text {
+  /* Dedicated black variable instead of the shared white hero paragraph
+     color that `.hero p` would otherwise apply to this <p> element */
+  color: var(--color-about-description);
+}
+</style>
+
