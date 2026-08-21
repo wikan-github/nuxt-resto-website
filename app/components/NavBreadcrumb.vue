@@ -9,7 +9,9 @@
 
   Why it exists: previously mobile users relied on footer links to navigate.
   The footer "Useful Links" column has been removed, so this breadcrumb is
-  now the lightweight replacement for phone-sized screens.
+  now the lightweight replacement for phone-sized screens. It renders on
+  EVERY page (including the homepage, where it shows "Home" as the current
+  crumb) so mobile navigation is always available and consistent.
 
   📚 LEARNING — Nuxt auto-imported composables used here:
   - `useRoute()`       — reactive access to the CURRENT route (path, params…)
@@ -20,10 +22,12 @@
 <template>
   <!--
     Wrapper <nav> element with an ARIA label so screen readers announce it
-    as a breadcrumb landmark. Rendered ONLY when the user is NOT on the
-    home page — a lone "Home ›" crumb would be redundant noise.
+    as a breadcrumb landmark. Rendered on EVERY page — since the footer
+    "Useful Links" column was removed, this trail is the primary mobile
+    navigation, so it must stay visible consistently (on the homepage it
+    simply shows "Home" as the current-page crumb).
   -->
-  <nav v-if="crumbs.length > 1" class="breadcrumb-nav" aria-label="Breadcrumb">
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
     <!--
       Ordered list (<ol>) is the semantic element for breadcrumbs:
       order matters, screen readers read the trail sequence correctly.
