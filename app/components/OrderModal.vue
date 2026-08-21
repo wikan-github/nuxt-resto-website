@@ -3,8 +3,10 @@
   OrderModal.vue — Order Form Modal with WhatsApp Integration
   ============================================================================
   This component displays a modal overlay with a form for collecting
-  the customer's order details (name, WhatsApp number, address).
-  When submitted, it generates a WhatsApp message with the full order.
+  the customer's order details (name, WhatsApp number, plus EITHER a
+  table number/name for dine-in orders OR a delivery address for
+  takeaway orders). When submitted, it generates a WhatsApp message
+  with the full order.
 
   📚 LEARNING — Dual Pricing in WhatsApp Message:
   The WhatsApp message now includes the order type (Takeaway or Dine In)
@@ -12,10 +14,11 @@
   knows exactly what the customer ordered and at which price point.
 
   Flow:
-    1. User fills in name, WhatsApp number, and address
-    2. User clicks "Send Order via WhatsApp"
-    3. The system builds a formatted WhatsApp message with order types
-    4. WhatsApp opens with the pre-filled message
+    1. User fills in name and WhatsApp number
+    2. Dine-in cart → user enters table number/name; takeaway-only → delivery address
+    3. User clicks "Send Order via WhatsApp"
+    4. The system builds a formatted WhatsApp message with order types
+    5. WhatsApp opens with the pre-filled message
 -->
 <template>
   <Teleport to="body">
@@ -99,22 +102,48 @@
             />
           </div>
 
-          <!-- Delivery/Pickup Address field -->
-          <div class="form-group">
-            <!-- i18n: Address label — switches between dine-in table and delivery address -->
-            <label for="order-address">
-              {{ hasDineInItems ? $t('order.addressLabel') : $t('order.addressLabelDelivery') }}
-            </label>
+          <!--
+            ═══ TABLE FIELD (dine-in orders only) ═══
+            📚 CONDITIONAL RENDERING with v-if / v-else:
+            The two field groups below are MUTUALLY EXCLUSIVE — exactly one
+            of them renders depending on what's in the cart:
+            - Cart contains ANY dine-in item → show a dedicated required
+              "Table Number / Name" input, so staff knows where to bring
+              the food. A short single-line <input> fits table codes
+              ("5", "Bali Terrace") better than a tall textarea.
+            - Cart is takeaway-only → show the original delivery address
+              textarea, unchanged.
+            This replaces the old combined "Table Number / Address" field,
+            which forced dine-in customers to guess what to type.
+          -->
+
+          <!-- Table number/name input — rendered ONLY for dine-in orders -->
+          <div v-if="hasDineInItems" class="form-group">
+            <!-- i18n: Table field label via order.tableLabel key -->
+            <label for="order-table">{{ $t('order.tableLabel') }}</label>
             <!--
-              📚 DYNAMIC PLACEHOLDER:
-              If the order contains dine-in items, the placeholder asks for a table number.
-              If it's all takeaway, the placeholder asks for a delivery address.
+              📚 `required` uses native HTML5 validation: submitting without
+                 a value blocks the form and shows the browser's message —
+                 no custom validation code needed.
             -->
-            <!-- i18n: Address placeholder — dynamic based on order type -->
+            <input
+              id="order-table"
+              v-model="form.table"
+              type="text"
+              :placeholder="$t('order.tablePlaceholder')"
+              required
+            />
+          </div>
+
+          <!-- Delivery/Pickup Address textarea — rendered ONLY when the cart has no dine-in items -->
+          <div v-else class="form-group">
+            <!-- i18n: Address label for delivery/takeaway orders -->
+            <label for="order-address">{{ $t('order.addressLabelDelivery') }}</label>
+            <!-- i18n: Address placeholder for delivery/takeaway orders -->
             <textarea
               id="order-address"
               v-model="form.address"
-              :placeholder="hasDineInItems ? $t('order.addressPlaceholder') : $t('order.addressPlaceholderDelivery')"
+              :placeholder="$t('order.addressPlaceholderDelivery')"
               rows="3"
               required
             ></textarea>
@@ -154,7 +183,8 @@ import { RESTAURANT_WHATSAPP } from '~/config/restaurant'
 const form = reactive({
   name: '',       // Customer's full name
   whatsapp: '',   // Customer's WhatsApp number
-  address: '',    // Customer's delivery address or table number
+  address: '',    // Customer's delivery address (takeaway-only orders)
+  table: '',      // Table number or name (dine-in orders, e.g., "5" or "Bali Terrace")
 })
 
 // ── Submission State ──
@@ -181,7 +211,10 @@ const hasDineInItems = computed(() => {
  *   --- Customer Details ---
  *   Name: John Smith
  *   WhatsApp: +62 812-3456-7890
- *   Address: Table 5
+ *   Table: 5
+ *
+ * For a takeaway-only order the last line is instead:
+ *   Address: Jl. Monkey Forest 12, Ubud
  *
  * The restaurant staff can clearly see which items are dine-in vs takeaway.
  */
@@ -216,7 +249,14 @@ function handleOrder() {
   lines.push('--- Customer Details ---')
   lines.push(`Name: ${form.name}`)
   lines.push(`WhatsApp: ${form.whatsapp}`)
-  lines.push(`Address: ${form.address}`)
+  // 📚 LOCATION LINE — exactly one of the two, matching which field was shown:
+  // - Dine-in order → "Table: <number/name>" so staff brings food to the spot
+  // - Takeaway-only → "Address: <delivery address>" as before
+  if (hasDineInItems.value) {
+    lines.push(`Table: ${form.table}`)
+  } else {
+    lines.push(`Address: ${form.address}`)
+  }
 
   // Join all lines with newline characters
   const message = lines.join('\n')
@@ -233,6 +273,7 @@ function handleOrder() {
     form.name = ''
     form.whatsapp = ''
     form.address = ''
+    form.table = ''     // Also clear the dine-in table field
 
     // Clear the cart (order has been "sent")
     useCart().clearCart()

@@ -171,9 +171,9 @@
     "namePlaceholder": "e.g., John Smith",
     "whatsappLabel": "WhatsApp Number",
     "whatsappPlaceholder": "e.g., +62 812-3456-7890",
-    "addressLabel": "Table Number / Address",
+    "tableLabel": "Table Number / Name",
+    "tablePlaceholder": "e.g., Table 5 or Bali Terrace...",
     "addressLabelDelivery": "Delivery Address",
-    "addressPlaceholder": "e.g., Table 5 or your address...",
     "addressPlaceholderDelivery": "Enter your full delivery address...",
     "sending": "Sending...",
     "sendBtn": "Send Order via WhatsApp"

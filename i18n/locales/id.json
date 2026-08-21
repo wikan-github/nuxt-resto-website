@@ -171,9 +171,9 @@
     "namePlaceholder": "mis., Budi Santoso",
     "whatsappLabel": "Nomor WhatsApp",
     "whatsappPlaceholder": "mis., +62 812-3456-7890",
-    "addressLabel": "Nomor Meja / Alamat",
+    "tableLabel": "Nomor / Nama Meja",
+    "tablePlaceholder": "mis., Meja 5 atau Teras Bali...",
     "addressLabelDelivery": "Alamat Pengiriman",
-    "addressPlaceholder": "mis., Meja 5 atau alamat Anda...",
     "addressPlaceholderDelivery": "Masukkan alamat pengiriman lengkap Anda...",
     "sending": "Mengirim...",
     "sendBtn": "Kirim Pesanan via WhatsApp"

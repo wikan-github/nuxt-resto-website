@@ -44,7 +44,11 @@ export interface CartItem {
 export interface CustomerInfo {
   name: string            // Full name of the person placing the order
   whatsapp: string        // WhatsApp number (with country code, e.g., +62...)
-  address: string         // Delivery or pickup address
+  address: string         // Delivery or pickup address (takeaway-only orders)
+  table?: string          // Table number or name (dine-in orders, e.g., "5").
+                          // Optional because it only exists when the cart
+                          // contains dine-in items — exactly one of
+                          // address/table is collected per order.
 }
 
 // ── Helper Functions ──
