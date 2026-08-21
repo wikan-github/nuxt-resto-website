@@ -1,17 +1,23 @@
 <!--
   ============================================================================
-  NavBreadcrumb.vue — Mobile Breadcrumb Navigation
+  NavBreadcrumb.vue — Mobile Site Navigation Bar (all pages, always visible)
   ============================================================================
-  A compact breadcrumb trail (Home › Current Page) rendered directly below
-  the sticky header. It is INVISIBLE on desktop/tablet and only appears on
-  phones (max-width: 767px) — exactly the breakpoint where the horizontal
+  A compact horizontal navigation bar rendered directly below the sticky
+  header. It lists EVERY available page — Home · Menu · Promos · About Us ·
+  Contact Us — so mobile users always have complete site navigation,
+  regardless of which page they are currently viewing.
+
+  It is INVISIBLE on desktop/tablet and only appears on phones
+  (max-width: 767px) — exactly the breakpoint where the horizontal
   `.nav-links` menu is hidden (see main.css phone breakpoint).
 
+  The CURRENT page is highlighted with deep-green bold text (plus the
+  aria-current="page" attribute for screen readers) while all other pages
+  stay muted gray but remain clickable.
+
   Why it exists: previously mobile users relied on footer links to navigate.
-  The footer "Useful Links" column has been removed, so this breadcrumb is
-  now the lightweight replacement for phone-sized screens. It renders on
-  EVERY page (including the homepage, where it shows "Home" as the current
-  crumb) so mobile navigation is always available and consistent.
+  The footer "Useful Links" column has been removed and no hamburger menu
+  exists yet, so this bar is now THE primary mobile navigation.
 
   📚 LEARNING — Nuxt auto-imported composables used here:
   - `useRoute()`       — reactive access to the CURRENT route (path, params…)
@@ -22,41 +28,40 @@
 <template>
   <!--
     Wrapper <nav> element with an ARIA label so screen readers announce it
-    as a breadcrumb landmark. Rendered on EVERY page — since the footer
-    "Useful Links" column was removed, this trail is the primary mobile
-    navigation, so it must stay visible consistently (on the homepage it
-    simply shows "Home" as the current-page crumb).
+    as a navigation landmark. Rendered on EVERY page — this bar IS the
+    mobile site menu, so it must never disappear.
   -->
-  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+  <nav class="mobile-nav-bar" aria-label="Site navigation">
     <!--
-      Ordered list (<ol>) is the semantic element for breadcrumbs:
-      order matters, screen readers read the trail sequence correctly.
+      Ordered list (<ol>) holds one list item per site page.
+      Semantic markup keeps the navigation understandable for assistive tech.
     -->
-    <ol class="breadcrumb-list">
+    <ol class="mobile-nav-list">
       <!--
-        Loop over the computed `crumbs` array (built in <script setup>).
-        - :key — unique path string for Vue's reactivity diffing
-        - Last crumb = current page → rendered as plain text with
-          aria-current="page" (NOT clickable, marks where the user IS)
+        Loop over the computed `links` array (built in <script setup>):
+        - :key   — unique internal path string for Vue's reactivity diffing
+        - :class — adds 'active' when this entry matches the current page
+        Every entry renders as a NuxtLink (client-side navigation), INCLUDING
+        the current page — only its color/weight changes, it stays clickable.
       -->
       <li
-        v-for="(crumb, index) in crumbs"
-        :key="crumb.to"
-        class="breadcrumb-item"
-        :class="{ current: index === crumbs.length - 1 }"
+        v-for="link in links"
+        :key="link.to"
+        class="mobile-nav-item"
+        :class="{ active: link.active }"
       >
-        <!-- Intermediate crumbs are NuxtLink (client-side nav, locale-aware href) -->
+        <!--
+          Locale-aware link; aria-current marks the live page for
+          accessibility (only set when `active`, otherwise undefined omits
+          the attribute entirely).
+        -->
         <NuxtLink
-          v-if="index < crumbs.length - 1"
-          :to="crumb.to"
-          class="breadcrumb-link"
+          :to="link.to"
+          class="mobile-nav-link"
+          :aria-current="link.active ? 'page' : undefined"
         >
-          {{ crumb.label }}
+          {{ link.label }}
         </NuxtLink>
-        <!-- Current crumb: static text + aria-current for accessibility -->
-        <span v-else class="breadcrumb-current" aria-current="page">
-          {{ crumb.label }}
-        </span>
       </li>
     </ol>
   </nav>
@@ -88,48 +93,52 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 /*
-  Lookup table mapping a URL segment to its i18n translation key.
-  📚 A Record<string, string> type guarantees every entry is a string pair,
-     giving autocomplete + compile-time safety in TypeScript.
+  The complete list of site pages shown in the bar.
+  - `path` — the canonical (locale-independent) route path
+  - `key`  — i18n translation key for that page's label
+  📚 `as const` freezes the array shape so TypeScript infers literal types,
+     catching typos in keys/paths at compile time instead of at runtime.
 */
-const SEGMENT_LABEL_KEYS: Record<string, string> = {
-  menu: 'nav.menu',           // /menu      → "Menu"
-  promotions: 'nav.promos',   // /promotions → "Promos"
-  about: 'nav.about',         // /about     → "About Us"
-  contact: 'nav.contact',     // /contact   → "Contact Us"
-}
+const SITE_PAGES = [
+  { path: '/', key: 'nav.home' },
+  { path: '/menu', key: 'nav.menu' },
+  { path: '/promotions', key: 'nav.promos' },
+  { path: '/about', key: 'nav.about' },
+  { path: '/contact', key: 'nav.contact' },
+] as const
 
 /*
   Strip the locale prefix from the current path so both '/menu'
-  and '/id/menu' yield the same logical segments ['menu'].
-  Returns an array of path segments (empty array on the homepage).
+  and '/id/menu' normalize to '/menu'. This lets us reliably compare
+  against SITE_PAGES paths to detect which page is active.
 */
-const pathSegments = computed<string[]>(() => {
+const currentPath = computed<string>(() => {
   // Build the prefix to remove, e.g. '/id' when locale is 'id'
   const localePrefix = `/${locale.value}`
-  // If the path starts with the locale prefix, slice it off
-  const cleanPath = route.path.startsWith(localePrefix)
-    ? route.path.slice(localePrefix.length)
+  // If the path starts with the locale prefix, slice it off;
+  // ensure a trailing-slash-free result so '/menu' === '/menu'
+  const clean = route.path.startsWith(localePrefix)
+    ? route.path.slice(localePrefix.length) || '/'
     : route.path
-  // Split '/menu' → ['menu']; filter(Boolean) drops empty strings
-  return cleanPath.split('/').filter(Boolean)
+  // Drop any trailing slash ('/menu/' → '/menu') for safe comparison
+  return clean !== '/' && clean.endsWith('/') ? clean.slice(0, -1) : clean
 })
 
 /*
-  Build the full breadcrumb trail as a reactive array:
-  [ { Home }, { Current Page } ] — always starts at Home,
-  followed by one crumb per matched URL segment.
+  Build the reactive link objects consumed by the template:
+  one entry per site page, each carrying its translated label,
+  locale-aware href, and an `active` flag for highlighting.
 */
-const crumbs = computed(() => [
-  // First crumb: Home — always translated and locale-linked
-  { label: t('nav.home'), to: localePath('/') },
-  // Map each remaining URL segment to a translated crumb object.
-  // Unknown segments fall back to displaying the raw segment text.
-  ...pathSegments.value.map((segment) => ({
-    label: t(SEGMENT_LABEL_KEYS[segment] ?? segment),
-    to: localePath(`/${segment}`),
+const links = computed(() =>
+  SITE_PAGES.map((page) => ({
+    // Translated display text ("Home", "Menu", "Promos", …)
+    label: t(page.key),
+    // Locale-aware URL ('/menu' or '/id/menu' depending on language)
+    to: localePath(page.path),
+    // True when THIS page is the one currently being viewed
+    active: page.path === currentPath.value,
   })),
-])
+)
 </script>
 
 <!--
@@ -142,19 +151,19 @@ const crumbs = computed(() => [
 <style scoped>
 /*
   Default state: fully hidden on desktop and tablets — the horizontal
-  nav bar handles navigation there, so a breadcrumb would be redundant.
+  nav bar in the header handles navigation there, making this redundant.
 */
-.breadcrumb-nav {
+.mobile-nav-bar {
   display: none;
 }
 
 /* ── Phone breakpoint — identical to main.css `.nav-links` hide rule ── */
 @media (max-width: 767px) {
   /*
-    Reveal the breadcrumb as a full-width band sitting right below
-    the sticky header. `display: block` lets the inner list control layout.
+    Reveal the nav bar as a full-width band sitting right below the
+    sticky header. `display: block` lets the inner list control layout.
   */
-  .breadcrumb-nav {
+  .mobile-nav-bar {
     display: block;
     /* Soft brand-tinted background separates it from page content */
     background: var(--color-green-light);
@@ -163,50 +172,63 @@ const crumbs = computed(() => [
   }
 
   /*
-    Horizontal flex row for the crumbs; wraps if the trail ever grows long.
-    `list-style: none` removes browser bullet points on the <ol>.
+    Horizontal flex row holding ALL page links:
+    - `flex-wrap: nowrap` keeps everything on ONE line
+    - `overflow-x: auto` makes the row swipe-scrollable when 5 labels
+      exceed a narrow phone's width
+    - `scrollbar-width: none` + ::-webkit-scrollbar hide the scrollbar
+      itself for a clean look while scrolling still works
   */
-  .breadcrumb-list {
+  .mobile-nav-list {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.25rem;
-    list-style: none;
+    flex-wrap: nowrap;          /* Never wrap — scroll horizontally instead */
+    align-items: center;        /* Vertically center labels in the row */
+    gap: 0.5rem;                /* Space between items AND dot separators */
+    list-style: none;           /* Remove browser bullet points */
+    margin: 0;                  /* Reset default <ol> margins */
     /* Side padding mirrors .container (min(4rem, 5vw)) for alignment */
-    margin: 0;
-    padding: 0.5rem min(4rem, 5vw);
+    padding: 0.6rem min(4rem, 5vw);
+    overflow-x: auto;           /* Enable horizontal swiping on narrow screens */
+    white-space: nowrap;        /* Prevent individual labels from wrapping */
+    scrollbar-width: none;      /* Firefox: hide scrollbar track/thumb */
+    -ms-overflow-style: none;   /* Legacy Edge: hide scrollbar */
+  }
+
+  /* Chrome/Safari/WebKit browsers: hide the scrollbar completely */
+  .mobile-nav-list::-webkit-scrollbar {
+    display: none;
   }
 
   /*
-    Separator between crumbs: a "›" chevron injected via ::before on every
+    Dot separator between items: a "·" injected via ::before on every
     item EXCEPT the first (`+` sibling selector skips the first item).
+    Muted gray keeps it subtle next to the text labels.
   */
-  .breadcrumb-item + .breadcrumb-item::before {
-    content: '›';           /* Chevron reads more modern than "/" */
-    margin-right: 0.25rem;  /* Breathing room after the separator */
-    color: var(--color-text-muted); /* Dim gray keeps it subtle */
+  .mobile-nav-item + .mobile-nav-item::before {
+    content: '·';                     /* Middle-dot separator character */
+    margin-right: 0.5rem;             /* Breathing room after the dot */
+    color: var(--color-text-muted);   /* Dim gray — decorative only */
   }
 
   /*
-    Clickable intermediate crumbs ("Home"): deep green echoes nav link
-    hover styling elsewhere in the site for consistent affordance.
+    Base style shared by ALL page links (active and inactive):
+    compact text sized for small screens, medium gray by default.
   */
-  .breadcrumb-link {
-    font-family: var(--font-content);
-    font-size: 0.8rem;      /* Compact text suited to small screens */
-    font-weight: 500;
-    color: var(--color-green);
+  .mobile-nav-link {
+    font-family: var(--font-content); /* Site-wide content font */
+    font-size: 0.8rem;                /* Compact size fits 5 labels better */
+    font-weight: 400;                 /* Regular weight for inactive pages */
+    color: var(--color-text-muted);   /* Dark gray — readable but subdued */
   }
 
   /*
-    Non-clickable current-page crumb: darker neutral gray signals
-    "you are here" without inviting a click.
+    ACTIVE page highlight: the page the user is currently viewing gets
+    deep brand green + bold weight so it stands out from gray neighbors.
   */
-  .breadcrumb-current {
-    font-family: var(--font-content);
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--color-text-body);
+  .mobile-nav-link.active,
+  .mobile-nav-item.active .mobile-nav-link {
+    color: var(--color-green);  /* Deep forest green — unmistakably "you are here" */
+    font-weight: 700;           /* Bold adds emphasis without extra decoration */
   }
 }
 </style>

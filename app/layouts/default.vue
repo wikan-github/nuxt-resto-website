@@ -108,10 +108,12 @@
     </header>
 
     <!--
-      Mobile Breadcrumb Navigation: "Home › Current Page" trail rendered
-      directly below the sticky header. Invisible on desktop/tablet —
-      it only appears on phones (≤767px), replacing the removed
-      footer "Useful Links" column as the mobile navigation aid.
+      Mobile Site Navigation Bar: lists EVERY page (Home · Menu · Promos ·
+      About Us · Contact Us) in one horizontally scrollable row directly
+      below the sticky header. Invisible on desktop/tablet — it only
+      appears on phones (≤767px), replacing both the hidden `.nav-links`
+      menu and the removed footer "Useful Links" column as THE mobile
+      navigation. The current page is highlighted green + bold.
       Auto-imported by Nuxt — no import needed.
     -->
     <NavBreadcrumb />
