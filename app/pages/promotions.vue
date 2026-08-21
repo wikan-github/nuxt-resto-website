@@ -22,7 +22,10 @@
          PAGE HEADER
          Standard hero section with label, title, and subtitle.
          ════════════════════════════════════════════════════════════════════ -->
-    <section class="hero" style="padding-bottom: 1rem;">
+    <!-- The extra "promotions-header" class lets our scoped styles below target
+         ONLY this header — the featured/all sections further down keep their
+         original (visible) colors. -->
+    <section class="hero promotions-header" style="padding-bottom: 1rem;">
       <div class="container">
         <!-- i18n: Small uppercase label for the promotions section -->
         <p class="section-label">{{ $t('promotionsPage.label') }}</p>
@@ -217,3 +220,42 @@ const filteredPromos = computed(() => {
   return promotions.value.filter(p => p.category === activeCategory.value)
 })
 </script>
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════╗
+  ║ STYLE SECTION (scoped)                                                ║
+  ╚═══════════════════════════════════════════════════════════════════════╝
+
+  📚 LEARNING — Why these overrides are needed:
+  The global stylesheet (main.css) has `.hero h1` and `.hero p` rules that
+  paint text WHITE (via --color-hero-heading / --color-hero-text). That is
+  correct for the homepage hero, which sits on a dark image card — but this
+  page reuses the `.hero` class on a plain light background, so the header
+  text was invisible.
+
+  📚 LEARNING — `<style scoped>`:
+  Vue attaches a unique data attribute (e.g., data-v-99f6e4f6) to every
+  element in THIS component and rewrites each selector to match only that
+  attribute. Combined with the `.promotions-header` wrapper class, each rule
+  below has HIGHER specificity than the global `.hero h1` / `.hero p` rules,
+  yet still applies ONLY to the header of the /promotions page.
+-->
+<style scoped>
+/* Fix the small uppercase label ("Special Offers") in the page header */
+.promotions-header .section-label {
+  /* Dedicated black variable instead of the shared white hero text color */
+  color: var(--color-promotions-label);
+}
+
+/* Fix the main heading ("Menu Promotions") in the page header */
+.promotions-header .section-title {
+  /* Dedicated black variable instead of the shared white hero heading color */
+  color: var(--color-promotions-title);
+}
+
+/* Fix the subtitle paragraph in the page header */
+.promotions-header .section-text {
+  /* Dedicated black variable instead of the shared white hero paragraph color */
+  color: var(--color-promotions-description);
+}
+</style>

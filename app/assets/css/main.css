@@ -44,6 +44,16 @@
   --color-menu-title: #000000;        /* Menu page "Our Menu" heading — pure black for contrast */
   --color-menu-description: #000000;  /* Menu page subtitle paragraph — pure black for contrast */
   --color-menu-label: #000000;        /* Menu page "Tropical View Ubud" label — pure black for contrast */
+
+  /* ── Promotions Page (individual, NOT shared) ──
+     Dedicated variables for the /promotions page header ONLY.
+     The shared .hero h1 / .hero p rules use --color-hero-heading /
+     --color-hero-text (white), which is invisible on this page's
+     plain light background — these black vars fix that without
+     touching the homepage hero styling. */
+  --color-promotions-label: #000000;        /* Promotions page "Special Offers" label — pure black for contrast */
+  --color-promotions-title: #000000;        /* Promotions page heading — pure black for contrast */
+  --color-promotions-description: #000000;  /* Promotions page subtitle paragraph — pure black for contrast */
   --color-border: #e5e5e5;          /* Borders — light gray */
 
   /* ── Fonts ──
