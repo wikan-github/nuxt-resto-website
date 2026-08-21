@@ -125,16 +125,18 @@ const { locale, locales, setLocale } = useI18n()
 
 /*
   Active state: the CURRENTLY SELECTED language.
-  Solid white pill with deep green text — high contrast against both
-  the light header AND the transparent inactive buttons, so users can
-  tell at a glance which language they are viewing.
+  Soft light-green tint pill with deep green text — clearly distinct
+  from the transparent inactive buttons while staying in harmony with
+  the site's green brand palette (no harsh white block in the header).
 */
 .lang-btn.active {
-  /* Pure white fill makes the active pill pop out of the header */
-  background: #fff;
-  /* Dark green text on white passes contrast requirements */
+  /* Light green tint token (#f1f5eb) — a gentle brand-colored fill
+     that stands out from the off-white header without overpowering it */
+  background: var(--color-green-light);
+  /* Deep forest green text (#034833) on the light tint passes
+     contrast requirements and reinforces the active state */
   color: var(--color-green);
-  /* White border blends the pill into its own filled background */
-  border-color: #fff;
+  /* Matching light-green border blends the pill into its own fill */
+  border-color: var(--color-green-light);
 }
 </style>
