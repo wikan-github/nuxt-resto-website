@@ -207,6 +207,13 @@ const filteredItems = computed(() => {
   that reuse the same classes are completely unaffected.
 -->
 <style scoped>
+/* Override the shared ".section-label" class for the menu page header only */
+.section-label {
+  /* Use the dedicated black variable instead of the shared --color-green,
+     so "Tropical View Ubud" is readable against the dark hero background */
+  color: var(--color-menu-label);
+}
+
 /* Override the shared ".section-title" class for the menu page header only */
 .section-title {
   /* Use the dedicated black variable instead of the shared --color-green,

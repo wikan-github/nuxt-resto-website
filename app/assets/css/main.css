@@ -43,6 +43,7 @@
      Changing them must never affect other pages. */
   --color-menu-title: #000000;        /* Menu page "Our Menu" heading — pure black for contrast */
   --color-menu-description: #000000;  /* Menu page subtitle paragraph — pure black for contrast */
+  --color-menu-label: #000000;        /* Menu page "Tropical View Ubud" label — pure black for contrast */
   --color-border: #e5e5e5;          /* Borders — light gray */
 
   /* ── Fonts ──
