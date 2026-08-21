@@ -824,12 +824,27 @@ h1, h2, h3, h4 {
 /* ── Footer Google Map ──
    📚 The map is now a GRID COLUMN (brand · contact · map) instead of a
       full-width block below the grid, so it needs no outer margins —
-      the grid `gap` provides its spacing. On tablets (see breakpoint)
-      it spans the full grid width via `grid-column: 1 / -1`. */
+      the grid `gap` provides its spacing.
+
+   DYNAMIC HEIGHT: on desktop (≥992px) the layout script measures the
+   brand and contact columns and pins this wrapper's height INLINE to
+   whichever column is taller (`:style="mapWrapperStyle"` in the
+   template). Inline style always beats stylesheet rules, so the value
+   below acts purely as a FALLBACK — used before JavaScript runs and
+   on tablet/phone breakpoints where the grid stacks vertically. */
 .footer-map {
-  /* Align to the top edge of its column so shorter text columns and
-     the taller map share the same starting line */
-  align-self: start;
+  /* Fallback height for stacked layouts / pre-hydration render */
+  height: 300px;
+}
+
+/* The iframe always fills whatever height its wrapper provides:
+   - desktop → the dynamically calculated max(brand, contact) height
+   - tablet/phone → the 300px fallback declared above */
+.footer-map iframe {
+  /* Stretch across the full width of its grid column */
+  width: 100%;
+  /* Match the wrapper's height exactly (no gaps, no overflow) */
+  height: 100%;
 }
 
 .footer-bottom p {
