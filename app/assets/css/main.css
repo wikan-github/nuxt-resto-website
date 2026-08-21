@@ -735,14 +735,15 @@ h1, h2, h3, h4 {
   margin-top: 4rem;  /* Space above the footer */
 }
 
-/* 3-column grid for footer content.
-   📚 `1.5fr 1fr 1.2fr` = 3 columns with proportional widths.
-      The first column (brand) is widest, contact is second widest.
-      (The old 4th column "Useful Links" was removed — mobile navigation
-      now lives in the <NavBreadcrumb /> component instead.) */
+/* 3-column grid for footer content: brand · contact · google map.
+   📚 `1.2fr 1fr 1.4fr` = 3 columns with proportional widths.
+      The map column is widest (visual content needs more room),
+      contact details are the narrowest (short label:value lines).
+      (The old "Opening Hours" column was removed when the map moved
+      INTO the grid from its former full-width block below it.) */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1.2fr;
+  grid-template-columns: 1.2fr 1fr 1.4fr;
   gap: 2.5rem;
 }
 
@@ -821,13 +822,14 @@ h1, h2, h3, h4 {
 }
 
 /* ── Footer Google Map ──
-   📚 The map sits below the 4-column footer grid and above the copyright line.
-      `margin-top: 2.5rem` adds space between the grid and the map.
-      `margin-bottom: 1rem` adds space between the map and the copyright.
-      The iframe inside has `border-radius: 12px` for rounded corners. */
+   📚 The map is now a GRID COLUMN (brand · contact · map) instead of a
+      full-width block below the grid, so it needs no outer margins —
+      the grid `gap` provides its spacing. On tablets (see breakpoint)
+      it spans the full grid width via `grid-column: 1 / -1`. */
 .footer-map {
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
+  /* Align to the top edge of its column so shorter text columns and
+     the taller map share the same starting line */
+  align-self: start;
 }
 
 .footer-bottom p {

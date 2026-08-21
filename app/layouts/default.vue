@@ -144,12 +144,13 @@
     <footer class="site-footer">
       <div class="container">
         <!--
-          📚 CSS Grid: `grid-template-columns: 1.5fr 1fr 1.2fr`
-             creates a 3-column layout (brand, hours, contact).
+          📚 CSS Grid: `grid-template-columns: 1.2fr 1fr 1.4fr`
+             creates a 3-column layout (brand, contact, google map).
              `fr` stands for "fraction of available space".
-          - 1.5fr — takes 1.5 parts of the space (brand column is widest)
-          - 1fr   — takes 1 part (opening hours)
-          - 1.2fr — takes 1.2 parts (contact details)
+          - 1.2fr — takes 1.2 parts of the space (brand)
+          - 1fr   — takes 1 part (contact details, the narrowest)
+          - 1.4fr — takes 1.4 parts (map gets the widest share because
+                    visual content needs more room than text)
         -->
         <div class="footer-grid">
 
@@ -160,24 +161,7 @@
             <p>{{ $t('footer.description') }}</p>
           </div>
 
-          <!-- Column 2: Opening hours -->
-          <!--
-            📚 NOTE: The former "Useful Links" column was removed — its job
-               (mobile navigation) is now handled by <NavBreadcrumb /> above.
-               The footer grid therefore has 3 columns instead of 4.
-          -->
-          <div class="footer-col">
-            <!-- i18n: Translates "Opening Hours" footer section heading via footer.openingHours key -->
-            <h4>{{ $t('footer.openingHours') }}</h4>
-            <ul>
-              <!-- i18n: Translates "Mon – Sun" opening days text via footer.monSun key -->
-              <li><a href="#">{{ $t('footer.monSun') }}</a></li>
-              <!-- i18n: Translates "7:00 AM – 10:00 PM" opening time text via footer.time key -->
-              <li><a href="#">{{ $t('footer.time') }}</a></li>
-            </ul>
-          </div>
-
-          <!-- Column 3: Contact details -->
+          <!-- Column 2: Contact details -->
           <div class="footer-col">
             <!-- i18n: Translates "Contact Us" footer section heading via footer.contactUs key -->
             <h4>{{ $t('footer.contactUs') }}</h4>
@@ -201,38 +185,39 @@
               <span class="value">tropicalview19@gmail.com</span>
             </div>
           </div>
-        </div>
+          <!-- Column 3: Google Map -->
+          <!--
+            📚 LEARNING — `<iframe>` for Embedding External Content:
+            An <iframe> embeds another website inside your page.
+            - `src` — the URL of the content to embed (Google Maps embed URL)
+            - `width="100%"` — fill the full width of its grid column
+            - `style="border: 0"` — remove the default iframe border
+            - `allowfullscreen` — let users click "full screen" on the map
+            - `loading="lazy"` — delay loading until the user scrolls near it
+              (improves initial page load speed)
+            - `referrerpolicy="no-referrer-when-downgrade"` — security header
+              that prevents sending referrer data when switching to HTTP
 
-        <!-- ═══════════════════════════════════════════════════════════════
-             GOOGLE MAP
-             Embedded map showing the restaurant's location in Ubud, Bali.
-             ═══════════════════════════════════════════════════════════════ -->
-        <!--
-          📚 LEARNING — `<iframe>` for Embedding External Content:
-          An <iframe> embeds another website inside your page.
-          - `src` — the URL of the content to embed (Google Maps embed URL)
-          - `width="100%"` — fill the full width of the parent container
-          - `style="border: 0"` — remove the default iframe border
-          - `allowfullscreen` — let users click "full screen" on the map
-          - `loading="lazy"` — delay loading until the user scrolls near it
-            (improves initial page load speed)
-          - `referrerpolicy="no-referrer-when-downgrade"` — security header
-            that prevents sending referrer data when switching to HTTP
+            📚 The `src` URL contains:
+            - `pb=!1m18!1m12...` — encoded map parameters (zoom, position, etc.)
+            - The coordinates point to Ubud, Bali (Monkey Forest Street area)
 
-          📚 The `src` URL contains:
-          - `pb=!1m18!1m12...` — encoded map parameters (zoom, position, etc.)
-          - The coordinates point to Ubud, Bali (Monkey Forest Street area)
-        -->
-        <div class="footer-map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.6!2d115.262!3d-8.506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzAnMjEuNiJTIDExNcKwMTUnNDMuMiJF!5e0!3m2!1sen!2sid!4v1"
-            width="100%"
-            height="300"
-            style="border: 0; border-radius: 12px;"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+            NOTE: The map used to be a full-width block BELOW this grid;
+            it is now a grid COLUMN (brand · contact · map) and therefore
+            sits inside `.footer-grid`. Height was reduced from 300px to
+            240px so the landscape map fits its narrower column.
+          -->
+          <div class="footer-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.6!2d115.262!3d-8.506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzAnMjEuNiJTIDExNcKwMTUnNDMuMiJF!5e0!3m2!1sen!2sid!4v1"
+              width="100%"
+              height="240"
+              style="border: 0; border-radius: 12px;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
 
         <!-- Copyright line -->
