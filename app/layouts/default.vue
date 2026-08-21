@@ -107,6 +107,15 @@
       </div>
     </header>
 
+    <!--
+      Mobile Breadcrumb Navigation: "Home › Current Page" trail rendered
+      directly below the sticky header. Invisible on desktop/tablet —
+      it only appears on phones (≤767px), replacing the removed
+      footer "Useful Links" column as the mobile navigation aid.
+      Auto-imported by Nuxt — no import needed.
+    -->
+    <NavBreadcrumb />
+
     <!-- ════════════════════════════════════════════════════════════════════
          MAIN CONTENT — The <slot> is where page content gets inserted
          ════════════════════════════════════════════════════════════════════ -->
@@ -133,12 +142,12 @@
     <footer class="site-footer">
       <div class="container">
         <!--
-          📚 CSS Grid: `display: grid` + `grid-template-columns: 1.5fr 1fr 1fr 1.2fr`
-          creates a 4-column layout. `fr` stands for "fraction of available space".
-          - 1.5fr = takes 1.5 parts of the space
-          - 1fr   = takes 1 part
-          - 1.2fr = takes 1.2 parts
-          So the first column is the widest, and the others are roughly equal.
+          📚 CSS Grid: `grid-template-columns: 1.5fr 1fr 1.2fr`
+             creates a 3-column layout (brand, hours, contact).
+             `fr` stands for "fraction of available space".
+          - 1.5fr — takes 1.5 parts of the space (brand column is widest)
+          - 1fr   — takes 1 part (opening hours)
+          - 1.2fr — takes 1.2 parts (contact details)
         -->
         <div class="footer-grid">
 
@@ -149,25 +158,12 @@
             <p>{{ $t('footer.description') }}</p>
           </div>
 
-          <!-- Column 2: Navigation links -->
-          <div class="footer-col">
-            <!-- i18n: Translates "Useful Links" footer section heading via footer.usefulLinks key -->
-            <h4>{{ $t('footer.usefulLinks') }}</h4>
-            <ul>
-              <!-- i18n: Translates "Home" footer link via nav.home key -->
-              <li><NuxtLink to="/">{{ $t('nav.home') }}</NuxtLink></li>
-              <!-- i18n: Translates "About Us" footer link via nav.about key -->
-              <li><NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink></li>
-              <!-- i18n: Translates "Menu" footer link via nav.menu key -->
-              <li><NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink></li>
-              <!-- i18n: Translates "Promos" footer link via nav.promos key -->
-              <li><NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink></li>
-              <!-- i18n: Translates "Contact Us" footer link via nav.contact key -->
-              <li><NuxtLink to="/contact">{{ $t('nav.contact') }}</NuxtLink></li>
-            </ul>
-          </div>
-
-          <!-- Column 3: Opening hours -->
+          <!-- Column 2: Opening hours -->
+          <!--
+            📚 NOTE: The former "Useful Links" column was removed — its job
+               (mobile navigation) is now handled by <NavBreadcrumb /> above.
+               The footer grid therefore has 3 columns instead of 4.
+          -->
           <div class="footer-col">
             <!-- i18n: Translates "Opening Hours" footer section heading via footer.openingHours key -->
             <h4>{{ $t('footer.openingHours') }}</h4>
@@ -179,7 +175,7 @@
             </ul>
           </div>
 
-          <!-- Column 4: Contact details -->
+          <!-- Column 3: Contact details -->
           <div class="footer-col">
             <!-- i18n: Translates "Contact Us" footer section heading via footer.contactUs key -->
             <h4>{{ $t('footer.contactUs') }}</h4>
