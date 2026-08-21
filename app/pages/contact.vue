@@ -24,7 +24,14 @@
     <!-- ════════════════════════════════════════════════════════════════════
          PAGE HEADER
          ════════════════════════════════════════════════════════════════════ -->
-    <section class="hero" style="padding-bottom: 1rem;">
+    <!--
+      📚 The extra "contact-header" class lets the scoped styles at the
+         bottom of this file target ONLY this header section. Without it,
+         the global `.hero h1` / `.hero p` rules (white text for the dark
+         homepage hero) would win and paint these labels invisible on the
+         plain light background of this page.
+    -->
+    <section class="hero contact-header" style="padding-bottom: 1rem;">
       <div class="container">
         <!-- i18n: page label above the main title -->
         <p class="section-label">{{ $t('contactPage.label') }}</p>
@@ -441,8 +448,48 @@ function handleSubmit() {
 
   Use scoped styles for styles that are specific to ONE component.
   Use global styles (main.css) for shared/reusable styles.
+
+  📚 LEARNING — Why the header overrides below are needed:
+  The global stylesheet (main.css) has `.hero h1` and `.hero p` rules that
+  paint text WHITE (via --color-hero-heading / --color-hero-text). That is
+  correct for the homepage hero, which sits on a dark image card — but this
+  page reuses the `.hero` class on a plain light background, so the header
+  text ("Get in Touch", "Contact Us", and the subtitle) was invisible.
+
+  Each override rule below pairs the `.contact-header` wrapper class with
+  a scoped attribute selector, giving HIGHER specificity than the global
+  `.hero h1` / `.hero p` rules, while still applying ONLY to this page's
+  header. Colors come from dedicated black variables defined in main.css
+  (NOT the shared white hero variables).
 -->
 <style scoped>
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Page Header Color Fixes
+   Restore visible dark text for "Get in Touch", "Contact Us", and the
+   subtitle paragraph inside the light-background page header.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Fix the small uppercase label ("Get in Touch") in the page header */
+.contact-header .section-label {
+  /* Dedicated black variable instead of the shared white hero text color
+     that `.hero p` would otherwise apply to this <p> element */
+  color: var(--color-contact-label);
+}
+
+/* Fix the main heading ("Contact Us") in the page header */
+.contact-header .section-title {
+  /* Dedicated black variable instead of the shared white hero heading color
+     that `.hero h1` would otherwise apply to this <h1> element */
+  color: var(--color-contact-title);
+}
+
+/* Fix the subtitle paragraph in the page header */
+.contact-header .section-text {
+  /* Dedicated black variable instead of the shared white hero paragraph
+     color that `.hero p` would otherwise apply to this <p> element */
+  color: var(--color-contact-description);
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    Contact Info Cards Grid
