@@ -54,8 +54,8 @@
 // Import both item types for the union type in props
 import type { MenuItem } from '~/composables/useMenu'
 import type { Promotion } from '~/composables/usePromotions'
-// Import OrderType from the central config for type safety
-import type { OrderType } from '~/config/restaurant'
+// Import OrderType from the shared types file for type safety
+import type { OrderType } from '~/types/restaurant'
 
 // i18n: Import useI18n and destructure `t` for translation calls in script
 const { t } = useI18n()

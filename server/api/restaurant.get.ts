@@ -34,6 +34,12 @@ export interface RestaurantInfo {
     embedUrl: string          // Ready-to-use URL for <iframe> map embeds in the footer/contact page
     linkUrl: string           // External link that opens the position in Google Maps
   }
+  geofence: {                 // Proximity-detection block (moved from app/config/restaurant.ts)
+    radiusMeters: number      // Max distance (meters) for the user to count as "at the restaurant" → Dine In pricing
+  }
+  pricing: {                  // Pricing-rules block (moved from app/config/restaurant.ts)
+    dineInMultiplier: number  // Dine-in price = takeaway price × this factor (1.15 = +15%)
+  }
   branding: {                 // Brand identity block
     name: string              // Official restaurant name ("Tropical View Ubud")
     tagline: string           // Short marketing sentence used in headers/SEO

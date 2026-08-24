@@ -5,7 +5,7 @@
 // 1. Requests browser geolocation permission
 // 2. Gets the user's current latitude/longitude
 // 3. Calculates distance to the restaurant using the Haversine formula
-// 4. Exposes a reactive `isNearRestaurant` boolean (within 10 meters)
+// 4. Exposes a reactive `isNearRestaurant` boolean (within geofence radius)
 //
 // 📚 LEARNING — Browser Geolocation API:
 // The Geolocation API is built into all modern browsers. It:
@@ -27,12 +27,11 @@
 //          c = 2 · atan2(√a, √(1−a))
 //          d = R · c
 // Where R = Earth's radius (6,371,000 meters)
-
-import {
-  RESTAURANT_LAT,
-  RESTAURANT_LNG,
-  GEOFENCE_RADIUS_METERS,
-} from '~/config/restaurant'
+//
+// 📚 LEARNING — Data Source (Nuxt 4):
+// The restaurant's coordinates and geofence radius are NO LONGER hardcoded
+// here — they come from server/data/restaurant.json through the shared
+// useRestaurant() composable. Editing the JSON instantly re-tunes proximity.
 
 // ── TypeScript Interface ──
 
@@ -119,6 +118,14 @@ function calculateDistance(
  */
 export function useLocation() {
 
+  // ── Restaurant Data (from server/data/restaurant.json) ──
+  // 📚 The shared `restaurant` ref (key 'restaurant-info') is fetched once
+  //    app-wide by useRestaurant() and deduped — calling it here costs no
+  //    extra HTTP request. It reactively supplies:
+  //    - map.latitude / map.longitude  → replaces old RESTAURANT_LAT/LNG
+  //    - geofence.radiusMeters         → replaces old GEOFENCE_RADIUS_METERS
+  const { restaurant } = useRestaurant()
+
   // ── Shared State ──
   // `useState` ensures all components see the SAME location data.
   // Without useState, each component calling useLocation() would get fresh state.
@@ -151,12 +158,16 @@ export function useLocation() {
    *    `userLocation` changes. If the user moves, the distance updates.
    */
   const distanceToRestaurant = computed(() => {
+    // Guard: without a user position there is nothing to measure from
     if (!userLocation.value) return null
+    // Guard: restaurant JSON may still be loading on first render — no target yet
+    if (!restaurant.value) return null
+    // Haversine distance from the user to the coordinates stored in restaurant.json
     return calculateDistance(
-      userLocation.value.latitude,
-      userLocation.value.longitude,
-      RESTAURANT_LAT,
-      RESTAURANT_LNG,
+      userLocation.value.latitude,          // User's current latitude (reactive)
+      userLocation.value.longitude,         // User's current longitude (reactive)
+      restaurant.value.map.latitude,        // Restaurant latitude from server/data/restaurant.json
+      restaurant.value.map.longitude,       // Restaurant longitude from server/data/restaurant.json
     )
   })
 
@@ -168,8 +179,14 @@ export function useLocation() {
    *    When false → "Take Away" mode (user is elsewhere, or location unknown)
    */
   const isNearRestaurant = computed(() => {
+    // Guard: unknown distance (no user location OR JSON still loading) → not near
     if (distanceToRestaurant.value === null) return false
-    return distanceToRestaurant.value <= GEOFENCE_RADIUS_METERS
+    // Read the geofence radius from server/data/restaurant.json (undefined while loading)
+    const radiusMeters = restaurant.value?.geofence.radiusMeters
+    // Guard: without a radius we cannot decide → default to "not near" (takeaway pricing)
+    if (radiusMeters === undefined) return false
+    // True only when the user stands within the configured radius
+    return distanceToRestaurant.value <= radiusMeters
   })
 
   // ── Actions ──
@@ -212,13 +229,27 @@ export function useLocation() {
           longitude: userLng,
         }
 
-        const distance = calculateDistance(userLat, userLng, RESTAURANT_LAT, RESTAURANT_LNG)
+        // ── Debug Logging (restaurant data from server/data/restaurant.json) ──
+        // 📚 This callback runs ASYNC — by the time the browser returns GPS
+        //    coordinates the /api/restaurant payload has almost always arrived.
+        //    We still guard with `?.` so a slow API never crashes the callback;
+        //    it just skips the log block instead.
+        if (restaurant.value) {
+          // Distance from the fresh user position to the JSON-defined restaurant point
+          const distance = calculateDistance(
+            userLat,                          // User latitude from the GPS fix
+            userLng,                          // User longitude from the GPS fix
+            restaurant.value.map.latitude,    // Restaurant latitude from restaurant.json
+            restaurant.value.map.longitude,   // Restaurant longitude from restaurant.json
+          )
 
-        console.log('--- Location Info ---')
-        console.log(`User Location:      Lat ${userLat}, Lng ${userLng}`)
-        console.log(`Restaurant Location: Lat ${RESTAURANT_LAT}, Lng ${RESTAURANT_LNG}`)
-        console.log(`Distance to Restaurant: ${distance.toFixed(2)} meters`)
-        console.log('---------------------')
+          // Human-readable trace for debugging proximity issues in devtools
+          console.log('--- Location Info ---')
+          console.log(`User Location:      Lat ${userLat}, Lng ${userLng}`)
+          console.log(`Restaurant Location: Lat ${restaurant.value.map.latitude}, Lng ${restaurant.value.map.longitude}`)
+          console.log(`Distance to Restaurant: ${distance.toFixed(2)} meters`)
+          console.log('---------------------')
+        }
 
         // Clear any previous error and loading state
         locationError.value = null

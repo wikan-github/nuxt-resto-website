@@ -19,7 +19,7 @@
 
 import type { MenuItem } from '~/composables/useMenu'
 import type { Promotion } from '~/composables/usePromotions'
-import type { OrderType } from '~/config/restaurant'
+import type { OrderType } from '~/types/restaurant'
 
 // ── TypeScript Interfaces ──
 
