@@ -45,16 +45,6 @@ export const RESTAURANT_LNG = 115.2024576 as const
 //    This lets other code use it as a precise type, not a generic `number`.
 export const GEOFENCE_RADIUS_METERS = 10 as const
 
-// ── Restaurant WhatsApp Number ──
-// Used by the OrderModal to build the WhatsApp order URL.
-// This is the same number that appears in the header CTA, footer, and contact page.
-//
-// 📚 Format: country code + number, no spaces, no plus sign.
-//    Indonesia country code: 62
-//    Restaurant number: 813-3877-4969
-//    Combined: 6281338774969
-export const RESTAURANT_WHATSAPP = '6281338774969' as const
-
 // ── Order Type Constants ──
 // Defines the two order types available: takeaway and dine-in.
 // These string literals are used throughout the app for consistency.

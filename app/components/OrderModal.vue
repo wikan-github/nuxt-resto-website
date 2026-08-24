@@ -18,7 +18,9 @@
     2. Dine-in cart → user enters table number/name; takeaway-only → delivery address
     3. User clicks "Send Order via WhatsApp"
     4. The system builds a formatted WhatsApp message with order types
-    5. WhatsApp opens with the pre-filled message
+    5. WhatsApp opens with the pre-filled message, addressed to the
+       restaurant number defined in server/data/restaurant.json
+       (fetched via useRestaurant() → GET /api/restaurant)
 -->
 <template>
   <Teleport to="body">
@@ -174,10 +176,12 @@ const {
   getItemPrice,       // Helper: get price from item (requires orderType)
 } = useCart()
 
-// ── Import WhatsApp number from central config ──
-// 📚 Instead of hardcoding the number here, we import it from the config file.
-//    If the number ever changes, we only need to update one file.
-import { RESTAURANT_WHATSAPP } from '~/config/restaurant'
+// ── Restaurant data via Nuxt 4 composable ──
+// 📚 The WhatsApp destination number now comes from server/data/restaurant.json
+//    (the single source of truth), served by GET /api/restaurant and fetched
+//    through the useRestaurant() composable. If the restaurant changes its
+//    number, ONLY restaurant.json needs editing — no code changes anywhere.
+const { waMeUrl } = useRestaurant()
 
 // ── Form State ──
 const form = reactive({
@@ -240,9 +244,15 @@ function handleOrder() {
     lines.push(`${cartItem.quantity}x ${name} [${orderLabel}] — $${subtotal.toFixed(2)}`)
   })
 
-  // Total
-  lines.push('')
-  lines.push(`*Total: $${cartTotal.toFixed(2)}*`)
+  // ── Total ──
+  // 📚 LEARNING — REF UNWRAP IN SCRIPT:
+  // `cartTotal` is a computed ref (ComputedRef<number>) returned by useCart().
+  // Vue auto-unwraps refs ONLY inside templates (e.g., {{ cartTotal.toFixed(2) }}),
+  // but in script code the ref itself is an object WITHOUT a .toFixed() method.
+  // We therefore read its numeric value explicitly via `.value` before formatting,
+  // which fixes the crash: "TypeError: cartTotal.toFixed is not a function".
+  lines.push('')                                        // Blank separator line for readability
+  lines.push(`*Total: $${cartTotal.value.toFixed(2)}*`) // Total line — unwrap ref with .value first
 
   // Customer info
   lines.push('')
@@ -258,13 +268,17 @@ function handleOrder() {
     lines.push(`Address: ${form.address}`)
   }
 
-  // Join all lines with newline characters
+  // Join all lines with newline characters into one message string
   const message = lines.join('\n')
 
-  // Build the WhatsApp URL and open it in a new tab
-  const whatsappUrl = `https://wa.me/${RESTAURANT_WHATSAPP}?text=${encodeURIComponent(message)}`
+  // Build the WhatsApp URL from the restaurant number in server/data/restaurant.json
+  // 📚 waMeUrl() (from useRestaurant composable) returns:
+  //    "https://wa.me/<number-from-restaurant.json>?text=<encoded message>"
+  //    or a safe '#' fallback while the API payload is still loading,
+  //    so window.open never receives an undefined/broken URL.
+  const whatsappUrl = waMeUrl(message)
 
-  // Open WhatsApp in a new browser tab
+  // Open WhatsApp in a new browser tab with the pre-filled order message
   window.open(whatsappUrl, '_blank')
 
   // Reset form after a short delay
