@@ -55,12 +55,12 @@
         -->
         <div class="contact-info-grid">
 
-          <!-- Card 1: Phone -->
+          <!-- Card 1: Phone (from the DB) -->
           <div class="contact-info-card">
             <div class="contact-icon">📞</div>
             <!-- i18n: phone info card heading -->
             <h4>{{ $t('contactPage.info.phone') }}</h4>
-            <p>+62 813-3877-4969</p>
+            <p>{{ restaurant?.whatsappDisplay ?? '' }}</p>
           </div>
 
           <!-- Card 2: Email -->
@@ -82,7 +82,7 @@
                  `%20` is URL encoding for a space character.
             -->
             <a
-              href="https://wa.me/6281338774969?text=Hello,%20I%20want%20to%20know%20more"
+              :href="waMeUrl('Hello, I want to know more')"
               target="_blank"
               rel="noopener"
               class="contact-link"
@@ -306,7 +306,7 @@
 
             <!-- Quick WhatsApp reservation button -->
             <a
-              href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
+              :href="waMeUrl(restaurant?.reservationMessage)"
               class="btn btn-green"
               style="width: 100%; text-align: center;"
               target="_blank"
@@ -369,7 +369,7 @@
           <!-- i18n: call-to-action banner description -->
           <p>{{ $t('contactPage.ctaDescription') }}</p>
           <a
-            href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
+            :href="waMeUrl(restaurant?.reservationMessage)"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
@@ -416,6 +416,10 @@
 -->
 <script setup lang="ts">
 
+// ── Restaurant info from the SQLite-backed API ──
+// WhatsApp links (chat + reservation) are built from the `restaurant` row.
+const { restaurant, waMeUrl } = useRestaurant()
+
 // 📚 `reactive()` creates a reactive object. Changes to its properties
 // automatically update the template (and vice versa).
 //
@@ -431,27 +435,35 @@ const form = reactive({
 // 📚 LEARNING — `handleSubmit()`:
 // This function runs when the form is submitted (user clicks "Send Message").
 //
-// In a real project, you would send this data to an API endpoint:
-//   await $fetch('/api/contact', { method: 'POST', body: form })
-//
-// For now, we just show an alert and reset the form.
+// The message is POSTed to `server/api/contact.post.ts`, which persists it to
+// the `contact_message` table in SQLite via MikroORM.
 //
 // 📚 `$fetch` is Nuxt's built-in HTTP client (auto-imported).
 //    It's similar to `fetch()` but with Nuxt-specific features.
-function handleSubmit() {
-  // Show a confirmation message with the user's name
-  alert(`Thank you, ${form.name}! Your message has been received. We'll get back to you soon.`)
+async function handleSubmit() {
+  try {
+    await $fetch('/api/contact', {
+      method: 'POST',
+      body: { ...form },
+    })
 
-  // Reset all form fields to empty strings
-  // 📚 `Object.assign(form, { ... })` copies the properties from the
-  //    new object into the existing reactive `form` object.
-  //    We don't do `form = { ... }` because reactive() cannot be reassigned.
-  Object.assign(form, {
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
+    // Show a confirmation message with the user's name
+    alert(`Thank you, ${form.name}! Your message has been received. We'll get back to you soon.`)
+
+    // Reset all form fields to empty strings
+    // 📚 `Object.assign(form, { ... })` copies the properties from the
+    //    new object into the existing reactive `form` object.
+    //    We don't do `form = { ... }` because reactive() cannot be reassigned.
+    Object.assign(form, {
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    })
+  } catch (err) {
+    // Network or server error — tell the user how to reach us instead.
+    alert('Sorry, something went wrong sending your message. Please try again or contact us on WhatsApp.')
+  }
 }
 </script>
 

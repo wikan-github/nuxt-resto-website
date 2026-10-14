@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Redesign Spec — Tropical View Ubud</title>
+<style>
+  :root {
+    --green: #2f6b3a;
+    --green-light: #f1f5eb;
+    --ink: #1f2933;
+    --muted: #5b6673;
+    --line: #dde3d5;
+    --code-bg: #f4f6f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 1rem 4rem;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    line-height: 1.65;
+    background: #fff;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; }
+  header.doc {
+    padding: 2.5rem 0 1.5rem;
+    border-bottom: 3px solid var(--green);
+    margin-bottom: 2rem;
+  }
+  header.doc h1 { margin: 0 0 .25rem; font-size: 2rem; color: var(--green); }
+  header.doc .sub { color: var(--muted); font-size: .95rem; }
+  h2 {
+    margin: 2.5rem 0 .75rem;
+    font-size: 1.4rem;
+    color: var(--green);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .35rem;
+  }
+  h3 { margin: 1.75rem 0 .5rem; font-size: 1.1rem; }
+  p, li { font-size: 1rem; }
+  .objective {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .objective p { margin: .35rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .75rem 0 1.25rem;
+    font-size: .92rem;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: .55rem .7rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--green-light); color: var(--green); font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbf8; }
+  code {
+    background: var(--code-bg);
+    padding: .1rem .35rem;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: .88em;
+    color: #24402b;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    overflow-x: auto;
+    font-size: .85rem;
+  }
+  pre code { background: none; padding: 0; }
+  .tag {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: .1rem .5rem;
+    border-radius: 999px;
+    background: var(--green);
+    color: #fff;
+    vertical-align: middle;
+  }
+  .tag.p1 { background: #c47f17; }
+  .tag.p2 { background: #7a8699; }
+  .tag.p3 { background: #9aa3b0; }
+  .note { color: var(--muted); font-size: .9rem; }
+  ol.build > li { margin-bottom: .6rem; }
+  a { color: var(--green); }
+  footer.doc {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Redesign Spec — Tropical View Ubud</h1>
+  <p class="sub">Real sites: restaurant — <a href="https://www.tropicalviewrestaurant.com/">tropicalviewrestaurant.com</a> · sanctuary — <a href="https://monkeyforestubud.com/">monkeyforestubud.com</a></p>
+</header>
+
+<div class="objective">
+  <p><strong>Objective:</strong> convert guests leaving Ubud Monkey Forest Sanctuary within the 2-minute "hot &amp; hungry" window.</p>
+  <p><strong>Primary KPI:</strong> WhatsApp claim clicks + reservations originating from the <code>/after-monkey-forest</code> funnel (tracked per QR placement).</p>
+</div>
+
+<p class="note">This spec builds on the existing Nuxt project (i18n, WhatsApp checkout, dual pricing, SQLite/MikroORM) rather than replacing it.</p>
+
+<!-- ============================================================= -->
+<h2>1. Sitemap</h2>
+
+<table>
+  <thead>
+    <tr><th>Route</th><th>Role</th><th>Priority</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/after-monkey-forest</code></td><td><strong>Campaign QR landing</strong> (all sanctuary traffic)</td><td><span class="tag">P0</span></td><td>Reads <code>?offer=</code> + <code>?utm_source=</code></td></tr>
+    <tr><td><code>/</code></td><td>Home (general + sanctuary entry point)</td><td><span class="tag">P0</span></td><td>Secondary CTA "Coming from Monkey Forest?" → campaign</td></tr>
+    <tr><td><code>/menu</code></td><td>Full menu, category tabs, dual pricing</td><td><span class="tag">P0</span></td><td>Banner: "Sanctuary offer applies"</td></tr>
+    <tr><td><code>/promotions</code></td><td>Promotions hub (featured + all, filterable)</td><td><span class="tag">P0</span></td><td>Renders expiry, hides expired</td></tr>
+    <tr><td><code>/reserve</code></td><td>Reservation form → DB + WhatsApp confirm</td><td><span class="tag p1">P1</span></td><td>Missing today</td></tr>
+    <tr><td><code>/visit</code></td><td>Location, hours ("Open now"), directions, parking</td><td><span class="tag p1">P1</span></td><td>Split from <code>/contact</code></td></tr>
+    <tr><td><code>/about</code></td><td>Story, rice fields, photos, reviews</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/contact</code></td><td>Real contact form (exists), map, phone/email</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/privacy</code> <code>/terms</code></td><td>Legal (real site has these)</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/id/*</code></td><td>Indonesian mirror of every route</td><td><span class="tag">P0</span></td><td><code>prefix_except_default</code> already configured</td></tr>
+    <tr><td><code>/[locale]/*</code></td><td>Add tourist languages later (zh/ja/ko/fr/de/es/it/nl/ru/ar)</td><td><span class="tag p3">P3</span></td><td>Real site runs 10; phase in</td></tr>
+  </tbody>
+</table>
+
+<p>Nav stays small: <em>Home · Menu · Promotions · After Monkey Forest · About · Contact</em> + persistent <strong>Reserve</strong> CTA.</p>
+
+<h3>Campaign routing (QR → offer)</h3>
+<p>One page, many entries. The QR/flyer encodes:</p>
+<pre><code>/after-monkey-forest?utm_source=qr_ticket&amp;utm_medium=qr&amp;utm_campaign=sanctuary&amp;offer=sanctuary-combo</code></pre>
+<p>Placements to attach (each its own <code>utm_source</code>): <code>qr_exit</code>, <code>qr_ticket</code>, <code>qr_guesthouse</code>, <code>qr_driver</code>, <code>qr_shop</code>, <code>guide_card</code>, <code>sticker_table</code>. Server resolves the active offer for <code>audience=monkey_forest_guest</code> if no <code>offer</code> param.</p>
+
+<!-- ============================================================= -->
+<h2>2. Page-by-page sections</h2>
+
+<h3>2.1 <code>/after-monkey-forest</code> (rebuild, P0)</h3>
+<table>
+  <thead>
+    <tr><th>#</th><th>Section</th><th>Content / behaviour</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Sticky offer bar</strong> (mobile)</td><td>"15% off mains + free iced tea · 2 min walk" + WhatsApp <strong>Claim</strong>. Dismissible; hides on scroll-up on desktop.</td></tr>
+    <tr><td>2</td><td><strong>Hero</strong></td><td>H1 = the moment ("Just finished the Sanctuary? Cool down 2 minutes away"). Sub: offer + proximity. CTAs: <strong>Claim on WhatsApp</strong> (pre-filled w/ offer) + <strong>See menu</strong>. Note line: "Open now · 2–3 min walk from the exit". Real self-hosted photo (shaded rice-field seating). Language auto-detect.</td></tr>
+    <tr><td>3</td><td><strong>Offer card</strong></td><td>"Sanctuary Cool-Down Combo": what's included, validity window, "show your ticket/stamp", price. CTA claim. Rendered from DB (see §3).</td></tr>
+    <tr><td>4</td><td><strong>Why sit down here</strong></td><td>4 benefits: 2–3 min walk · shaded seating · quick service · family friendly.</td></tr>
+    <tr><td>5</td><td><strong>Popular right now</strong></td><td>3–6 dishes w/ dual pricing + add-to-cart; link to <code>/menu</code>.</td></tr>
+    <tr><td>6</td><td><strong>Active promotions</strong></td><td>Cards from DB filtered <code>audience=monkey_forest_guest</code> + <code>is_active</code>; link <code>/promotions</code>.</td></tr>
+    <tr><td>7</td><td><strong>Social proof</strong></td><td>Google/TripAdvisor rating + 2–3 review quotes + "N guests from the sanctuary this week" (from redemption counts).</td></tr>
+    <tr><td>8</td><td><strong>Getting here</strong></td><td>Map, "Open now", walking route from the sanctuary exit, parking/transport.</td></tr>
+    <tr><td>9</td><td><strong>Mini-FAQ</strong></td><td>Do I need the ticket? Is it walkable? Card/QRIS accepted? Halal/veg options?</td></tr>
+    <tr><td>10</td><td><strong>Final CTA</strong></td><td>"Ready to sit down and relax?" + WhatsApp.</td></tr>
+    <tr><td>11</td><td><strong>Persistent</strong></td><td>Floating WhatsApp (contextual message = offer).</td></tr>
+  </tbody>
+</table>
+
+<h3>2.2 <code>/</code> Home (P0)</h3>
+<p>Hero (dual-intent, Reserve primary + "Coming from Monkey Forest?" secondary) → 4 value cards → signature dishes → featured promotions → location/hours/map → reviews strip → final CTA.</p>
+
+<h3>2.3 <code>/menu</code> (P0)</h3>
+<p>Header → sticky category nav → menu grid w/ dual-pricing toggle (dine-in vs takeaway, geofence-driven) → item detail/add-to-cart → "Sanctuary offer applies" banner → CTA.</p>
+
+<h3>2.4 <code>/promotions</code> (P0)</h3>
+<p>Header → <strong>Sanctuary combo featured first</strong> → featured grid → all promos with <strong>DB-driven category tabs</strong> (removes the current hardcoded 5 tabs bug) → <strong>render <code>validUntil</code>, filter out expired, show countdown/badge</strong> → promo detail (terms) → CTA.</p>
+
+<h3>2.5 <code>/reserve</code> (P1)</h3>
+<p>Form: party size, date, time, name, phone, email, notes → <code>POST /api/reservations</code> → store + return a <code>wa.me</code> confirmation link → success screen with "Add to calendar".</p>
+
+<h3>2.6 <code>/visit</code> (P1)</h3>
+<p>Map, address, <strong>live "Open now"</strong> (computed from hours), directions, walking route from sanctuary, parking, transport. (Also fixes the current 20 km coordinate mismatch — spec'd separately.)</p>
+
+<h3>2.7 Layout / global (P0)</h3>
+<p>Header nav + language switcher + cart + primary CTA (Reserve; swaps to "Claim offer" when arriving via campaign). Footer: contact, hours, map, social, TripAdvisor. <code>Restaurant</code> JSON-LD + per-page <code>useSeoMeta</code> + <code>hreflang</code>.</p>
+
+<!-- ============================================================= -->
+<h2>3. Promotion data model (DB)</h2>
+
+<p>Today <code>promotion</code> is a flat card table (free-text <code>category</code>, text <code>valid_until</code>, no audience/time/bundle/redemption). Redesign into a campaign-capable model. Keep the project convention: <code>defineEntity</code>, snake_case tables, append-only MikroORM migrations, seed is source of truth.</p>
+
+<h3>3.1 <code>promotion</code> (extend)</h3>
+<table>
+  <thead>
+    <tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>integer PK</td><td></td></tr>
+    <tr><td>slug</td><td>text unique</td><td>deep link <code>?offer=slug</code></td></tr>
+    <tr><td>title / subtitle / description</td><td>text</td><td>EN base; translations in <code>promotion_translation</code></td></tr>
+    <tr><td>terms</td><td>text</td><td>fine print</td></tr>
+    <tr><td>kind</td><td>text</td><td><code>discount_pct</code> | <code>discount_amount</code> | <code>fixed_price</code> | <code>bogo</code> | <code>bundle</code> | <code>free_item</code> | <code>set_menu</code></td></tr>
+    <tr><td>discount_label</td><td>text</td><td>display, e.g. "15% OFF"</td></tr>
+    <tr><td><strong>audience</strong></td><td>text</td><td><code>all</code> | <code>monkey_forest_guest</code> | <code>local</code> | <code>takeaway</code> ← campaign key</td></tr>
+    <tr><td>requires_ticket</td><td>bool</td><td>show sanctuary ticket/stamp</td></tr>
+    <tr><td>min_spend</td><td>real null</td><td></td></tr>
+    <tr><td>max_redemptions</td><td>int null</td><td>global cap</td></tr>
+    <tr><td>per_customer_limit</td><td>int null</td><td></td></tr>
+    <tr><td>valid_from</td><td>datetime null</td><td></td></tr>
+    <tr><td><strong>valid_until</strong></td><td>datetime null</td><td><strong>real datetime</strong> (replaces text)</td></tr>
+    <tr><td>days_of_week</td><td>text</td><td>csv <code>1..7</code> (Mon=1)</td></tr>
+    <tr><td>time_start / time_end</td><td>text</td><td>e.g. <code>11:00</code> / <code>15:00</code> (post-sanctuary window)</td></tr>
+    <tr><td>original_price_takeaway / _dinein</td><td>real null</td><td></td></tr>
+    <tr><td>promo_price_takeaway / _dinein</td><td>real null</td><td></td></tr>
+    <tr><td>hero_image / thumbnail</td><td>text</td><td></td></tr>
+    <tr><td>is_active</td><td>bool</td><td>master switch</td></tr>
+    <tr><td>is_featured</td><td>bool</td><td></td></tr>
+    <tr><td>priority</td><td>int</td><td>sort order</td></tr>
+    <tr><td>created_at / updated_at</td><td>datetime</td><td></td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 <code>promotion_category</code> (new — replaces free-text <code>category</code>)</h3>
+<p><code>id, slug, label, sort_order</code>. Same pattern as <code>Category</code>; feeds <code>/api/promotion-categories</code> (fixes hardcoded tabs).</p>
+
+<h3>3.3 <code>promotion_item</code> (new — bundles/combos)</h3>
+<p><code>id, promotion_id FK, menu_item_id FK null, custom_name null, quantity, role</code> where <code>role ∈ {included, choice, free, discount_target}</code>.<br>
+→ "Sanctuary Cool-Down Combo" = 1 <code>choice</code> main (from a set) + 1 <code>free</code> item (iced tea).</p>
+
+<h3>3.4 <code>promotion_code</code> (new — QR placement / voucher)</h3>
+<p><code>id, promotion_id FK, code unique, channel, max_uses, used_count, starts_at, expires_at, is_active</code>.<br>
+One code per QR placement enables per-source tracking and anti-abuse.</p>
+
+<h3>3.5 <code>promotion_redemption</code> (new — analytics)</h3>
+<p><code>id, promotion_id FK null, code_id FK null, order_id FK null, reservation_id FK null, channel, utm_source, utm_medium, utm_campaign, redeemed_at</code>.<br>
+Powers "N guests this week", offers A/B, and channel ROI.</p>
+
+<h3>3.6 <code>campaign</code> (new — optional, placement registry)</h3>
+<p><code>id, slug, name, channel, utm_source, utm_medium, utm_campaign, landing_path, default_promotion_id FK null, qr_image_path, scan_count</code>.<br>
+Maps a physical placement → landing URL + default offer. If skipped, encode this in <code>promotion_code.channel</code>.</p>
+
+<h3>3.7 <code>promotion_translation</code> (new — content i18n)</h3>
+<p><code>id, promotion_id FK, locale, title, subtitle, description, terms</code>. Keeps promo copy out of the UI i18n JSON and translatable per language. Unique <code>(promotion_id, locale)</code>.</p>
+
+<h3>Relations</h3>
+<p><code>promotion 1─* promotion_item</code>, <code>promotion 1─* promotion_code</code>, <code>promotion 1─* promotion_redemption</code>, <code>promotion 1─* promotion_translation</code>, <code>promotion_redemption *─1 order/reservation</code>, <code>promotion_item *─1 menu_item</code>.</p>
+
+<h3>API endpoints</h3>
+<table>
+  <thead>
+    <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GET</td><td><code>/api/promotions?audience=&amp;active=&amp;channel=&amp;featured=</code></td><td>filtered list</td></tr>
+    <tr><td>GET</td><td><code>/api/promotions/:slug</code></td><td>detail + items + translations</td></tr>
+    <tr><td>GET</td><td><code>/api/promotion-categories</code></td><td>filter tabs</td></tr>
+    <tr><td>POST</td><td><code>/api/promotions/validate-code</code></td><td><code>{code}</code> → validity + offer</td></tr>
+    <tr><td>POST</td><td><code>/api/promotions/:id/redeem</code></td><td>record redemption (also called on order/reserve)</td></tr>
+    <tr><td>POST</td><td><code>/api/campaigns/:slug/scan</code></td><td>increment <code>scan_count</code></td></tr>
+    <tr><td>GET</td><td><code>/api/campaigns/:slug</code></td><td>resolve landing → default offer</td></tr>
+  </tbody>
+</table>
+
+<p>The <code>/after-monkey-forest</code> page calls: <code>GET /api/campaigns/:slug</code> (from <code>utm_source</code>) → <code>GET /api/promotions/:slug?audience=monkey_forest_guest</code> → renders offer + contextual WhatsApp message.</p>
+
+<!-- ============================================================= -->
+<h2>4. Cross-cutting</h2>
+<ul>
+  <li><strong>Analytics:</strong> fire events for <code>qr_scan</code>, <code>offer_view</code>, <code>menu_view</code>, <code>wa_claim_click</code>, <code>reserve_submit</code>. WhatsApp click = primary conversion.</li>
+  <li><strong>SEO:</strong> per-page <code>useSeoMeta</code>, <code>i18n.baseUrl</code> + <code>useLocaleHead()</code> for hreflang, <code>Restaurant</code> + <code>Offer</code> JSON-LD, generated <code>sitemap.xml</code>, <code>robots.txt</code>, and a fully optimized <strong>Google Business Profile</strong> (category, hours, menu link, offers, photos, Q&amp;A).</li>
+  <li><strong>A11y:</strong> modal <code>role="dialog"</code> + focus trap + Escape; keep 44–48px touch targets.</li>
+  <li><strong>Performance:</strong> self-host all imagery (no <code>tropicalviewrestaurant.com</code>/unsplash hotlinks), WebP, lazy below-fold, target fast paint on weak sanctuary wifi.</li>
+</ul>
+
+<!-- ============================================================= -->
+<h2>5. Build order (phased)</h2>
+<ol class="build">
+  <li><strong>P0 campaign:</strong> fix coords → <code>promotion</code>/<code>promotion_category</code> migration + seed "Sanctuary Cool-Down Combo" → <code>/after-monkey-forest</code> rebuild (hero, offer, proof, map, sticky bar) → QR + UTM plumbing → GBP.</li>
+  <li><strong>P0 content:</strong> <code>/promotions</code> DB tabs + expiry + featured-first; <code>/menu</code> offer banner; home dual-intent.</li>
+  <li><strong>P1:</strong> <code>/reserve</code> (form → DB + WhatsApp), <code>/visit</code> with "Open now"; redemption tracking + analytics.</li>
+  <li><strong>P2/P3:</strong> <code>/about</code>, <code>/contact</code>, legal, extra languages, <code>promotion_translation</code>.</li>
+</ol>
+
+<footer class="doc">
+  Tropical View Ubud redesign spec — English document. Indonesian version: <code>NEW-WEBSITE-DESIGN-SPEC-ID.html</code>.
+</footer>
+
+</div>
+</body>
+</html>

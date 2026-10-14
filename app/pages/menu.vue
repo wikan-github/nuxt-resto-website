@@ -116,7 +116,7 @@
           <!-- i18n: CTA section description offering staff assistance -->
           <p>{{ $t('menuPage.helpDescription') }}</p>
           <a
-            href="https://wa.me/6281338774969?text=Hello,%20I%20need%20help%20with%20the%20menu"
+            :href="waMeUrl('Hello, I need help with the menu')"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
@@ -164,6 +164,9 @@
 const { data: menuItems } = await useFetch<MenuItem[]>('/api/menu')
 const { data: categories } = await useFetch<Category[]>('/api/categories')
 
+// WhatsApp help link built from the `restaurant` row in SQLite.
+const { waMeUrl } = useRestaurant()
+
 // ── Step 2: Create reactive state for the active category ──
 //
 // 📚 LEARNING — `ref()` (Reactive Reference):
@@ -188,7 +191,7 @@ const filteredItems = computed(() => {
   if (activeCategory.value === 'all') return menuItems.value
 
   // Otherwise, filter dishes where `item.category` matches the selected tab's slug
-  return menuItems.value.filter(item => item.category === activeCategory.value)
+  return menuItems.value.filter(item => item.category.slug === activeCategory.value)
 })
 </script>
 

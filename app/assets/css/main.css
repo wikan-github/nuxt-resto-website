@@ -437,6 +437,116 @@ h1, h2, h3, h4 {
   color: #fff;
 }
 
+/* Outline white button: transparent bg, white border/text. For dark/hero backgrounds.
+   On hover → white bg, green text (mirrors .btn-white). */
+.btn-outline-white {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-outline-white:hover {
+  background: #fff;
+  color: var(--color-green);
+}
+
+/* Hero action row: primary + secondary buttons side by side, stacking on narrow screens. */
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Small reassurance line under the hero buttons (opening hours).
+   `.hero p.hero-note` outranks `.hero p` so it drops the big bottom margin. */
+.hero p.hero-note {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-bottom: 0;
+  max-width: none;
+}
+
+/* Guest banner: soft-green promo strip below the hero.
+   Uses the shared green-light tint + XL radius from the design tokens. */
+.guest-banner {
+  background: var(--color-green-light);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.guest-banner-text h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+.guest-banner-text p {
+  font-family: var(--font-content);
+  color: var(--color-text-body);
+  margin-bottom: 0;
+  max-width: 560px;
+  /* Let the text wrap fully and never clip a wrapped line. */
+  overflow-wrap: break-word;
+}
+
+/* Text column grows/shrinks; min-width:0 lets flex shrink it without overflow. */
+.guest-banner-text {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+/* Floating WhatsApp button: fixed bottom-right on every page.
+   z-index 150 sits above content/header but BELOW cart/modals (200+),
+   so it never blocks dialogs. Safe-area keeps it off phone notches. */
+.floating-wa {
+  position: fixed;
+  right: 1.25rem;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 150;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.floating-wa:hover {
+  transform: scale(1.08);
+}
+
+.floating-wa svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* Location map: landscape embed with rounded corners.
+   Fixed clamp height keeps it prominent on all screen sizes. */
+.location-map {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: clamp(280px, 32vw, 400px);
+}
+
+.location-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    SECTION 7: Section Layouts
    Common layout classes used across pages.
@@ -492,7 +602,7 @@ h1, h2, h3, h4 {
    `repeat(3, 1fr)` = create 3 columns, each taking 1 fraction of space. */
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -614,7 +724,7 @@ h1, h2, h3, h4 {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* 2 equal columns for menu items.
-   📚 On mobile (below 767px), this switches to 1 column via the
+   📚 On mobile (below 768px), this switches to 1 column via the
       media query at the bottom of this file. */
 .menu-grid {
   display: grid;
@@ -1687,21 +1797,21 @@ h1, h2, h3, h4 {
    Media queries adjust the layout for smaller screens.
 
    📚 LEARNING — Media Queries:
-   `@media (max-width: 767px) { ... }` means "apply these styles ONLY
-   when the viewport width is 767px or less". This is how websites
+   `@media (max-width: 768px) { ... }` means "apply these styles ONLY
+   when the viewport width is 768px or less". This is how websites
    become responsive — different styles for different screen sizes.
 
    Common breakpoints:
    - 991px: tablets
-   - 767px: large phones
+   - 768px: large phones
    - 479px: small phones
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Tablet breakpoint */
 @media (max-width: 991px) {
-  /* Stack the 3-column grid into 1 column on tablets */
+  /* 4-column benefits grid → 2x2 on tablets */
   .values-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 
@@ -1727,12 +1837,70 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Phone breakpoint */
-@media (max-width: 767px) {
-  /* Shorter header on phones */
-  .header-inner {
-    height: 68px;
+/* Small-tablet hero scale-down (≤900px). Placed before the 768px block so
+   phone rules below still win where they overlap. */
+/* =========================================
+   Mobile optimizations (max-width: 900px)
+   ========================================= */
+@media (max-width: 900px) {
+
+  /* 1. Hero headline */
+  .hero h1,
+  .hero-content h1 {
+    font-size: 30px !important;
+    line-height: 1.25 !important;
   }
+
+  /* 2. Hero sub-headline & note */
+  .hero p,
+  .hero-content p {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero p.hero-note,
+  .hero-content .hero-note {
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+  }
+
+  /* 3. Special Banner – more compact */
+  .guest-banner {
+    flex-direction: column;
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .guest-banner .btn,
+  .guest-banner .btn-green {
+    width: 100%;
+  }
+
+  /* 4. Header – slightly more compact */
+  .header-inner {
+    height: 60px;
+    gap: 0.4rem;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .header-cta {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  /* 5. Benefits section – reduce vertical space */
+  .section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+}
+
+/* Phone breakpoint */
+@media (max-width: 768px) {
+  /* Header height comes from the 900px block (60px); phones keep it. */
 
   /* Hide the navigation links on phones.
      📚 In a real project, you'd add a hamburger menu here.
@@ -1742,14 +1910,166 @@ h1, h2, h3, h4 {
     display: none;
   }
 
+  /* Header phones: smaller logo + compact controls.
+     Height (60px), gap, and CTA size come from the 900px block. */
+  .logo-img {
+    height: 44px;
+  }
+
+  .header-cta {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cart-icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .lang-switcher {
+    flex-shrink: 0;
+  }
+
+  .logo-link {
+    flex-shrink: 0;
+  }
+
+  /* Touch targets: all content buttons at least 48px tall, labels centered.
+     (Header CTA stays compact by design so the bar fits; floating WA is 56px.) */
+  .btn {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Readable body text: 16px minimum for cards on phones. */
+  .value-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Final CTA: comfortable padding + already full-width button. */
+  .cta-banner {
+    padding: 2.5rem 1.25rem;
+  }
+
   /* Shorter hero on phones */
   .hero-card {
     min-height: 400px;
   }
 
+  /* Hero mobile-first: compact type, stacked full-width buttons, tighter padding
+     so the guest banner appears sooner and nothing is cut off. */
+  .hero-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Forced mobile headline size (overrides any competing h1 rule). */
+  .hero-content h1 {
+    font-size: 30px !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+
+  .hero p.hero-note {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+  }
+
   /* Menu grid goes from 2 columns to 1 column */
   .menu-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Footer clearance: extra bottom padding so the fixed WhatsApp button
+     never covers the copyright line when fully scrolled down. */
+  .site-footer {
+    padding-bottom: 5rem;
+  }
+
+  /* Benefits grid: 2x2 → 1 stacked column on phones, tighter rhythm. */
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  /* Compact cards: less padding, smaller icon — centered and readable. */
+  .value-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .value-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+  }
+
+  /* CTA banners: full-width, easy tap target on phones */
+  .cta-banner .btn {
+    width: 100%;
+    max-width: 340px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* Guest banner: compact stacked layout (matches 900px values). */
+  .guest-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 18px;
+    gap: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Kill the desktop flex-basis (300px min-height in column mode) so the
+     text block autosizes to its content and the button sits right below it. */
+  .guest-banner-text {
+    flex: none;
+  }
+
+  .guest-banner-text h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .guest-banner-text p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .guest-banner .btn {
+    width: 100%;
+    text-align: center;
   }
 
   /* Promo grid goes from 2 columns to 1 column */
@@ -1761,11 +2081,6 @@ h1, h2, h3, h4 {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
-  }
-
-  /* Reduce section spacing on small screens */
-  .section {
-    padding: 3rem 0;
   }
 
   /* Cart drawer: narrower on phones */
@@ -1788,5 +2103,26 @@ h1, h2, h3, h4 {
   .cart-item-img {
     width: 44px;
     height: 44px;
+  }
+}
+
+/* Very small phones (≤380px): shrink header further so logo, switcher,
+   cart, and Reserve Now never overlap. */
+@media (max-width: 380px) {
+  .header-inner {
+    gap: 0.35rem;
+  }
+
+  .logo-img {
+    height: 40px;
+  }
+
+  .header-cta {
+    font-size: 0.7rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
   }
 }

@@ -28,7 +28,7 @@
     <!-- Text content: category tag, name, description -->
     <div class="menu-card-info">
       <!-- Category tag (e.g., "STARTERS") shown in small uppercase green text -->
-      <span class="category-tag">{{ item.category }}</span>
+      <span class="category-tag">{{ item.category.label }}</span>
       <!-- Dish name as a heading -->
       <h4>{{ item.name }}</h4>
       <!-- Short description of the dish -->

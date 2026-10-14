@@ -139,7 +139,7 @@
           <!-- i18n: CTA description inviting contact for reservations or questions -->
           <p>{{ $t('promotionsPage.ctaDescription') }}</p>
           <a
-            href="https://wa.me/6281338774969?text=Hello,%20I%20want%20to%20know%20about%20your%20promotions"
+            :href="waMeUrl('Hello, I want to know about your promotions')"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
@@ -178,6 +178,9 @@
 // `pending` is true while the request is in progress.
 // `error` contains any error that occurred.
 const { data: promotions } = await useFetch<Promotion[]>('/api/promotions')
+
+// WhatsApp promotions link built from the `restaurant` row in SQLite.
+const { waMeUrl } = useRestaurant()
 
 // ── Step 2: Reactive state for the active filter category ──
 const activeCategory = ref('all')

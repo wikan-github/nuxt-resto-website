@@ -3,44 +3,85 @@
     "home": "Beranda",
     "menu": "Menu",
     "promos": "Promo",
+    "afterForest": "Spesial Monkey Forest",
     "about": "Tentang Kami",
     "contact": "Hubungi Kami",
     "reserve": "Pesan Sekarang",
     "openCart": "Buka keranjang"
   },
   "hero": {
-    "title": "Rasakan Ketenangan Alam di Jantung Ubud",
-    "subtitle": "Nikmati masakan Indonesia dan internasional yang autentik dikelilingi oleh pemandangan sawah yang asri dan keramahan Bali yang hangat.",
-    "reserveBtn": "Buat Reservasi"
+    "monkeyForestTitle": "Baru Selesai dari Ubud Monkey Forest? Istirahat, Segarkan Diri & Nikmati Pemandangan Sawah",
+    "monkeyForestSubtitle": "Hanya 2–3 menit jalan kaki dari pintu keluar Sanctuary. Penawaran spesial untuk tamu Ubud Monkey Forest.",
+    "monkeyForestBtn": "Klaim Spesial Ubud Monkey Forest",
+    "monkeyForestMessage": "Halo, saya baru saja dari Ubud Monkey Forest dan ingin penawaran spesialnya: diskon 15% hidangan utama + es teh gratis",
+    "viewMenu": "Lihat Menu",
+    "hoursNote": "Buka setiap hari 07:00 – 22:00 • Meja tersedia sekarang",
+    "guestBannerTitle": "Spesial Tamu Ubud Monkey Forest",
+    "guestBannerDesc": "Tunjukkan tiket Ubud Monkey Forest Anda dan nikmati diskon 15% untuk hidangan utama + es teh gratis",
+    "guestBannerBtn": "Klaim via WhatsApp"
+  },
+  "afterForest": {
+    "heroTitle": "Baru Selesai dari Ubud Monkey Forest?",
+    "heroSubtitle": "Beristirahat, menyegarkan diri, dan nikmati penawaran spesial hanya 2–3 menit jalan kaki dari pintu keluar Sanctuary.",
+    "heroPrimary": "Klaim Penawaran Spesial Anda",
+    "offerTitle": "Spesial Tamu Ubud Monkey Forest",
+    "offerText": "Tunjukkan tiket Anda dan nikmati diskon 15% untuk hidangan utama + es teh gratis",
+    "offerBtn": "Klaim via WhatsApp",
+    "dismissBar": "Tutup penawaran",
+    "locationText": "Terletak di Jl. Monkey Forest, hanya 2–3 menit jalan kaki dari pintu keluar Sacred Monkey Forest Sanctuary."
+  },
+  "seo": {
+    "afterForest": {
+      "title": "Setelah Ubud Monkey Forest — Diskon 15% di Tropical View Ubud",
+      "description": "Baru selesai dari Ubud Monkey Forest? 2–3 menit jalan kaki ke Tropical View Ubud untuk diskon 15% hidangan utama + es teh gratis."
+    }
+  },
+  "campaignHero": {
+    "eyebrow": "Ubud Monkey Forest · 200m dari pintu keluar",
+    "h1": "Baru selesai dari Sanctuary? Dinginkan diri 2 menit dari sini.",
+    "sub": "Tempat duduk beratap dengan pemandangan sawah, minuman dingin, dan makanan hangat — 200 meter dari pintu keluar Monkey Forest. Tunjukkan tiket sanctuary Anda untuk diskon 15% menu utama + es teh gratis.",
+    "ctaPrimary": "Klaim via WhatsApp",
+    "ctaSecondary": "Lihat menu",
+    "note": "Buka sekarang · 2–3 menit jalan kaki dari pintu keluar"
   },
   "values": {
-    "label": "Nilai Kami",
-    "title": "Makanan lezat yang bermakna",
-    "description": "Kami berkomitmen untuk memberikan pengalaman yang autentik dan tenang yang mencerminkan keindahan alam dan kehangatan keramahan Bali.",
-    "freshIngredients": {
-      "title": "Bahan Segar",
-      "description": "Hasil pertanian lokal dan rempah-rempah Bali tradisional dalam setiap hidangan."
+    "label": "Kenapa Mampir ke Sini",
+    "title": "Sempurna Setelah Kunjungan Sanctuary Anda",
+    "description": "Beristirahat, menyegarkan diri, dan mengisi energi hanya beberapa langkah dari pintu keluar Ubud Monkey Forest.",
+    "walk": {
+      "title": "2–3 Menit Jalan Kaki",
+      "description": "Dari pintu keluar Ubud Monkey Forest Sanctuary langsung ke pintu masuk kami"
     },
-    "expertChefs": {
-      "title": "Koki Ahli",
-      "description": "Tim kuliner kami membawa semangat dan presisi dalam setiap piring yang kami sajikan."
+    "shade": {
+      "title": "Tempat Duduk Sejuk & Teduh",
+      "description": "Meja outdoor di bawah atap jerami tradisional dengan pemandangan sawah yang indah"
     },
-    "curatedDrinks": {
-      "title": "Minuman Pilihan",
-      "description": "Kopi khusus, smoothie segar, anggur, dan koktail buatan tangan."
+    "fast": {
+      "title": "Pelayanan Cepat",
+      "description": "Sempurna setelah berjalan panas mengelilingi sanctuary — kami melayani dengan cepat"
+    },
+    "family": {
+      "title": "Ramah Keluarga",
+      "description": "Tempat duduk luas ideal untuk rombongan, pasangan, dan keluarga dengan anak-anak"
     }
+  },
+  "location": {
+    "label": "Cara Menemukan Kami",
+    "title": "Hanya beberapa langkah dari Ubud Monkey Forest",
+    "text": "Terletak di Jl. Monkey Forest, hanya 2–3 menit jalan kaki dari pintu keluar Sacred Monkey Forest Sanctuary (Ubud Monkey Forest).",
+    "directionsBtn": "Lihat Rute"
   },
   "about": {
     "label": "Tropical View Ubud",
     "title": "Oasis Rasa di Jantung Ubud",
     "description1": "Tropical View Ubud menawarkan pengalaman makan yang unik di tengah suasana alam yang menenangkan di Ubud. Berlokasi strategis di Jalan Monkey Forest, kami menyajikan berbagai masakan Indonesia dan internasional, termasuk Nasi Goreng, Bebek Goreng, dan Rib-Eye Steak.",
-    "description2": "Dengan pemandangan sawah yang indah dan desain yang nyaman, tempat ini sempurna untuk menikmati sarapan, makan siang, atau makan malam. Kami buka setiap hari dari jam 7:00 hingga 22:00.",
+    "description2": "Dengan pemandangan sawah yang indah dan desain yang nyaman, tempat ini sempurna untuk menikmati sarapan, makan siang, atau makan malam. Kami buka setiap hari dari jam 07:00 hingga 22:00.",
     "viewMenuBtn": "Lihat Menu Kami"
   },
   "cta": {
-    "title": "Dapatkan Penawaran Terbaik Kami dengan Cepat",
-    "description": "Apakah Anda siap mencoba hidangan yang akan melengkapi perjalanan Anda? Tropical View Ubud akan memberikan yang Anda butuhkan!",
-    "reserveBtn": "Buat Reservasi"
+    "title": "Siap duduk dan bersantai?",
+    "description": "Kami memiliki meja tersedia sekarang. Beri tahu kami bahwa Anda datang dari Ubud Monkey Forest dan nikmati penawaran spesialnya.",
+    "reserveBtn": "Chat Kami Sekarang – Kami Siap"
   },
   "aboutPage": {
     "label": "Tropical View Ubud",

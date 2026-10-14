@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spesifikasi Redesain — Tropical View Ubud</title>
+<style>
+  :root {
+    --green: #2f6b3a;
+    --green-light: #f1f5eb;
+    --ink: #1f2933;
+    --muted: #5b6673;
+    --line: #dde3d5;
+    --code-bg: #f4f6f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 1rem 4rem;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    line-height: 1.65;
+    background: #fff;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; }
+  header.doc {
+    padding: 2.5rem 0 1.5rem;
+    border-bottom: 3px solid var(--green);
+    margin-bottom: 2rem;
+  }
+  header.doc h1 { margin: 0 0 .25rem; font-size: 2rem; color: var(--green); }
+  header.doc .sub { color: var(--muted); font-size: .95rem; }
+  h2 {
+    margin: 2.5rem 0 .75rem;
+    font-size: 1.4rem;
+    color: var(--green);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .35rem;
+  }
+  h3 { margin: 1.75rem 0 .5rem; font-size: 1.1rem; }
+  p, li { font-size: 1rem; }
+  .objective {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .objective p { margin: .35rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .75rem 0 1.25rem;
+    font-size: .92rem;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: .55rem .7rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--green-light); color: var(--green); font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbf8; }
+  code {
+    background: var(--code-bg);
+    padding: .1rem .35rem;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: .88em;
+    color: #24402b;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    overflow-x: auto;
+    font-size: .85rem;
+  }
+  pre code { background: none; padding: 0; }
+  .tag {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: .1rem .5rem;
+    border-radius: 999px;
+    background: var(--green);
+    color: #fff;
+    vertical-align: middle;
+  }
+  .tag.p1 { background: #c47f17; }
+  .tag.p2 { background: #7a8699; }
+  .tag.p3 { background: #9aa3b0; }
+  .note { color: var(--muted); font-size: .9rem; }
+  ol.build > li { margin-bottom: .6rem; }
+  a { color: var(--green); }
+  footer.doc {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .85rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Spesifikasi Redesain — Tropical View Ubud</h1>
+  <p class="sub">Situs asli: restoran — <a href="https://www.tropicalviewrestaurant.com/">tropicalviewrestaurant.com</a> · sanctuary — <a href="https://monkeyforestubud.com/">monkeyforestubud.com</a></p>
+</header>
+
+<div class="objective">
+  <p><strong>Tujuan:</strong> mengonversi tamu yang baru keluar dari Ubud Monkey Forest Sanctuary dalam jendela "panas &amp; lapar" 2 menit.</p>
+  <p><strong>KPI Utama:</strong> klik klaim WhatsApp + reservasi yang berasal dari corong (funnel) <code>/after-monkey-forest</code> (dilacak per penempatan QR).</p>
+</div>
+
+<p class="note">Spesifikasi ini dibangun di atas proyek Nuxt yang sudah ada (i18n, checkout WhatsApp, harga ganda, SQLite/MikroORM) — bukan menggantinya.</p>
+
+<!-- ============================================================= -->
+<h2>1. Peta Situs</h2>
+
+<table>
+  <thead>
+    <tr><th>Rute</th><th>Peran</th><th>Prioritas</th><th>Catatan</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/after-monkey-forest</code></td><td><strong>Halaman pendaratan kampanye QR</strong> (semua lalu lintas sanctuary)</td><td><span class="tag">P0</span></td><td>Membaca <code>?offer=</code> + <code>?utm_source=</code></td></tr>
+    <tr><td><code>/</code></td><td>Beranda (umum + pintu masuk sanctuary)</td><td><span class="tag">P0</span></td><td>CTA sekunder "Datang dari Monkey Forest?" → kampanye</td></tr>
+    <tr><td><code>/menu</code></td><td>Menu lengkap, tab kategori, harga ganda</td><td><span class="tag">P0</span></td><td>Banner: "Penawaran sanctuary berlaku"</td></tr>
+    <tr><td><code>/promotions</code></td><td>Pusat promosi (unggulan + semua, dapat difilter)</td><td><span class="tag">P0</span></td><td>Menampilkan masa berlaku, menyembunyikan yang kedaluwarsa</td></tr>
+    <tr><td><code>/reserve</code></td><td>Formulir reservasi → DB + konfirmasi WhatsApp</td><td><span class="tag p1">P1</span></td><td>Belum ada saat ini</td></tr>
+    <tr><td><code>/visit</code></td><td>Lokasi, jam ("Buka sekarang"), rute, parkir</td><td><span class="tag p1">P1</span></td><td>Dipisah dari <code>/contact</code></td></tr>
+    <tr><td><code>/about</code></td><td>Cerita, sawah, foto, ulasan</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/contact</code></td><td>Formulir kontak asli (sudah ada), peta, telefon/email</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/privacy</code> <code>/terms</code></td><td>Legal (situs asli memiliki ini)</td><td><span class="tag p2">P2</span></td><td></td></tr>
+    <tr><td><code>/id/*</code></td><td>Cermin Bahasa Indonesia untuk setiap rute</td><td><span class="tag">P0</span></td><td><code>prefix_except_default</code> sudah dikonfigurasi</td></tr>
+    <tr><td><code>/[locale]/*</code></td><td>Tambahkan bahasa turis nanti (zh/ja/ko/fr/de/es/it/nl/ru/ar)</td><td><span class="tag p3">P3</span></td><td>Situs asli menjalankan 10; tambahkan bertahap</td></tr>
+  </tbody>
+</table>
+
+<p>Navigasi tetap ringkas: <em>Beranda · Menu · Promosi · After Monkey Forest · Tentang · Kontak</em> + CTA <strong>Reserve</strong> yang selalu ada.</p>
+
+<h3>Perutean kampanye (QR → penawaran)</h3>
+<p>Satu halaman, banyak pintu masuk. QR/flyer mengodekan:</p>
+<pre><code>/after-monkey-forest?utm_source=qr_ticket&amp;utm_medium=qr&amp;utm_campaign=sanctuary&amp;offer=sanctuary-combo</code></pre>
+<p>Penempatan yang dilampirkan (masing-masing <code>utm_source</code> sendiri): <code>qr_exit</code>, <code>qr_ticket</code>, <code>qr_guesthouse</code>, <code>qr_driver</code>, <code>qr_shop</code>, <code>guide_card</code>, <code>sticker_table</code>. Server menentukan penawaran aktif untuk <code>audience=monkey_forest_guest</code> jika tidak ada parameter <code>offer</code>.</p>
+
+<!-- ============================================================= -->
+<h2>2. Bagian per Halaman</h2>
+
+<h3>2.1 <code>/after-monkey-forest</code> (dibangun ulang, P0)</h3>
+<table>
+  <thead>
+    <tr><th>#</th><th>Bagian</th><th>Konten / perilaku</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Bilah penawaran melekat</strong> (seluler)</td><td>"Diskon 15% hidangan utama + es teh gratis · 2 menit jalan" + tombol WhatsApp <strong>Klaim</strong>. Dapat ditutup; tersembunyi saat gulir ke atas di desktop.</td></tr>
+    <tr><td>2</td><td><strong>Hero</strong></td><td>H1 = momen itu ("Baru selesai Sanctuary? Dinginkan diri 2 menit dari sini"). Sub: penawaran + kedekatan. CTA: <strong>Klaim di WhatsApp</strong> (pesan terisi otomatis) + <strong>Lihat menu</strong>. Baris catatan: "Buka sekarang · 2–3 menit jalan dari pintu keluar". Foto nyata (tempat duduk teduh pemandangan sawah) yang di-host sendiri. Deteksi bahasa otomatis.</td></tr>
+    <tr><td>3</td><td><strong>Kartu penawaran</strong></td><td>"Sanctuary Cool-Down Combo": isi paket, jendela masa berlaku, "tunjukkan tiket/stempel Anda", harga. CTA klaim. Dirender dari DB (lihat §3).</td></tr>
+    <tr><td>4</td><td><strong>Kenapa mampir ke sini</strong></td><td>4 keunggulan: jalan 2–3 menit · tempat duduk teduh · layanan cepat · ramah keluarga.</td></tr>
+    <tr><td>5</td><td><strong>Populer saat ini</strong></td><td>3–6 hidangan dengan harga ganda + tambah-ke-keranjang; tautan ke <code>/menu</code>.</td></tr>
+    <tr><td>6</td><td><strong>Promosi aktif</strong></td><td>Kartu dari DB yang difilter <code>audience=monkey_forest_guest</code> + <code>is_active</code>; tautan ke <code>/promotions</code>.</td></tr>
+    <tr><td>7</td><td><strong>Bukti sosial</strong></td><td>Peringkat Google/TripAdvisor + 2–3 kutipan ulasan + "N tamu dari sanctuary minggu ini" (dari jumlah penukaran).</td></tr>
+    <tr><td>8</td><td><strong>Cara ke sini</strong></td><td>Peta, "Buka sekarang", rute jalan kaki dari pintu keluar sanctuary, parkir/transportasi.</td></tr>
+    <tr><td>9</td><td><strong>FAQ singkat</strong></td><td>Apakah saya butuh tiket? Apakah bisa dicapai dengan jalan kaki? Kartu/QRIS diterima? Opsi halal/vegetarian?</td></tr>
+    <tr><td>10</td><td><strong>CTA akhir</strong></td><td>"Siap duduk dan bersantai?" + WhatsApp.</td></tr>
+    <tr><td>11</td><td><strong>Persisten</strong></td><td>Tombol WhatsApp melayang (pesan kontekstual = penawaran).</td></tr>
+  </tbody>
+</table>
+
+<h3>2.2 <code>/</code> Beranda (P0)</h3>
+<p>Hero (niat ganda, Reserve utama + "Datang dari Monkey Forest?" sekunder) → 4 kartu nilai → hidangan andalan → promosi unggulan → lokasi/jam/peta → strip ulasan → CTA akhir.</p>
+
+<h3>2.3 <code>/menu</code> (P0)</h3>
+<p>Header → navigasi kategori melekat → grid menu dengan tombol harga ganda (dine-in vs takeaway, dipandu geofence) → detail item/tambah-ke-keranjang → banner "Penawaran sanctuary berlaku" → CTA.</p>
+
+<h3>2.4 <code>/promotions</code> (P0)</h3>
+<p>Header → <strong>Combo sanctuary tampil paling depan</strong> → grid unggulan → semua promo dengan <strong>tab kategori dari DB</strong> (menghapus bug 5 tab yang saat ini di-hardcode) → <strong>tampilkan <code>validUntil</code>, sembunyikan yang kedaluwarsa, tampilkan hitung mundur/lencana</strong> → detail promo (syarat) → CTA.</p>
+
+<h3>2.5 <code>/reserve</code> (P1)</h3>
+<p>Formulir: jumlah orang, tanggal, waktu, nama, telefon, email, catatan → <code>POST /api/reservations</code> → simpan + kembalikan tautan konfirmasi <code>wa.me</code> → layar sukses dengan "Tambahkan ke kalender".</p>
+
+<h3>2.6 <code>/visit</code> (P1)</h3>
+<p>Peta, alamat, <strong>"Buka sekarang" langsung</strong> (dihitung dari jam operasional), rute, rute jalan kaki dari sanctuary, parkir, transportasi. (Juga memperbaiki ketidakcocokan koordinat 20 km saat ini — dispesifikasikan terpisah.)</p>
+
+<h3>2.7 Tata Letak / global (P0)</h3>
+<p>Navigasi header + pengalih bahasa + keranjang + CTA utama (Reserve; berganti menjadi "Klaim penawaran" saat masuk lewat kampanye). Footer: kontak, jam, peta, sosial, TripAdvisor. JSON-LD <code>Restaurant</code> + <code>useSeoMeta</code> per halaman + <code>hreflang</code>.</p>
+
+<!-- ============================================================= -->
+<h2>3. Model Data Promosi (DB)</h2>
+
+<p>Saat ini <code>promotion</code> adalah tabel kartu datar (<code>category</code> teks bebas, <code>valid_until</code> teks, tanpa audience/waktu/bundle/penukaran). Redesain menjadi model yang mendukung kampanye. Pertahankan konvensi proyek: <code>defineEntity</code>, tabel snake_case, migrasi MikroORM append-only, seed sebagai sumber kebenaran.</p>
+
+<h3>3.1 <code>promotion</code> (diperluas)</h3>
+<table>
+  <thead>
+    <tr><th>Kolom</th><th>Tipe</th><th>Catatan</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>integer PK</td><td></td></tr>
+    <tr><td>slug</td><td>text unik</td><td>tautan mendalam <code>?offer=slug</code></td></tr>
+    <tr><td>title / subtitle / description</td><td>text</td><td>Basis EN; terjemahan di <code>promotion_translation</code></td></tr>
+    <tr><td>terms</td><td>text</td><td>syarat &amp; ketentuan kecil</td></tr>
+    <tr><td>kind</td><td>text</td><td><code>discount_pct</code> | <code>discount_amount</code> | <code>fixed_price</code> | <code>bogo</code> | <code>bundle</code> | <code>free_item</code> | <code>set_menu</code></td></tr>
+    <tr><td>discount_label</td><td>text</td><td>tampilan, mis. "15% OFF"</td></tr>
+    <tr><td><strong>audience</strong></td><td>text</td><td><code>all</code> | <code>monkey_forest_guest</code> | <code>local</code> | <code>takeaway</code> ← kunci kampanye</td></tr>
+    <tr><td>requires_ticket</td><td>bool</td><td>tunjukkan tiket/stempel sanctuary</td></tr>
+    <tr><td>min_spend</td><td>real null</td><td></td></tr>
+    <tr><td>max_redemptions</td><td>int null</td><td>batas global</td></tr>
+    <tr><td>per_customer_limit</td><td>int null</td><td></td></tr>
+    <tr><td>valid_from</td><td>datetime null</td><td></td></tr>
+    <tr><td><strong>valid_until</strong></td><td>datetime null</td><td><strong>datetime sebenarnya</strong> (menggantikan teks)</td></tr>
+    <tr><td>days_of_week</td><td>text</td><td>csv <code>1..7</code> (Sen=1)</td></tr>
+    <tr><td>time_start / time_end</td><td>text</td><td>mis. <code>11:00</code> / <code>15:00</code> (jendela pasca-sanctuary)</td></tr>
+    <tr><td>original_price_takeaway / _dinein</td><td>real null</td><td></td></tr>
+    <tr><td>promo_price_takeaway / _dinein</td><td>real null</td><td></td></tr>
+    <tr><td>hero_image / thumbnail</td><td>text</td><td></td></tr>
+    <tr><td>is_active</td><td>bool</td><td>saklar utama</td></tr>
+    <tr><td>is_featured</td><td>bool</td><td></td></tr>
+    <tr><td>priority</td><td>int</td><td>urutan sortir</td></tr>
+    <tr><td>created_at / updated_at</td><td>datetime</td><td></td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 <code>promotion_category</code> (baru — menggantikan <code>category</code> teks bebas)</h3>
+<p><code>id, slug, label, sort_order</code>. Pola yang sama seperti <code>Category</code>; memberi data ke <code>/api/promotion-categories</code> (memperbaiki tab yang di-hardcode).</p>
+
+<h3>3.3 <code>promotion_item</code> (baru — bundle/combo)</h3>
+<p><code>id, promotion_id FK, menu_item_id FK null, custom_name null, quantity, role</code> dengan <code>role ∈ {included, choice, free, discount_target}</code>.<br>
+→ "Sanctuary Cool-Down Combo" = 1 hidangan utama <code>choice</code> (dari sekumpulan) + 1 item <code>free</code> (es teh).</p>
+
+<h3>3.4 <code>promotion_code</code> (baru — penempatan QR / voucher)</h3>
+<p><code>id, promotion_id FK, code unik, channel, max_uses, used_count, starts_at, expires_at, is_active</code>.<br>
+Satu kode per penempatan QR memungkinkan pelacakan per sumber dan pencegahan penyalahgunaan.</p>
+
+<h3>3.5 <code>promotion_redemption</code> (baru — analitik)</h3>
+<p><code>id, promotion_id FK null, code_id FK null, order_id FK null, reservation_id FK null, channel, utm_source, utm_medium, utm_campaign, redeemed_at</code>.<br>
+Menghasilkan "N tamu minggu ini", A/B penawaran, dan ROI per kanal.</p>
+
+<h3>3.6 <code>campaign</code> (baru — opsional, registri penempatan)</h3>
+<p><code>id, slug, name, channel, utm_source, utm_medium, utm_campaign, landing_path, default_promotion_id FK null, qr_image_path, scan_count</code>.<br>
+Memetakan penempatan fisik → URL pendaratan + penawaran default. Jika dilewati, enkodekan ini di <code>promotion_code.channel</code>.</p>
+
+<h3>3.7 <code>promotion_translation</code> (baru — i18n konten)</h3>
+<p><code>id, promotion_id FK, locale, title, subtitle, description, terms</code>. Menjaga salinan promo di luar JSON i18n UI dan dapat diterjemahkan per bahasa. Unik <code>(promotion_id, locale)</code>.</p>
+
+<h3>Relasi</h3>
+<p><code>promotion 1─* promotion_item</code>, <code>promotion 1─* promotion_code</code>, <code>promotion 1─* promotion_redemption</code>, <code>promotion 1─* promotion_translation</code>, <code>promotion_redemption *─1 order/reservation</code>, <code>promotion_item *─1 menu_item</code>.</p>
+
+<h3>Endpoint API</h3>
+<table>
+  <thead>
+    <tr><th>Metode</th><th>Endpoint</th><th>Fungsi</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GET</td><td><code>/api/promotions?audience=&amp;active=&amp;channel=&amp;featured=</code></td><td>daftar terfilter</td></tr>
+    <tr><td>GET</td><td><code>/api/promotions/:slug</code></td><td>detail + item + terjemahan</td></tr>
+    <tr><td>GET</td><td><code>/api/promotion-categories</code></td><td>tab filter</td></tr>
+    <tr><td>POST</td><td><code>/api/promotions/validate-code</code></td><td><code>{code}</code> → validitas + penawaran</td></tr>
+    <tr><td>POST</td><td><code>/api/promotions/:id/redeem</code></td><td>catat penukaran (juga dipanggil saat order/reserve)</td></tr>
+    <tr><td>POST</td><td><code>/api/campaigns/:slug/scan</code></td><td>tambah <code>scan_count</code></td></tr>
+    <tr><td>GET</td><td><code>/api/campaigns/:slug</code></td><td>selesaikan pendaratan → penawaran default</td></tr>
+  </tbody>
+</table>
+
+<p>Halaman <code>/after-monkey-forest</code> memanggil: <code>GET /api/campaigns/:slug</code> (dari <code>utm_source</code>) → <code>GET /api/promotions/:slug?audience=monkey_forest_guest</code> → merender penawaran + pesan WhatsApp kontekstual.</p>
+
+<!-- ============================================================= -->
+<h2>4. Lintas-Sektor</h2>
+<ul>
+  <li><strong>Analitik:</strong> kirim event untuk <code>qr_scan</code>, <code>offer_view</code>, <code>menu_view</code>, <code>wa_claim_click</code>, <code>reserve_submit</code>. Klik WhatsApp = konversi utama.</li>
+  <li><strong>SEO:</strong> <code>useSeoMeta</code> per halaman, <code>i18n.baseUrl</code> + <code>useLocaleHead()</code> untuk hreflang, JSON-LD <code>Restaurant</code> + <code>Offer</code>, <code>sitemap.xml</code> yang dihasilkan, <code>robots.txt</code>, dan <strong>Google Business Profile</strong> yang dioptimalkan penuh (kategori, jam, tautan menu, penawaran, foto, Q&amp;A).</li>
+  <li><strong>Aksesibilitas:</strong> modal <code>role="dialog"</code> + focus trap + Escape; pertahankan target sentuh 44–48px.</li>
+  <li><strong>Performa:</strong> host sendiri semua gambar (tanpa hotlink <code>tropicalviewrestaurant.com</code>/unsplash), WebP, lazy untuk bagian bawah, targetkan paint cepat pada wifi sanctuary yang lemah.</li>
+</ul>
+
+<!-- ============================================================= -->
+<h2>5. Urutan Pengerjaan (bertahap)</h2>
+<ol class="build">
+  <li><strong>P0 kampanye:</strong> perbaiki koordinat → migrasi <code>promotion</code>/<code>promotion_category</code> + seed "Sanctuary Cool-Down Combo" → bangun ulang <code>/after-monkey-forest</code> (hero, penawaran, bukti sosial, peta, bilah melekat) → saluran QR + UTM → GBP.</li>
+  <li><strong>P0 konten:</strong> <code>/promotions</code> tab dari DB + kedaluwarsa + unggulan lebih dulu; banner penawaran <code>/menu</code>; beranda niat ganda.</li>
+  <li><strong>P1:</strong> <code>/reserve</code> (formulir → DB + WhatsApp), <code>/visit</code> dengan "Buka sekarang"; pelacakan penukaran + analitik.</li>
+  <li><strong>P2/P3:</strong> <code>/about</code>, <code>/contact</code>, legal, bahasa tambahan, <code>promotion_translation</code>.</li>
+</ol>
+
+<footer class="doc">
+  Spesifikasi redesain Tropical View Ubud — dokumen Bahasa Indonesia. Versi Inggris: <code>NEW-WEBSITE-DESIGN-SPEC.md</code>.
+</footer>
+
+</div>
+</body>
+</html>

@@ -6,8 +6,8 @@
 // Maps coordinates/embed URL, branding text, and physical address.
 //
 // 📚 LEARNING — Data Flow (Nuxt 4 full-stack):
-//   server/data/restaurant.json          ← single source of truth (editable data)
-//   → server/api/restaurant.get.ts       ← API route reads the JSON file
+//   SQLite table `restaurant` (seeded)   ← single source of truth
+//   → server/api/restaurant.get.ts       ← API route reads it via MikroORM
 //   → useFetch('/api/restaurant')        ← this composable fetches it
 //   → components/pages                   ← consume via useRestaurant()
 //
@@ -22,7 +22,31 @@
 // `useRestaurant()` without writing an import statement.
 // ============================================================================
 
-import type { RestaurantInfo } from '~/server/api/restaurant.get' // Reuse the exact response shape from the API route
+/**
+ * RestaurantInfo is the flat shape returned by GET /api/restaurant
+ * (the `restaurant` row from the SQLite database).
+ */
+export interface RestaurantInfo {
+  id: number
+  whatsappNumber: string
+  whatsappDisplay: string
+  reservationMessage: string
+  mapLatitude: number
+  mapLongitude: number
+  mapEmbedUrl: string
+  mapLinkUrl: string
+  geofenceRadiusMeters: number
+  dineInMultiplier: number
+  brandingName: string
+  brandingTagline: string
+  brandingLogoPath: string
+  addressStreet: string
+  addressLocality: string
+  addressRegion: string
+  addressPostalCode: string
+  addressCountry: string
+  addressFull: string
+}
 
 /**
  * useRestaurant provides reactive access to all restaurant identity data:
@@ -30,7 +54,7 @@ import type { RestaurantInfo } from '~/server/api/restaurant.get' // Reuse the e
  *
  * 📚 Usage example inside any component:
  *   const { restaurant, waMeUrl } = useRestaurant()
- *   // restaurant.value?.branding.name  → "Tropical View Ubud"
+ *   // restaurant.value?.brandingName  → "Tropical View Ubud"
  *   // waMeUrl.value                    → ready-to-open WhatsApp link
  */
 export function useRestaurant() {
@@ -60,8 +84,8 @@ export function useRestaurant() {
   function waMeUrl(message?: string): string {
     // Guard: if the payload hasn't arrived yet there is no number to link to
     if (!restaurant.value) return '#'
-    // Start from the digits-only international number stored in the JSON
-    const url = `https://wa.me/${restaurant.value.whatsapp.number}`
+    // Start from the digits-only international number stored in the DB
+    const url = `https://wa.me/${restaurant.value.whatsappNumber}`
     // Append the encoded message only when the caller supplied one
     return message ? `${url}?text=${encodeURIComponent(message)}` : url
   }
@@ -73,8 +97,8 @@ export function useRestaurant() {
    *    data arrives — no manual refresh logic needed in components.
    */
   const mapsLink = computed<string>(() =>
-    // Prefer the dedicated linkUrl field, falling back to '#' while loading
-    restaurant.value?.map.linkUrl ?? '#',
+    // Prefer the dedicated mapLinkUrl field, falling back to '#' while loading
+    restaurant.value?.mapLinkUrl ?? '#',
   )
 
   // ── Return ──

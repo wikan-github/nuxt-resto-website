@@ -42,28 +42,63 @@
         -->
         <div
           class="hero-card"
-          style="background-image: url('https://www.tropicalviewrestaurant.com/wp-content/uploads/2025/02/tropical-view-ubud-2.jpg'); background-size: cover; background-position: center;"
+          style="background-image: url('/images/hero-tropical-view.jpg'); background-size: cover; background-position: center;"
         >
           <!-- Dark overlay that sits on top of the background image -->
           <div class="hero-bg"></div>
 
           <!-- Text content, positioned at the bottom of the card -->
           <div class="hero-content">
-            <!-- Hero heading — translated via i18n key 'hero.title' -->
-            <h1>{{ $t('hero.title') }}</h1>
-            <!-- Hero subtitle — translated via i18n key 'hero.subtitle' -->
-            <p>{{ $t('hero.subtitle') }}</p>
-            <!-- External link to WhatsApp for reservations -->
-            <a
-              href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
-              class="btn btn-white"
-              target="_blank"
-              rel="noopener"
-            >
-              <!-- Hero button label — translated via i18n key 'hero.reserveBtn' -->
-              {{ $t('hero.reserveBtn') }}
-            </a>
+            <!-- Hero heading — Ubud Monkey Forest angle -->
+            <h1>{{ $t('hero.monkeyForestTitle') }}</h1>
+            <!-- Hero subtitle — proximity + special deals -->
+            <p>{{ $t('hero.monkeyForestSubtitle') }}</p>
+            <!-- Primary + secondary actions side by side -->
+            <div class="hero-buttons">
+              <!-- Primary: WhatsApp claim link with pre-filled message -->
+              <a
+                :href="waMeUrl($t('hero.monkeyForestMessage'))"
+                class="btn btn-white"
+                target="_blank"
+                rel="noopener"
+              >
+                {{ $t('hero.monkeyForestBtn') }}
+              </a>
+              <!-- Secondary: internal menu page -->
+              <NuxtLink to="/menu" class="btn btn-outline-white">
+                {{ $t('hero.viewMenu') }}
+              </NuxtLink>
+            </div>
+            <!-- Opening-hours reassurance -->
+            <p class="hero-note">{{ $t('hero.hoursNote') }}</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         MONKEY FOREST GUEST BANNER
+         Full-width promo strip for Ubud Monkey Forest ticket holders.
+         Message and button text come from i18n (hero.guestBanner*).
+         The WhatsApp number comes from the DB (useRestaurant).
+         ════════════════════════════════════════════════════════════════════ -->
+    <section class="section">
+      <div class="container">
+        <div class="guest-banner">
+          <!-- Text: title + ticket offer description -->
+          <div class="guest-banner-text">
+            <h2>{{ $t('hero.guestBannerTitle') }}</h2>
+            <p>{{ $t('hero.guestBannerDesc') }}</p>
+          </div>
+          <!-- CTA: WhatsApp claim button -->
+          <a
+            :href="waMeUrl($t('hero.monkeyForestMessage'))"
+            class="btn btn-green"
+            target="_blank"
+            rel="noopener"
+          >
+            {{ $t('hero.guestBannerBtn') }}
+          </a>
         </div>
       </div>
     </section>
@@ -88,34 +123,35 @@
           <!-- Description text — translated via i18n key 'values.description' -->
           <p class="section-text">{{ $t('values.description') }}</p>
 
-          <!-- 3-column grid of value cards -->
+          <!-- 4-column grid of benefit cards (same .value-card style) -->
           <div class="values-grid">
 
-            <!-- Card 1: Fresh Ingredients -->
+            <!-- Card 1: proximity to the Sanctuary exit -->
             <div class="value-card">
-              <div class="value-icon">🌿</div>
-              <!-- Card title — translated via i18n key 'values.freshIngredients.title' -->
-              <h3>{{ $t('values.freshIngredients.title') }}</h3>
-              <!-- Card description — translated via i18n key 'values.freshIngredients.description' -->
-              <p>{{ $t('values.freshIngredients.description') }}</p>
+              <div class="value-icon">🚶</div>
+              <h3>{{ $t('values.walk.title') }}</h3>
+              <p>{{ $t('values.walk.description') }}</p>
             </div>
 
-            <!-- Card 2: Expert Chefs -->
+            <!-- Card 2: shaded outdoor seating with rice field views -->
             <div class="value-card">
-              <div class="value-icon">🍳</div>
-              <!-- Card title — translated via i18n key 'values.expertChefs.title' -->
-              <h3>{{ $t('values.expertChefs.title') }}</h3>
-              <!-- Card description — translated via i18n key 'values.expertChefs.description' -->
-              <p>{{ $t('values.expertChefs.description') }}</p>
+              <div class="value-icon">🌾</div>
+              <h3>{{ $t('values.shade.title') }}</h3>
+              <p>{{ $t('values.shade.description') }}</p>
             </div>
 
-            <!-- Card 3: Curated Drinks -->
+            <!-- Card 3: fast service after a hot walk -->
             <div class="value-card">
-              <div class="value-icon">🍹</div>
-              <!-- Card title — translated via i18n key 'values.curatedDrinks.title' -->
-              <h3>{{ $t('values.curatedDrinks.title') }}</h3>
-              <!-- Card description — translated via i18n key 'values.curatedDrinks.description' -->
-              <p>{{ $t('values.curatedDrinks.description') }}</p>
+              <div class="value-icon">⚡</div>
+              <h3>{{ $t('values.fast.title') }}</h3>
+              <p>{{ $t('values.fast.description') }}</p>
+            </div>
+
+            <!-- Card 4: spacious, group- and kid-friendly -->
+            <div class="value-card">
+              <div class="value-icon">👪</div>
+              <h3>{{ $t('values.family.title') }}</h3>
+              <p>{{ $t('values.family.description') }}</p>
             </div>
 
           </div>
@@ -186,6 +222,46 @@
     </section>
 
     <!-- ════════════════════════════════════════════════════════════════════
+         LOCATION SECTION
+         "How to Find Us" — text + Get Directions button + embedded map.
+         Map embed + directions link come from the DB (useRestaurant).
+         ════════════════════════════════════════════════════════════════════ -->
+    <section class="section">
+      <div class="container">
+        <div class="about-row">
+          <!-- Left: heading, proximity text, directions button -->
+          <div>
+            <p class="section-label">{{ $t('location.label') }}</p>
+            <h2 class="section-title">{{ $t('location.title') }}</h2>
+            <p class="section-text" style="margin-bottom: 2rem;">
+              {{ $t('location.text') }}
+            </p>
+            <a
+              :href="mapsLink"
+              class="btn btn-green"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ $t('location.directionsBtn') }}
+            </a>
+          </div>
+          <!-- Right: embedded map showing the proximity -->
+          <div class="location-map">
+            <iframe
+              :src="restaurant?.mapEmbedUrl"
+              width="100%"
+              height="100%"
+              style="border: 0; border-radius: 12px;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════════
          CTA BANNER
          Green background, centered text, "Make a Reservation" button.
          ════════════════════════════════════════════════════════════════════ -->
@@ -197,7 +273,7 @@
           <!-- CTA description — translated via i18n key 'cta.description' -->
           <p>{{ $t('cta.description') }}</p>
           <a
-            href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
+            :href="waMeUrl($t('hero.monkeyForestMessage'))"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
@@ -212,16 +288,9 @@
   </div>
 </template>
 
-<!--
-  📚 LEARNING — `<script setup lang="ts">`:
-  This page doesn't need any JavaScript logic — it's purely static HTML.
-  So there's no <script> block here. That's perfectly valid!
-  Not every Vue component needs a script section.
-
-  If you wanted to add interactivity later (e.g., an image carousel),
-  you'd add:
-    <script setup lang="ts">
-    const currentIndex = ref(0)
-    // ...logic here
-    </script>
--->
+<script setup lang="ts">
+// The reservation WhatsApp links are built from the `restaurant` row in SQLite
+// (via useRestaurant → GET /api/restaurant), so the number and message live in
+// ONE place — edit the database, not the markup.
+const { restaurant, waMeUrl, mapsLink } = useRestaurant()
+</script>

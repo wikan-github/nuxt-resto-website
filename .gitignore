@@ -9,6 +9,12 @@ dist
 # Node dependencies
 node_modules
 
+# SQLite database (regenerate with `pnpm migration:up && pnpm seed`)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
 # Logs
 logs
 *.log

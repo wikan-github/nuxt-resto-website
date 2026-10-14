@@ -166,8 +166,8 @@ export function useLocation() {
     return calculateDistance(
       userLocation.value.latitude,          // User's current latitude (reactive)
       userLocation.value.longitude,         // User's current longitude (reactive)
-      restaurant.value.map.latitude,        // Restaurant latitude from server/data/restaurant.json
-      restaurant.value.map.longitude,       // Restaurant longitude from server/data/restaurant.json
+      restaurant.value.mapLatitude,        // Restaurant latitude from the database
+      restaurant.value.mapLongitude,       // Restaurant longitude from the database
     )
   })
 
@@ -182,7 +182,7 @@ export function useLocation() {
     // Guard: unknown distance (no user location OR JSON still loading) → not near
     if (distanceToRestaurant.value === null) return false
     // Read the geofence radius from server/data/restaurant.json (undefined while loading)
-    const radiusMeters = restaurant.value?.geofence.radiusMeters
+    const radiusMeters = restaurant.value?.geofenceRadiusMeters
     // Guard: without a radius we cannot decide → default to "not near" (takeaway pricing)
     if (radiusMeters === undefined) return false
     // True only when the user stands within the configured radius
@@ -239,14 +239,14 @@ export function useLocation() {
           const distance = calculateDistance(
             userLat,                          // User latitude from the GPS fix
             userLng,                          // User longitude from the GPS fix
-            restaurant.value.map.latitude,    // Restaurant latitude from restaurant.json
-            restaurant.value.map.longitude,   // Restaurant longitude from restaurant.json
+            restaurant.value.mapLatitude,    // Restaurant latitude from the database
+            restaurant.value.mapLongitude,   // Restaurant longitude from the database
           )
 
           // Human-readable trace for debugging proximity issues in devtools
           console.log('--- Location Info ---')
           console.log(`User Location:      Lat ${userLat}, Lng ${userLng}`)
-          console.log(`Restaurant Location: Lat ${restaurant.value.map.latitude}, Lng ${restaurant.value.map.longitude}`)
+          console.log(`Restaurant Location: Lat ${restaurant.value.mapLatitude}, Lng ${restaurant.value.mapLongitude}`)
           console.log(`Distance to Restaurant: ${distance.toFixed(2)} meters`)
           console.log('---------------------')
         }

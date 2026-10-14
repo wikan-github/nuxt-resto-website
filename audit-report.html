@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuxt-Resto-Website — Code Audit Report</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --sidebar-bg: #1e293b;
+  --content-bg: #ffffff;
+  --fg: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --critical: #dc2626;
+  --critical-bg: #fef2f2;
+  --high: #d97706;
+  --high-bg: #fffbeb;
+  --medium: #2563eb;
+  --medium-bg: #eff6ff;
+  --low: #64748b;
+  --low-bg: #f8fafc;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --sidebar-w: 300px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--fg);
+  background: var(--content-bg);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  color: #e2e8f0;
+  overflow-y: auto;
+  padding: 20px 0;
+  border-right: 1px solid #334155;
+}
+.sidebar h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  padding: 12px 20px 6px;
+  margin-top: 8px;
+}
+.sidebar h2:first-child { margin-top: 0; }
+.sidebar a {
+  display: block;
+  padding: 6px 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 13px;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.sidebar a:hover {
+  color: #fff;
+  background: #334155;
+  border-left-color: var(--accent);
+}
+.sidebar a.sub { padding-left: 32px; font-size: 12px; }
+.search-box {
+  padding: 12px 16px;
+  border-bottom: 1px solid #334155;
+  position: sticky;
+  top: 0;
+  background: var(--sidebar-bg);
+  z-index: 10;
+}
+.search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 13px;
+  outline: none;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: #64748b; }
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 48px;
+  background: var(--content-bg);
+}
+.content h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.content .meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--fg);
+}
+.content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 36px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 20px;
+}
+.content h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  color: #334155;
+  scroll-margin-top: 20px;
+}
+.content p { font-size: 14px; margin-bottom: 12px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 20px;
+  font-size: 13px;
+}
+th, td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #475569;
+}
+tr:hover td { background: #f8fafc; }
+.severity {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.severity.critical { background: var(--critical-bg); color: var(--critical); }
+.severity.high { background: var(--high-bg); color: var(--high); }
+.severity.medium { background: var(--medium-bg); color: var(--medium); }
+.severity.low { background: var(--low-bg); color: var(--low); }
+.severity.done { background: var(--success-bg); color: var(--success); }
+.status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status.resolved { background: var(--success-bg); color: var(--success); }
+.status.open { background: var(--critical-bg); color: var(--critical); }
+.status.new { background: var(--high-bg); color: var(--high); }
+tr.resolved td { background: #f0fdf4; }
+tr.resolved td:first-child { border-left: 3px solid var(--success); }
+tr.open-row td:first-child { border-left: 3px solid var(--critical); }
+.tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--accent-light);
+  color: var(--accent);
+  margin-right: 4px;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.search-highlight {
+  background: #fef08a;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+.no-results {
+  display: none;
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+.file-ref {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.summary-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.summary-card .num {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.summary-card .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.summary-card.total .num { color: var(--accent); }
+.summary-card.done .num { color: var(--success); }
+.summary-card.critical .num { color: var(--critical); }
+.summary-card.todo .num { color: var(--high); }
+.callout {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-light);
+  padding: 14px 16px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.callout.success { border-left-color: var(--success); background: var(--success-bg); }
+.callout.warning { border-left-color: var(--high); background: var(--high-bg); }
+.callout strong { display: block; margin-bottom: 4px; }
+.progress-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  margin: 8px 0 4px;
+}
+.progress-bar span { display: block; height: 100%; background: var(--success); }
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .sidebar { width: 240px; min-width: 240px; }
+  .content { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search report..." oninput="filterContent()">
+  </div>
+  <div id="toc">
+    <h2>Summary</h2>
+    <a href="#summary">Overview</a>
+    <a href="#changelog">Changelog</a>
+    <a href="#stats">Stats</a>
+    <h2>Resolved</h2>
+    <a href="#resolved">Closed by migration</a>
+    <h2>Outstanding</h2>
+    <a href="#pending">All open issues</a>
+    <a href="#pending" class="sub">Critical</a>
+    <a href="#pending" class="sub">High</a>
+    <a href="#pending" class="sub">Medium</a>
+    <a href="#pending" class="sub">Low</a>
+    <h2>New</h2>
+    <a href="#newitems">Introduced items</a>
+    <h2>TODOs</h2>
+    <a href="#todo">Priority Order</a>
+    <h2>Data</h2>
+    <a href="#data">Menu & Promotions</a>
+    <a href="#files">File Inventory</a>
+  </div>
+</nav>
+
+<main class="content" id="content">
+  <h1>Nuxt-Resto-Website — Code Audit Report</h1>
+  <p class="meta">Audited: 2026-09-30 &bull; Updated: 2026-10-13 (post SQLite + MikroORM migration) &bull; Framework: Nuxt 4 + Vue 3 + TypeScript</p>
+
+  <div id="summary">
+    <h2>Overview</h2>
+    <p>Audit of the Tropical View Ubud restaurant website. The project implements a marketing site with dual pricing (takeaway vs dine-in via geofence), WhatsApp checkout, and EN/ID i18n.</p>
+    <p><strong>Update 2026-10-13:</strong> the JSON-file data store was replaced with <strong>SQLite + MikroORM v7</strong> (decorator-free <code>defineEntity</code>). This closed 3 audit issues and added new data-layer capabilities (contact persistence, reservations, orders). The remaining issues below are unaffected by that work.</p>
+  </div>
+
+  <div id="changelog">
+    <h2>Changelog — 2026-10-13</h2>
+    <div class="callout success">
+      <strong>Data layer migrated: JSON files → SQLite (MikroORM v7)</strong>
+      8 entities via <code>defineEntity</code> (no decorators), Nitro plugin with per-request <code>em.fork()</code>, migration + seed, DB-backed API routes.
+    </div>
+    <ul style="margin-left:20px; font-size:14px;">
+      <li><strong>Resolved:</strong> contact form now persists (#1); production <code>readFileSync</code> break removed (#2); WhatsApp number unified to the DB value (#3).</li>
+      <li><strong>Added:</strong> <code>contact_message</code>, <code>reservation</code>, <code>order</code> / <code>order_item</code> tables + POST/GET endpoints.</li>
+      <li><strong>Frontend rewired:</strong> menu <code>category</code> is now an object; restaurant is flat; all hardcoded WhatsApp links + map embed read from the DB.</li>
+      <li><strong>Removed:</strong> <code>@mikro-orm/decorators</code>, <code>reflect-metadata</code>, <code>experimentalDecorators</code> config, dedicated CLI tsconfig.</li>
+    </ul>
+  </div>
+
+  <div id="stats">
+    <h2>Stats</h2>
+    <div class="summary-grid">
+      <div class="summary-card total"><div class="num">20</div><div class="label">Audit Items</div></div>
+      <div class="summary-card done"><div class="num">3</div><div class="label">Resolved</div></div>
+      <div class="summary-card critical"><div class="num">1</div><div class="label">Critical Open</div></div>
+      <div class="summary-card todo"><div class="num">17</div><div class="label">Open Total</div></div>
+      <div class="summary-card todo"><div class="num">3</div><div class="label">New Items</div></div>
+    </div>
+    <p style="font-size:13px; color:var(--muted);">Progress: 3 / 20 audit items resolved (15%)</p>
+    <div class="progress-bar"><span style="width:15%"></span></div>
+  </div>
+
+  <div id="resolved">
+    <h2>Resolved by the SQLite / MikroORM Migration</h2>
+    <table>
+      <thead><tr><th>#</th><th>Original Issue</th><th>Resolution</th></tr></thead>
+      <tbody>
+        <tr class="resolved">
+          <td>1</td>
+          <td>Contact form is fake — <code>alert()</code> only, no backend</td>
+          <td>Now POSTs to <code>/api/contact</code> → persists to <code>contact_message</code> table. Verified write + read-back.</td>
+        </tr>
+        <tr class="resolved">
+          <td>2</td>
+          <td>API routes break in production (<code>readFileSync</code> on missing <code>.output/data/</code>)</td>
+          <td><code>readFileSync</code> removed entirely; routes now query SQLite via MikroORM. New production concern tracked below.</td>
+        </tr>
+        <tr class="resolved">
+          <td>3</td>
+          <td>Two WhatsApp numbers (JSON vs 9 hardcoded refs)</td>
+          <td>All 9 hardcoded refs replaced with <code>useRestaurant()</code> reading the DB. <code>6281338774969</code> no longer present in <code>app/</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="pending">
+    <h2>Outstanding Issues</h2>
+    <table>
+      <thead><tr><th>#</th><th>Issue</th><th>Severity</th><th>Status</th><th>Files</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr class="open-row">
+          <td>4</td>
+          <td>Geofence vs map coords 20km apart</td>
+          <td><span class="severity critical">Critical</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">restaurant table (seed)</td>
+          <td>DB has lat/lng <code>-8.6802432, 115.2024576</code> but <code>mapEmbedUrl</code> still renders <code>3d-8.506</code> (~20.45km apart).</td>
+        </tr>
+        <tr class="open-row">
+          <td>5</td>
+          <td>useCart mutators ignore orderType</td>
+          <td><span class="severity high">High</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">useCart.ts:177,184</td>
+          <td>removeFromCart filters on id alone (kills BOTH rows); updateQuantity finds on id alone. Keys still <code>cartItem.item.id</code>.</td>
+        </tr>
+        <tr class="open-row">
+          <td>6</td>
+          <td>No SEO</td>
+          <td><span class="severity high">High</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">nuxt.config.ts, all pages</td>
+          <td>No useSeoMeta/useHead, no i18n.baseUrl (no hreflang), no og/twitter, hardcoded htmlAttrs lang='en'.</td>
+        </tr>
+        <tr class="open-row">
+          <td>7</td>
+          <td>No error page</td>
+          <td><span class="severity medium">Medium</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">missing</td>
+          <td>No <code>app/error.vue</code> for 404/500. Verified still missing.</td>
+        </tr>
+        <tr class="open-row">
+          <td>8</td>
+          <td>No loading/error states</td>
+          <td><span class="severity medium">Medium</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">menu.vue, promotions.vue</td>
+          <td>Pages still discard <code>pending</code>/<code>error</code>; failed fetch renders "No items found".</td>
+        </tr>
+        <tr class="open-row">
+          <td>9</td>
+          <td>Expired promos still display</td>
+          <td><span class="severity medium">Medium</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">promotions.get.ts</td>
+          <td>No <code>validUntil</code> filter. IDs 3, 4 already past-dated.</td>
+        </tr>
+        <tr class="open-row">
+          <td>10</td>
+          <td>No reservation page</td>
+          <td><span class="severity medium">Medium</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">missing</td>
+          <td>Reservation table + API now exist, but no UI page yet. CTAs still deep-link WhatsApp.</td>
+        </tr>
+        <tr class="open-row">
+          <td>11</td>
+          <td>Debug console.logs</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">useLocation.ts:211,247-251</td>
+          <td>6 console.log lines still present in production code.</td>
+        </tr>
+        <tr class="open-row">
+          <td>12</td>
+          <td>Geolocation logic error</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">useLocation.ts:211</td>
+          <td>Inverted message: logs "mendukung" (supports) when geolocation is NOT supported.</td>
+        </tr>
+        <tr class="open-row">
+          <td>13</td>
+          <td>Stale comments</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">5 occurrences</td>
+          <td>Comments say "10 meters" but radius is 30 (AddToCartButton, MenuCard, useMenu, useLocation).</td>
+        </tr>
+        <tr class="open-row">
+          <td>14</td>
+          <td>Unused vue-router dep</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">package.json:28</td>
+          <td>Nuxt 4 includes vue-router internally.</td>
+        </tr>
+        <tr class="open-row">
+          <td>15</td>
+          <td>All images placeholder</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">all pages</td>
+          <td>30 Unsplash URLs + 3 hotlinked. No real restaurant photos.</td>
+        </tr>
+        <tr class="open-row">
+          <td>16</td>
+          <td>README untouched</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">README.md</td>
+          <td>Still the default "Nuxt Minimal Starter" README.</td>
+        </tr>
+        <tr class="open-row">
+          <td>17</td>
+          <td>No .env.example</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">missing</td>
+          <td>Verified missing (a <code>.env</code> with <code>NODE_ENV</code> exists).</td>
+        </tr>
+        <tr class="open-row">
+          <td>18</td>
+          <td>Currency hardcoded $</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">OrderModal.vue:244,255</td>
+          <td>Hardcodes <code>$${...}</code> bypassing <code>common.currency</code>. Should be IDR.</td>
+        </tr>
+        <tr class="open-row">
+          <td>19</td>
+          <td>Promo tab labels untranslated</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">promotions.vue:197</td>
+          <td>Hardcoded English labels, should come from the API/i18n.</td>
+        </tr>
+        <tr class="open-row">
+          <td>20</td>
+          <td>No modal a11y</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status open">Open</span></td>
+          <td class="file-ref">CartDrawer.vue, OrderModal.vue</td>
+          <td>Verified: no <code>role="dialog"</code>, focus trap, or Escape handler.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="newitems">
+    <h2>New Items Introduced by the Migration</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Severity</th><th>Status</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Production DB path / migrations</td>
+          <td><span class="severity high">High</span></td>
+          <td><span class="status new">New</span></td>
+          <td><code>dbName: './data/resto.db'</code> won't exist in a fresh build — must ship the file or run <code>migration:up</code> on deploy.</td>
+        </tr>
+        <tr>
+          <td>Orphaned JSON files</td>
+          <td><span class="severity low">Low</span></td>
+          <td><span class="status new">New</span></td>
+          <td><code>server/data/*.json</code> are now unused (kept as seed reference). Remove or document.</td>
+        </tr>
+        <tr>
+          <td>No CMS / POS sync / reservation UI</td>
+          <td><span class="severity medium">Medium</span></td>
+          <td><span class="status new">New</span></td>
+          <td>Stated goals (CMS, cart→POS sync, reservation table) have the data layer + APIs only — no admin UI, no sync job.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="todo">
+    <h2>TODO — Priority Order (updated)</h2>
+    <table>
+      <thead><tr><th>Priority</th><th>Task</th><th>Status</th><th>Files to Touch</th></tr></thead>
+      <tbody>
+        <tr class="resolved"><td><span class="severity critical">P1</span></td><td>Fix production API break</td><td><span class="status resolved">Done</span></td><td class="file-ref">server/api/*.get.ts</td></tr>
+        <tr class="resolved"><td><span class="severity critical">P2</span></td><td>Unify WhatsApp number</td><td><span class="status resolved">Done</span></td><td class="file-ref">6 files</td></tr>
+        <tr class="open-row"><td><span class="severity critical">P3</span></td><td>Fix geofence/map coords mismatch</td><td><span class="status open">Open</span></td><td class="file-ref">restaurant seed</td></tr>
+        <tr class="resolved"><td><span class="severity high">P4</span></td><td>Implement contact form backend (POST /api/contact)</td><td><span class="status resolved">Done</span></td><td class="file-ref">server/api/contact.post.ts + contact.vue</td></tr>
+        <tr class="open-row"><td><span class="severity high">P5</span></td><td>Fix useCart mutators (id + orderType)</td><td><span class="status open">Open</span></td><td class="file-ref">useCart.ts:177,184</td></tr>
+        <tr class="open-row"><td><span class="severity high">P6</span></td><td>Add SEO — useSeoMeta, hreflang, og/twitter</td><td><span class="status open">Open</span></td><td class="file-ref">nuxt.config.ts, all pages</td></tr>
+        <tr class="open-row"><td><span class="severity medium">P7</span></td><td>Add app/error.vue + loading states</td><td><span class="status open">Open</span></td><td class="file-ref">new file + pages</td></tr>
+        <tr class="open-row"><td><span class="severity medium">P8</span></td><td>Filter expired promotions by validUntil</td><td><span class="status open">Open</span></td><td class="file-ref">promotions.get.ts</td></tr>
+        <tr class="open-row"><td><span class="severity medium">P9</span></td><td>Remove debug console.logs</td><td><span class="status open">Open</span></td><td class="file-ref">useLocation.ts</td></tr>
+        <tr class="open-row"><td><span class="severity medium">P10</span></td><td>Fix geolocation inverted message</td><td><span class="status open">Open</span></td><td class="file-ref">useLocation.ts:211</td></tr>
+        <tr class="open-row"><td><span class="severity medium">P11</span></td><td>Add reservation page with localized text</td><td><span class="status open">Open</span></td><td class="file-ref">new page</td></tr>
+        <tr class="open-row"><td><span class="severity low">P12</span></td><td>Translate promo tab labels via i18n</td><td><span class="status open">Open</span></td><td class="file-ref">promotions.vue, locales</td></tr>
+        <tr class="open-row"><td><span class="severity low">P13</span></td><td>Standardize currency to IDR</td><td><span class="status open">Open</span></td><td class="file-ref">OrderModal.vue, components</td></tr>
+        <tr class="open-row"><td><span class="severity low">P14</span></td><td>Add modal a11y (role, focus trap, Escape)</td><td><span class="status open">Open</span></td><td class="file-ref">CartDrawer.vue, OrderModal.vue</td></tr>
+        <tr class="open-row"><td><span class="severity low">P15</span></td><td>Update stale comments (10m → 30m)</td><td><span class="status open">Open</span></td><td class="file-ref">5 occurrences</td></tr>
+        <tr class="open-row"><td><span class="severity low">P16</span></td><td>Remove unused vue-router dep</td><td><span class="status open">Open</span></td><td class="file-ref">package.json</td></tr>
+        <tr class="open-row"><td><span class="severity low">P17</span></td><td>Replace placeholder images</td><td><span class="status open">Open</span></td><td class="file-ref">all pages</td></tr>
+        <tr class="open-row"><td><span class="severity low">P18</span></td><td>Write proper README.md</td><td><span class="status open">Open</span></td><td class="file-ref">README.md</td></tr>
+        <tr class="open-row"><td><span class="severity low">P19</span></td><td>Add .env.example</td><td><span class="status open">Open</span></td><td class="file-ref">new file</td></tr>
+        <tr class="open-row"><td><span class="severity low">P20</span></td><td>Add lint/test tooling</td><td><span class="status open">Open</span></td><td class="file-ref">package.json</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="data">
+    <h2>Data (now in SQLite)</h2>
+    <p style="font-size:13px;color:var(--muted)">Seed source: <code>server/seed.ts</code> → <code>data/resto.db</code>. Previously <code>server/data/*.json</code> (now orphaned).</p>
+    <h3>Menu Items (20 items, 6 categories)</h3>
+    <table>
+      <thead><tr><th>Category</th><th>Count</th><th>Price Range (Takeaway)</th></tr></thead>
+      <tbody>
+        <tr><td>Starters</td><td>4</td><td>$11-$15</td></tr>
+        <tr><td>Mains</td><td>4</td><td>$26-$38</td></tr>
+        <tr><td>Pasta</td><td>3</td><td>$21-$30</td></tr>
+        <tr><td>Pizza</td><td>3</td><td>$18-$24</td></tr>
+        <tr><td>Desserts</td><td>3</td><td>$11-$14</td></tr>
+        <tr><td>Drinks</td><td>3</td><td>$7-$16</td></tr>
+      </tbody>
+    </table>
+    <h3>Promotions (10 items)</h3>
+    <table>
+      <thead><tr><th>Status</th><th>Count</th><th>IDs</th></tr></thead>
+      <tbody>
+        <tr><td>Featured</td><td>2</td><td>1, 2</td></tr>
+        <tr><td>Active</td><td>6</td><td>5, 7, 8, 9, 10, 1</td></tr>
+        <tr><td>Expired</td><td>2</td><td>3, 4</td></tr>
+        <tr><td>Expiring soon</td><td>1</td><td>6 (Oct 31)</td></tr>
+      </tbody>
+    </table>
+    <h3>Restaurant Config (restaurant table)</h3>
+    <table>
+      <tbody>
+        <tr><td>WhatsApp</td><td><code>6281805444270</code> (+62 81-805-444-270) — now the single source (all refs unified)</td></tr>
+        <tr><td>Geofence</td><td>30m radius</td></tr>
+        <tr><td>Dine-in multiplier</td><td>1.15x</td></tr>
+        <tr><td>Coordinates</td><td>-8.6802432, 115.2024576 (Ubud, Bali) — still mismatched vs embed (#4)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="files">
+    <h2>File Inventory (updated)</h2>
+    <table>
+      <thead><tr><th>File</th><th>Role</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td class="file-ref">mikro-orm.config.ts</td><td>ORM config (SQLite, class-ref entities)</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/plugins/mikro-orm.ts</td><td>Nitro plugin: init, per-request fork, flush, close</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/utils/orm.ts</td><td>useOrm / useEntityManager</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/types/h3.d.ts</td><td>H3EventContext + NitroApp augmentation</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/entities/*.ts</td><td>8 entities via defineEntity (no decorators)</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/seed.ts</td><td>Seeds restaurant, categories, menu, promotions</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/migrations/</td><td>Initial migration</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/api/*.get.ts</td><td>Now DB-backed (menu, categories, promotions, restaurant)</td><td><span class="status resolved">Rewritten</span></td></tr>
+        <tr><td class="file-ref">server/api/contact.post.ts</td><td>Persists contact messages</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/api/reservations/*</td><td>GET/POST reservations</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/api/orders/*</td><td>GET/POST orders + items</td><td><span class="status new">New</span></td></tr>
+        <tr><td class="file-ref">server/data/*.json</td><td>Legacy JSON store</td><td><span class="status new">Orphaned</span></td></tr>
+        <tr><td class="file-ref">app/composables/useRestaurant.ts</td><td>Flat shape + DB-backed waMeUrl/mapsLink</td><td><span class="status resolved">Updated</span></td></tr>
+        <tr><td class="file-ref">app/composables/useMenu.ts</td><td>category is now an object</td><td><span class="status resolved">Updated</span></td></tr>
+        <tr><td class="file-ref">app/composables/useLocation.ts</td><td>Flat restaurant field access</td><td><span class="status resolved">Updated</span></td></tr>
+        <tr><td class="file-ref">app/layouts/default.vue</td><td>Header CTA / footer / map now from DB</td><td><span class="status resolved">Updated</span></td></tr>
+        <tr><td class="file-ref">app/pages/{index,about,contact,menu,promotions}.vue</td><td>Hardcoded WA links → useRestaurant(); contact form POSTs</td><td><span class="status resolved">Updated</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-results" id="noResults">
+    No results found. Try a different search term.
+  </div>
+</main>
+
+<script>
+function filterContent() {
+  const query = document.getElementById('search').value.toLowerCase().trim();
+  const content = document.getElementById('content');
+  const sections = content.querySelectorAll('h1, h2, h3, p, li, td, th, .summary-card');
+  const noResults = document.getElementById('noResults');
+
+  if (!query) {
+    sections.forEach(el => {
+      el.style.display = '';
+      el.innerHTML = el.innerHTML.replace(/<span class="search-highlight">|<\/span>/g, '');
+    });
+    content.querySelectorAll('tr').forEach(r => r.style.display = '');
+    noResults.style.display = 'none';
+    return;
+  }
+
+  let totalMatches = 0;
+  sections.forEach(el => {
+    const text = el.textContent.toLowerCase();
+    if (text.includes(query)) {
+      el.style.display = '';
+      totalMatches++;
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      el.innerHTML = el.innerHTML.replace(/<span class="search-highlight">|<\/span>/g, '');
+      el.innerHTML = el.innerHTML.replace(regex, '<span class="search-highlight">$1</span>');
+    } else if (el.tagName === 'TD' || el.tagName === 'TH') {
+      el.style.display = '';
+    }
+  });
+
+  const rows = content.querySelectorAll('tr');
+  rows.forEach(row => {
+    if (!row.textContent.toLowerCase().includes(query)) {
+      row.style.display = 'none';
+    } else {
+      row.style.display = '';
+    }
+  });
+
+  noResults.style.display = totalMatches ? 'none' : 'block';
+}
+
+document.querySelectorAll('.sidebar a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const id = a.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      const target = document.querySelector(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

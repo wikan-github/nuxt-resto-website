@@ -39,19 +39,21 @@ export interface MenuItem {
   description: string       // Short description shown on the menu card
   priceTakeaway: number     // Price for takeaway orders (e.g., 38 means $38)
   priceDinein: number       // Price for dine-in orders (e.g., 44 means $44)
-  category: string          // Which section it belongs to (e.g., "mains", "starters")
+  category: Category        // The category row this dish belongs to (from the DB)
   image: string             // URL to the dish's photo (e.g., a Unsplash image link)
 }
 
 /**
- * Category defines a filter tab on the menu page.
+ * Category defines a filter tab on the menu page (a row in the `category` table).
  *
  * 📚 `slug` is a URL-friendly identifier (lowercase, no spaces).
  *    We use slugs for filtering logic, and `label` for what the user sees.
  */
 export interface Category {
-  slug: string   // e.g., "starters" — used in code and URLs
-  label: string  // e.g., "Starters" — shown to the user as a button
+  id: number        // Primary key from the DB
+  slug: string      // e.g., "starters" — used in code and URLs
+  label: string     // e.g., "Starters" — shown to the user as a button
+  sortOrder: number // Controls the order tabs appear in
 }
 
 // ── Data: Now loaded from server-side JSON via API routes ──

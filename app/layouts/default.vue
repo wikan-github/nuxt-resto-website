@@ -49,6 +49,8 @@
             <li><NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink></li>
             <!-- i18n: Translates "Promos" nav link label via nav.promos key -->
             <li><NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink></li>
+            <!-- i18n: Monkey Forest landing page via nav.afterForest key -->
+            <li><NuxtLink to="/after-monkey-forest">{{ $t('nav.afterForest') }}</NuxtLink></li>
             <!-- i18n: Translates "About Us" nav link label via nav.about key -->
             <li><NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink></li>
             <!-- i18n: Translates "Contact Us" nav link label via nav.contact key -->
@@ -96,7 +98,7 @@
              page from accessing your page's window object.
         -->
         <a
-          href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
+          :href="waMeUrl($t('hero.monkeyForestMessage'))"
           class="header-cta"
           target="_blank"
           rel="noopener"
@@ -186,12 +188,12 @@
             <div class="footer-contact-item">
               <!-- i18n: Translates "Phone" contact label via footer.phone key -->
               <span class="label">{{ $t('footer.phone') }}</span>
-              <span class="value">+62 813-3877-4969</span>
+              <span class="value">{{ restaurant?.whatsappDisplay ?? '' }}</span>
             </div>
             <div class="footer-contact-item">
               <!-- i18n: Translates "WA" (WhatsApp) contact label via footer.wa key -->
               <span class="label">{{ $t('footer.wa') }}</span>
-              <span class="value">+62 813-3877-4969</span>
+              <span class="value">{{ restaurant?.whatsappDisplay ?? '' }}</span>
             </div>
             <div class="footer-contact-item">
               <!-- i18n: Translates "Email" contact label via footer.email key -->
@@ -231,7 +233,7 @@
                fallback height, and disappears on stacked layouts. -->
           <div class="footer-map" :style="mapWrapperStyle">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.6!2d115.262!3d-8.506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMzAnMjEuNiJTIDExNcKwMTUnNDMuMiJF!5e0!3m2!1sen!2sid!4v1"
+              :src="restaurant?.mapEmbedUrl"
               width="100%"
               height="100%"
               style="border: 0; border-radius: 12px;"
@@ -270,6 +272,7 @@
     -->
     <CartDrawer />
     <OrderModal />
+    <FloatingWhatsApp />
   </div>
 </template>
 
@@ -288,6 +291,11 @@
 // 📚 The cart icon in the header needs `cartItemCount` for the badge
 //    and `openCart` for the click handler.
 const { cartItemCount, openCart } = useCart()
+
+// ── Restaurant info from the SQLite-backed API ──
+// 📚 Header CTA (WhatsApp reservation link), footer contact values and the
+//    Google Map embed URL all come from the `restaurant` table now.
+const { restaurant, waMeUrl } = useRestaurant()
 
 /*
   ╔═════════════════════════════════════════════════════════════════════╗

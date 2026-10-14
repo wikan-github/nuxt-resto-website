@@ -17,6 +17,26 @@ export default defineNuxtConfig({
   // 📚 Think of it like a "minimum version guarantee" for API behavior.
   compatibilityDate: '2025-07-15',
 
+  // devServer binds to 0.0.0.0 so the site is reachable from BOTH
+  // localhost (http://127.0.0.1:3001) AND the LAN IP (http://192.168.111.10:3001),
+  // e.g. to preview on a mobile phone on the same network.
+  // 0.0.0.0 is the only way to serve multiple addresses with one server.
+  devServer: {
+    host: '0.0.0.0',
+    port: 3001,
+  },
+
+  // runtimeConfig exposes values to the app via useRuntimeConfig().
+  // `public` keys are inlined into the client bundle — safe for a public
+  // WhatsApp number, never put secrets here.
+  // whatsappPhone mirrors the `restaurant` table (single source of truth
+  // lives in SQLite; keep this in sync when the number changes).
+  runtimeConfig: {
+    public: {
+      whatsappPhone: '6281805444270',
+    },
+  },
+
   // css: an array of global CSS files applied to EVERY page in your app.
   // 📚 `~/` is a Nuxt alias that means "the root of this project".
   //    So ~/assets/css/main.css → /app/assets/css/main.css

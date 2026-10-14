@@ -225,7 +225,7 @@
           <p>{{ $t('aboutPage.ctaDescription') }}</p>
           <!-- External link to WhatsApp for reservations -->
           <a
-            href="https://wa.me/6281338774969?text=Hello,%20I%20want%20a%20reservation"
+            :href="waMeUrl(restaurant?.reservationMessage)"
             class="btn btn-white"
             target="_blank"
             rel="noopener"
@@ -240,18 +240,11 @@
   </div>
 </template>
 
-<!--
-  📚 LEARNING — No <script> Needed:
-  This page is entirely static (no user interactions, no data fetching).
-  It only uses HTML template and CSS classes defined in main.css.
-  That's perfectly valid in Vue — not every component needs a <script> block.
-
-  If you wanted to add animations or dynamic content later,
-  you could add:
-    <script setup lang="ts">
-    const title = ref('About Us')
-    </script>
--->
+<script setup lang="ts">
+// Reservation WhatsApp link built from the `restaurant` row in SQLite
+// (via useRestaurant → GET /api/restaurant).
+const { restaurant, waMeUrl } = useRestaurant()
+</script>
 
 <!--
   ╔═══════════════════════════════════════════════════════════════════════╗
