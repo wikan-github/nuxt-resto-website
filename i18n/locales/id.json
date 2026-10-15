@@ -44,6 +44,60 @@
     "ctaSecondary": "Lihat menu",
     "note": "Buka sekarang · 2–3 menit jalan kaki dari pintu keluar"
   },
+  "campaignOffer": {
+    "badge": "DISKON 15%",
+    "title": "Paket Sanctuary Cool-Down",
+    "subtitle": "1 menu utama pilihan Anda + 1 es teh gratis",
+    "included": {
+      "item1": "Pilih 1 menu utama: Nasi Goreng, Bebek Goreng Crispy, atau Rib-Eye Steak",
+      "item2": "1 es teh gratis (bisa isi ulang sekali)"
+    },
+    "validity": "Berlaku hari ini, 11:00–15:00 · Tunjukkan tiket atau stempel sanctuary Anda",
+    "priceLabel": "Mulai dari",
+    "pricePrefix": "IDR",
+    "cta": "Klaim via WhatsApp",
+    "termsLabel": "Syarat",
+    "terms": "Satu paket per orang. Hanya untuk makan di tempat. Tidak dapat digabung dengan promo lain. Tiket atau stempel wajib ditunjukkan di meja.",
+    "ended": "Berakhir"
+  },
+  "monkey_forest_exit": {
+    "offer": {
+      "label": "Spesial tamu sanctuary minggu ini",
+      "promo_code_label": "Referensi staf"
+    },
+    "social_proof": {
+      "trust_line": "{count} tamu Monkey Forest mengklaim minggu ini",
+      "rating_label": "penilaian",
+      "reviews_label": "ulasan",
+      "guests_label": "tamu sanctuary"
+    },
+    "route": {
+      "title": "Temukan kami dari pintu keluar",
+      "walking_time": "{minutes} mnt jalan kaki dari sini",
+      "open_in_maps": "Buka di Google Maps",
+      "exit_label": "Pintu keluar Monkey Forest Sanctuary"
+    },
+    "faq": {
+      "title": "Perlu diketahui",
+      "q1": "Bisakah saya memesan meja terlebih dahulu?",
+      "a1": "Bisa. Ketuk Klaim via WhatsApp di bawah dan beri tahu kapan Anda datang — kami siapkan meja.",
+      "q2": "Apakah penawaran hanya berlaku hari ini?",
+      "a2": "Tunjukkan tiket atau stempel sanctuary Anda di meja pada 11:00–15:00 untuk mengklaim paket.",
+      "q3": "Apakah ada pilihan untuk anak-anak?",
+      "a3": "Ada. Kami ramah keluarga dengan tempat duduk luas — anak-anak dipersilakan.",
+      "q4": "Bisakah dibawa pulang?",
+      "a4": "Paket sanctuary hanya untuk makan di tempat, tetapi menu lengkap tersedia untuk dibawa pulang.",
+      "q5": "Bagaimana jika saya punya alergi?",
+      "a5": "Staf kami berbahasa Inggris dan Indonesia — beri tahu saja dan kami akan membantu."
+    },
+    "cta": {
+      "question": "Siap untuk bersantai?"
+    },
+    "meta": {
+      "title": "Tropical View Ubud — Paket Sanctuary Cool-Down",
+      "description": "Es teh segar dan makanan hangat 2 menit dari pintu keluar Monkey Forest. Penawaran spesial untuk tamu sanctuary."
+    }
+  },
   "values": {
     "label": "Kenapa Mampir ke Sini",
     "title": "Sempurna Setelah Kunjungan Sanctuary Anda",

@@ -27,12 +27,13 @@
 // `restaurant-info` useFetch key is shared app-wide, so this adds no extra request.
 const { waMeUrl } = useRestaurant()
 
-// Hide while the landing-page sticky offer bar is visible (it has its own
+// Hide while a landing-page sticky offer bar is visible (it has its own
 // Claim button, so the floating one would be redundant + overlapping).
-// State persists (dismiss sticks); route check scopes it to the landing page.
+// State persists (dismiss sticks); route check scopes it to landing pages.
 const route = useRoute()
 const showOfferBar = useState('offer-bar-visible', () => false)
 const hideFloating = computed(
-  () => showOfferBar.value && route.path.includes('after-monkey-forest'),
+  () => showOfferBar.value
+    && (route.path.includes('after-monkey-forest') || route.path.includes('monkey-forest-exit')),
 )
 </script>

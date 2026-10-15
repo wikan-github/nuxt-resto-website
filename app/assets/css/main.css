@@ -117,12 +117,20 @@
    `box-sizing: border-box` means the `width` includes padding and border.
    Without this, adding padding to an element makes it wider than expected.
    ═══════════════════════════════════════════════════════════════════════════ */
+/* The asterisk (*) means "every element" */
 *,
+/* ::before and ::after are pseudo-elements — invisible hooks
+   browsers let you add content to. Resetting them too. */
 *::before,
 *::after {
+  /* box-sizing: border-box means "if I say width: 100px,
+     the padding and border are INCLUDED in that 100px"
+     Without this, a 100px box with 10px padding is actually 120px. */
   box-sizing: border-box;
-  margin: 0;     /* Remove default browser margins */
-  padding: 0;    /* Remove default browser padding */
+  /* Browsers add default margins to h1, p, etc. — remove them all. */
+  margin: 0;
+  /* Same with padding. */
+  padding: 0;
 }
 
 /* Smooth scrolling when clicking anchor links (e.g., #section) */
@@ -135,10 +143,15 @@ body {
   font-family: var(--font-body);    /* Use Inter as the default font */
   background: var(--color-bg);      /* Soft off-white background */
   color: var(--color-text);         /* Near-black text */
-  line-height: 1.55;               /* Space between lines — more = easier to read */
   /* Font smoothing makes text look crisp on Mac/iOS */
   -webkit-font-smoothing: antialiased;
   font-size: 1rem;                  /* Base font size (16px) — other sizes use rem */
+  /* line-height is the space between lines of text.
+     1.55 is comfortable for reading (1.4 is tight, 1.8 is loose). */
+  line-height: 1.55;
+  /* Font smoothing makes text look thinner/crisper on Mac.
+     On Windows it's ignored. Harmless to include. */
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Remove underline from links, inherit parent text color */
@@ -318,6 +331,8 @@ h1, h2, h3, h4 {
    The large banner at the top of the homepage.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* Hero section wrapper: vertical breathing room around the hero card.
+   The card itself (.hero-card) carries the background, radius, and layout. */
 .hero {
   padding: 4rem 0 3rem;  /* Top/bottom space around the hero */
 }
@@ -524,9 +539,11 @@ h1, h2, h3, h4 {
 }
 
 .floating-wa:hover {
-  transform: scale(1.08);
+  transform: scale(1.08);  /* Gentle grow on hover to signal clickability */
 }
 
+/* WhatsApp glyph inside the button: fixed 30px so it stays crisp
+   within the 56px circle on all screen densities. */
 .floating-wa svg {
   width: 30px;
   height: 30px;
@@ -594,12 +611,13 @@ h1, h2, h3, h4 {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    SECTION 8: Values Grid
-   The 3-column grid showing "Fresh Ingredients", "Expert Chefs", "Curated Drinks"
+   The 4-column grid showing walk / shade / fast / family benefit cards.
+   (Collapses to 2x2 on tablets, 1 stacked column on phones — see SECTION 22.)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* 3 equal columns with 2rem gap between them.
-   📚 CSS Grid: `grid-template-columns: repeat(3, 1fr)`
-   `repeat(3, 1fr)` = create 3 columns, each taking 1 fraction of space. */
+/* 4 equal columns with 2rem gap between them.
+   📚 CSS Grid: `grid-template-columns: repeat(4, 1fr)`
+   `repeat(4, 1fr)` = create 4 columns, each taking 1 fraction of space. */
 .values-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -705,7 +723,7 @@ h1, h2, h3, h4 {
 }
 
 .tab-btn:hover {
-  border-color: var(--color-green);
+  border-color: var(--color-green);  /* Preview the active look on hover */
   color: var(--color-green);
 }
 
@@ -987,6 +1005,8 @@ h1, h2, h3, h4 {
   height: 100%;
 }
 
+/* Copyright line: smallest type on the page, half-opacity white
+   so it reads as legal fine print, not content. */
 .footer-bottom p {
   font-family: var(--font-content);
   font-size: 0.8rem;
@@ -1320,7 +1340,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-close-btn:hover {
-  color: var(--color-text);
+  color: var(--color-text);  /* Darken the × on hover for affordance */
 }
 
 /* Empty state: centered text when cart has no items */
@@ -1341,6 +1361,8 @@ h1, h2, h3, h4 {
   margin-bottom: 0.5rem;
 }
 
+/* Hint line under the empty-cart message: `!important` forces the muted
+   small style to win over the generic `.cart-empty p` rule above. */
 .cart-empty-hint {
   font-size: 0.85rem !important;
   color: var(--color-text-muted) !important;
@@ -1498,7 +1520,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-qty-btn:hover {
-  background: var(--color-green);
+  background: var(--color-green);  /* Fill green + white text = clear pressed feedback */
   color: #fff;
 }
 
@@ -1526,7 +1548,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-item-remove:hover {
-  color: #d32f2f;
+  color: #d32f2f;  /* material-red signals a destructive action */
 }
 
 /* Drawer footer: total, order button, clear button */
@@ -1632,7 +1654,7 @@ h1, h2, h3, h4 {
 }
 
 .order-close-btn:hover {
-  color: var(--color-text);
+  color: var(--color-text);  /* Darken the × on hover for affordance */
 }
 
 /* Order summary: compact list of items at the top of the modal */
@@ -1653,10 +1675,13 @@ h1, h2, h3, h4 {
   font-size: 0.85rem;
 }
 
+/* Item name in the summary: body-gray (not green) to keep the compact
+   list visually quiet next to the bold total below it. */
 .order-summary-name {
   color: var(--color-text-body);
 }
 
+/* Item price in the summary: semibold + nowrap so "IDR 123" never wraps. */
 .order-summary-price {
   font-weight: 600;
   color: var(--color-text);
@@ -1752,40 +1777,54 @@ h1, h2, h3, h4 {
    - `*-leave-to` → ending state (element disappears)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Backdrop fade animation ── */
+/* ── Backdrop fade animation ──
+   Only opacity animates; the backdrop has no position to move. */
 .backdrop-enter-active,
 .backdrop-leave-active {
   transition: opacity 0.3s ease;
 }
 
+/* Transparent at both ends of the fade: invisible when entering starts
+   and when leaving finishes (Vue removes the element right after). */
 .backdrop-enter-from,
 .backdrop-leave-to {
   opacity: 0;
 }
 
-/* ── Cart drawer slide-from-right animation ── */
+/* ── Cart drawer slide-from-right animation ──
+   📚 `cubic-bezier(0.22, 1, 0.36, 1)` ("easeOutExpo"-like) starts fast
+   and decelerates — snappy open, soft landing. Only transform animates,
+   so it stays on the GPU-composited fast path (no layout thrash). */
 .drawer-enter-active,
 .drawer-leave-active {
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Off-canvas start/end: parked one full width to the right of the viewport. */
 .drawer-enter-from,
 .drawer-leave-to {
   transform: translateX(100%);
 }
 
-/* ── Order modal scale + fade animation ── */
+/* ── Order modal scale + fade animation ──
+   Centered modals can't slide (they're translate-centered), so they
+   pop: slight scale-down + fade reads as "emerging toward you". */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+/* Hidden start/end: transparent + 5% smaller, still centered via the
+   same translate(-50%, -50%) so it grows in place instead of drifting. */
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.95);
 }
 
+/* Settled (visible) state of the modal: fully opaque, centered,
+   at full scale. Vue transitions TO this from `modal-enter-from`
+   and FROM this to `modal-leave-to` on close. */
 .modal-enter-to,
 .modal-leave-from {
   opacity: 1;
@@ -1793,8 +1832,10 @@ h1, h2, h3, h4 {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SECTION 15: Responsive Design
+   SECTION 22: Responsive Design
    Media queries adjust the layout for smaller screens.
+   (Numbered last because it must come AFTER all section styles to win
+   the cascade at equal specificity — source order is the tiebreaker.)
 
    📚 LEARNING — Media Queries:
    `@media (max-width: 768px) { ... }` means "apply these styles ONLY
@@ -1885,6 +1926,8 @@ h1, h2, h3, h4 {
     padding-right: 12px;
   }
 
+  /* Header CTA at ≤900px: slightly smaller pill so nav + button + cart
+     fit before the 768px breakpoint hides the nav links entirely. */
   .header-cta {
     font-size: 0.75rem;
     padding: 0.45rem 0.8rem;
@@ -1923,6 +1966,8 @@ h1, h2, h3, h4 {
     flex-shrink: 0;
   }
 
+  /* Header cart button on phones: 44×44px minimum touch target
+     (Apple HIG), immune to shrinking in the crowded header row. */
   .cart-icon-btn {
     min-width: 44px;
     min-height: 44px;
@@ -1930,10 +1975,15 @@ h1, h2, h3, h4 {
     flex-shrink: 0;
   }
 
+  /* Language switcher: no base styles live here — <LanguageSwitcher />
+     carries its own scoped CSS. This only stops it shrinking in the
+     tight 60px phone header so EN | ID never collapses. */
   .lang-switcher {
     flex-shrink: 0;
   }
 
+  /* Logo link wrapper: same treatment — never shrink, so the logo
+     keeps its size and pushes siblings instead of squashing itself. */
   .logo-link {
     flex-shrink: 0;
   }
@@ -1994,6 +2044,8 @@ h1, h2, h3, h4 {
     margin-bottom: 0.75rem;
   }
 
+  /* Hero buttons on phones: full-width stacked tap targets so each
+     CTA is easy to hit with a thumb and never sits side-by-side. */
   .hero-buttons .btn {
     width: 100%;
   }
@@ -2100,6 +2152,8 @@ h1, h2, h3, h4 {
     gap: 0.5rem;
   }
 
+  /* Cart thumbnails shrink 56px → 44px on phones to leave room
+     for the name, price, and quantity controls in one row. */
   .cart-item-img {
     width: 44px;
     height: 44px;
@@ -2107,21 +2161,28 @@ h1, h2, h3, h4 {
 }
 
 /* Very small phones (≤380px): shrink header further so logo, switcher,
-   cart, and Reserve Now never overlap. */
+   cart, and Reserve Now never overlap. Only the essentials change here —
+   everything else is inherited from the 900px / 768px blocks above. */
 @media (max-width: 380px) {
+  /* Tighter gap frees ~4px so four header items fit in 360px viewports. */
   .header-inner {
     gap: 0.35rem;
   }
 
+  /* Logo steps down 44px → 40px as the last-resort space saver. */
   .logo-img {
     height: 40px;
   }
 
+  /* Smallest CTA variant: keeps "Reserve Now" on one line without
+     overflowing; white-space comes free from the 768px nowrap rule. */
   .header-cta {
     font-size: 0.7rem;
     padding: 0.45rem 0.7rem;
   }
 
+  /* Hero headline floor: never smaller than 1.6rem so it stays
+     a headline, not body text, on the narrowest screens. */
   .hero h1 {
     font-size: 1.6rem;
   }

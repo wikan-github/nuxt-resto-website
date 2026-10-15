@@ -2,6 +2,9 @@ import { defineEntity, p, type InferEntity } from '@mikro-orm/core';
 
 export const Promotion = defineEntity({
   name: 'Promotion',
+  // Legacy menu promotions live in `menu_promotion` since v7 campaign model
+  // claimed the `promotion` table name. API routes use this entity, unchanged.
+  tableName: 'menu_promotion',
   properties: {
     id: p.integer().primary(),
     title: p.string(),

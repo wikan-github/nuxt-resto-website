@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Sanctuary Cool-Down Combo offer">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef7ee"/>
+      <stop offset="1" stop-color="#cfe8d0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect x="60" y="60" width="680" height="480" rx="24" fill="#ffffff" stroke="#2e8b57" stroke-width="3"/>
+  <text x="110" y="160" font-family="sans-serif" font-size="40" font-weight="bold" fill="#1a5c3a">Sanctuary Cool-Down Combo</text>
+  <text x="110" y="210" font-family="sans-serif" font-size="24" fill="#333333">1 main + 1 free iced tea</text>
+  <rect x="110" y="250" width="220" height="64" rx="32" fill="#2e8b57"/>
+  <text x="220" y="290" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">15% OFF</text>
+  <text x="110" y="380" font-family="sans-serif" font-size="20" fill="#555555">Show sanctuary ticket · 11:00–15:00</text>
+  <text x="110" y="415" font-family="sans-serif" font-size="20" fill="#555555">Dine-in only · 1 per person</text>
+</svg>

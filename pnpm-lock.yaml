@@ -14,6 +14,9 @@ importers:
       '@mikro-orm/migrations':
         specifier: ^7.2.5
         version: 7.2.5(@mikro-orm/core@7.2.5)
+      '@mikro-orm/seeder':
+        specifier: ^7.2.5
+        version: 7.2.5(@mikro-orm/core@7.2.5)
       '@mikro-orm/sqlite':
         specifier: ^7.2.5
         version: 7.2.5(@mikro-orm/core@7.2.5)
@@ -719,6 +722,12 @@ packages:
 
   '@mikro-orm/migrations@7.2.5':
     resolution: {integrity: sha512-1nq+ger9gpPTTjxJF4GyrIXtTO/fhZGjlYjw6MSLcnVyCy0xoCMpz/cYYcz95J9HuT2tEInK41oi+ZUqIfTUEg==}
+    engines: {node: '>= 22.17.0'}
+    peerDependencies:
+      '@mikro-orm/core': 7.2.5
+
+  '@mikro-orm/seeder@7.2.5':
+    resolution: {integrity: sha512-TTykeIaaqQMn79N4jnL3mSmevCZ7lyQWNaNtzt7zyBBj5NUW75zJSrKPJKAouHqMRAV2sNJxVvgKlUoruR2X7A==}
     engines: {node: '>= 22.17.0'}
     peerDependencies:
       '@mikro-orm/core': 7.2.5
@@ -4660,6 +4669,10 @@ snapshots:
     dependencies:
       '@mikro-orm/core': 7.2.5
       '@mikro-orm/sql': 7.2.5(@mikro-orm/core@7.2.5)
+
+  '@mikro-orm/seeder@7.2.5(@mikro-orm/core@7.2.5)':
+    dependencies:
+      '@mikro-orm/core': 7.2.5
 
   '@mikro-orm/sql@7.2.5(@mikro-orm/core@7.2.5)':
     dependencies:

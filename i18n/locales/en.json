@@ -44,6 +44,60 @@
     "ctaSecondary": "See menu",
     "note": "Open now · 2–3 min walk from the exit"
   },
+  "campaignOffer": {
+    "badge": "15% OFF",
+    "title": "Sanctuary Cool-Down Combo",
+    "subtitle": "1 main of your choice + 1 free iced tea",
+    "included": {
+      "item1": "Choose 1 main: Nasi Goreng, Crispy Fried Duck, or Rib-Eye Steak",
+      "item2": "1 free iced tea (refillable once)"
+    },
+    "validity": "Valid today, 11:00–15:00 · Show your sanctuary ticket or stamp",
+    "priceLabel": "From",
+    "pricePrefix": "IDR",
+    "cta": "Claim on WhatsApp",
+    "termsLabel": "Terms",
+    "terms": "One combo per person. Dine-in only. Cannot be combined with other promotions. Ticket or stamp must be shown at the table.",
+    "ended": "Ended"
+  },
+  "monkey_forest_exit": {
+    "offer": {
+      "label": "This week's sanctuary guest special",
+      "promo_code_label": "Staff reference"
+    },
+    "social_proof": {
+      "trust_line": "{count} guests from Monkey Forest claimed this week",
+      "rating_label": "rating",
+      "reviews_label": "reviews",
+      "guests_label": "sanctuary guests"
+    },
+    "route": {
+      "title": "Find us from the exit",
+      "walking_time": "{minutes} min walk from here",
+      "open_in_maps": "Open in Google Maps",
+      "exit_label": "Monkey Forest Sanctuary exit"
+    },
+    "faq": {
+      "title": "Good to know",
+      "q1": "Can I book a table in advance?",
+      "a1": "Yes. Tap Claim on WhatsApp below and tell us when you're coming — we keep tables ready.",
+      "q2": "Is the offer only valid today?",
+      "a2": "Show your sanctuary ticket or stamp at the table during 11:00–15:00 to claim the combo.",
+      "q3": "Do you have options for kids?",
+      "a3": "Yes. We're family friendly with spacious seating — kids are welcome.",
+      "q4": "Can I take away instead?",
+      "a4": "The sanctuary combo is dine-in only, but the full menu is available for takeaway.",
+      "q5": "What if I have allergies?",
+      "a5": "Our staff speak English and Indonesian — just tell us and we'll guide you."
+    },
+    "cta": {
+      "question": "Ready to cool down?"
+    },
+    "meta": {
+      "title": "Tropical View Ubud — Sanctuary Cool-Down Combo",
+      "description": "Fresh iced tea and hot food 2 minutes from the Monkey Forest exit. Special offer for sanctuary guests."
+    }
+  },
   "values": {
     "label": "Why Stop Here",
     "title": "Perfect After Your Sanctuary Visit",

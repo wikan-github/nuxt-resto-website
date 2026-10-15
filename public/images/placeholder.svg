@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Image loading">
+  <rect width="1200" height="800" fill="#1f2a24"/>
+  <g stroke="#3a5a4a" stroke-width="3" fill="none" opacity="0.8">
+    <path d="M0 620 Q200 560 400 600 T800 590 T1200 600"/>
+    <path d="M0 660 Q200 610 400 645 T800 635 T1200 645"/>
+    <path d="M0 700 Q200 660 400 690 T800 685 T1200 695"/>
+  </g>
+  <text x="600" y="360" font-family="sans-serif" font-size="44" font-weight="bold" fill="#ffffff" text-anchor="middle">Tropical View Ubud</text>
+  <text x="600" y="410" font-family="sans-serif" font-size="24" fill="#9fc3ad" text-anchor="middle">Image loading…</text>
+</svg>

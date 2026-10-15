@@ -11,11 +11,18 @@
 // ============================================================================
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// defineNuxtConfig wraps your config in a typed helper.
+// It gives you autocomplete and catches typos.
 export default defineNuxtConfig({
   // compatibilityDate locks the Nuxt behavior to a specific date.
   // This prevents surprises when you upgrade Nuxt later.
   // 📚 Think of it like a "minimum version guarantee" for API behavior.
   compatibilityDate: '2025-07-15',
+
+  // css: an array of global stylesheets to load on EVERY page.
+  // '~' is a Nuxt alias that means "the project root".
+  // So '~/assets/css/theme.css' points to <project-root>/assets/css/theme.css
+  css: ['~/assets/css/main.css'],
 
   // devServer binds to 0.0.0.0 so the site is reachable from BOTH
   // localhost (http://127.0.0.1:3001) AND the LAN IP (http://192.168.111.10:3001),
@@ -36,11 +43,6 @@ export default defineNuxtConfig({
       whatsappPhone: '6281805444270',
     },
   },
-
-  // css: an array of global CSS files applied to EVERY page in your app.
-  // 📚 `~/` is a Nuxt alias that means "the root of this project".
-  //    So ~/assets/css/main.css → /app/assets/css/main.css
-  css: ['~/assets/css/main.css'],
 
   // Enable Nuxt DevTools (a browser panel for debugging your app).
   // Press Ctrl+Shift+D in the browser to open it when dev server is running.

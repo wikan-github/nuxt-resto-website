@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Rice field terrace at Tropical View Ubud">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a5c3a"/>
+      <stop offset="1" stop-color="#2e8b57"/>
+    </linearGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7bc47f"/>
+      <stop offset="1" stop-color="#3a7d44"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <ellipse cx="600" cy="560" rx="700" ry="180" fill="url(#field)"/>
+  <path d="M0 470 Q300 430 600 470 T1200 470 L1200 630 L0 630 Z" fill="#2e7d46" opacity="0.7"/>
+  <path d="M0 520 Q300 490 600 520 T1200 520 L1200 630 L0 630 Z" fill="#256b3a" opacity="0.8"/>
+  <text x="60" y="120" font-family="sans-serif" font-size="44" font-weight="bold" fill="#ffffff">Tropical View Ubud</text>
+  <text x="60" y="170" font-family="sans-serif" font-size="24" fill="#ffffff" opacity="0.9">Rice-field view · 200m from Monkey Forest exit</text>
+</svg>

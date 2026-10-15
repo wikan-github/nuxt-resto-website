@@ -20,6 +20,7 @@
   "dependencies": {
     "@mikro-orm/core": "^7.2.5",
     "@mikro-orm/migrations": "^7.2.5",
+    "@mikro-orm/seeder": "^7.2.5",
     "@mikro-orm/sqlite": "^7.2.5",
     "@nuxtjs/i18n": "10.6.0",
     "better-sqlite3": "^13.0.3",

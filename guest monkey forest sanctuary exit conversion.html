@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monkey Forest Guest Exit Conversion to Restaurant</title>
+<meta name="description" content="A conversion playbook for turning Ubud Monkey Forest Sanctuary exit traffic into seated restaurant guests at Tropical View Ubud.">
+<style>
+  :root{
+    --forest:#1f2a24;
+    --forest-2:#2f5d3f;
+    --forest-3:#3f7a52;
+    --cream:#f7f3ec;
+    --cream-2:#efe8dc;
+    --ink:#1a1a1a;
+    --ink-soft:#4a4a4a;
+    --amber:#c97b2e;
+    --amber-soft:#f0d3a8;
+    --line:#ddd4c6;
+    --white:#ffffff;
+    --danger:#a33a2a;
+    --ok:#2f7d4f;
+    --radius:10px;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;scroll-padding-top:24px;}
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16.5px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 22px 90px;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  header.masthead{
+    background:linear-gradient(155deg,var(--forest) 0%,var(--forest-2) 65%,var(--forest-3) 100%);
+    color:var(--cream);
+    padding:64px 22px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.masthead::after{
+    content:"";
+    position:absolute;
+    right:-80px;bottom:-120px;
+    width:420px;height:420px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(201,123,46,.30),transparent 68%);
+    pointer-events:none;
+  }
+  .masthead-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  .kicker{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--amber-soft);
+    border:1px solid rgba(240,211,168,.4);
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:22px;
+  }
+  h1.doc-title{
+    font-size:clamp(30px,5.2vw,46px);
+    line-height:1.14;
+    margin:0 0 16px;
+    letter-spacing:-.02em;
+    font-weight:800;
+  }
+  .doc-sub{
+    font-size:clamp(16px,2.1vw,19px);
+    color:rgba(247,243,236,.86);
+    max-width:62ch;
+    margin:0 0 30px;
+  }
+  .meta-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 26px;
+    font-size:13.5px;
+    color:rgba(247,243,236,.72);
+    border-top:1px solid rgba(247,243,236,.18);
+    padding-top:20px;
+  }
+  .meta-strip b{color:var(--cream);font-weight:600;}
+
+  /* ---------- TOC ---------- */
+  nav.toc{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    margin:-34px 0 52px;
+    box-shadow:0 10px 30px rgba(31,42,36,.09);
+    position:relative;
+    z-index:2;
+  }
+  nav.toc h2{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+    font-weight:700;
+  }
+  nav.toc ol{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:4px 26px;
+    counter-reset:toc;
+  }
+  nav.toc li{counter-increment:toc;}
+  nav.toc a{
+    display:block;
+    padding:6px 0 6px 34px;
+    position:relative;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:14.5px;
+    border-radius:6px;
+    transition:color .15s;
+  }
+  nav.toc a::before{
+    content:counter(toc,decimal-leading-zero);
+    position:absolute;
+    left:0;
+    top:6px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--amber);
+    font-variant-numeric:tabular-nums;
+  }
+  nav.toc a:hover{color:var(--forest-2);}
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    margin:0 0 58px;
+    scroll-margin-top:22px;
+  }
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    border-bottom:2px solid var(--forest);
+    padding-bottom:12px;
+    margin-bottom:26px;
+  }
+  .sec-num{
+    font-size:13px;
+    font-weight:800;
+    color:var(--amber);
+    letter-spacing:.06em;
+    flex:none;
+    font-variant-numeric:tabular-nums;
+  }
+  h2.sec-title{
+    font-size:clamp(21px,3vw,27px);
+    margin:0;
+    letter-spacing:-.015em;
+    line-height:1.25;
+    color:var(--forest);
+    font-weight:800;
+  }
+  h3{
+    font-size:17.5px;
+    margin:34px 0 12px;
+    color:var(--forest-2);
+    letter-spacing:-.01em;
+    font-weight:700;
+  }
+  h4{
+    font-size:15px;
+    margin:22px 0 8px;
+    color:var(--ink);
+    font-weight:700;
+  }
+  p{margin:0 0 16px;}
+  section > p:first-of-type{
+    font-size:17.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- LISTS ---------- */
+  ul,ol{margin:0 0 18px;padding-left:24px;}
+  li{margin-bottom:7px;}
+  li::marker{color:var(--forest-3);}
+  strong{color:var(--forest);font-weight:700;}
+
+  /* ---------- TABLES ---------- */
+  .table-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:0 0 26px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--white);
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+    min-width:520px;
+  }
+  caption{
+    caption-side:top;
+    text-align:left;
+    padding:14px 18px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    background:var(--cream-2);
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    text-align:left;
+    padding:12px 18px;
+    background:var(--forest);
+    color:var(--cream);
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  td{
+    padding:12px 18px;
+    border-top:1px solid var(--line);
+    vertical-align:top;
+  }
+  tbody tr:nth-child(even){background:#fbf9f5;}
+  td:first-child{font-weight:600;color:var(--forest);}
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{
+    border-left:4px solid var(--amber);
+    background:var(--white);
+    padding:18px 22px;
+    border-radius:0 var(--radius) var(--radius) 0;
+    margin:0 0 26px;
+    box-shadow:0 2px 10px rgba(31,42,36,.05);
+  }
+  .callout p:last-child{margin-bottom:0;}
+  .callout .label{
+    display:block;
+    font-size:11.5px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    font-weight:800;
+    color:var(--amber);
+    margin-bottom:7px;
+  }
+  .callout.forest{border-left-color:var(--forest-2);}
+  .callout.forest .label{color:var(--forest-2);}
+  .callout.danger{border-left-color:var(--danger);}
+  .callout.danger .label{color:var(--danger);}
+
+  /* ---------- CODE / MESSAGE BLOCK ---------- */
+  pre{
+    background:var(--forest);
+    color:#d8f0dd;
+    padding:18px 20px;
+    border-radius:var(--radius);
+    overflow-x:auto;
+    font-size:14px;
+    line-height:1.6;
+    margin:0 0 20px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    border-left:4px solid var(--amber);
+  }
+  pre code{background:none;padding:0;color:inherit;font-size:inherit;}
+  code{
+    background:var(--cream-2);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:.88em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:var(--forest);
+  }
+
+  /* ---------- LAYER CARDS ---------- */
+  .layers{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+    margin:0 0 26px;
+  }
+  .layer{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    position:relative;
+  }
+  .layer .n{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--forest);
+    color:var(--cream);
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:12px;
+  }
+  .layer h4{margin:0 0 6px;font-size:15.5px;color:var(--forest);}
+  .layer p{margin:0 0 10px;font-size:14.5px;color:var(--ink-soft);}
+  .layer .eg{
+    font-size:13px;
+    color:var(--forest-2);
+    font-style:italic;
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+    margin:0;
+  }
+
+  /* ---------- SECTION BLOCKS (page anatomy) ---------- */
+  .block{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-left:4px solid var(--forest-3);
+    border-radius:0 var(--radius) var(--radius) 0;
+    padding:20px 24px;
+    margin:0 0 16px;
+  }
+  .block h4{
+    margin:0 0 4px;
+    font-size:16.5px;
+    color:var(--forest);
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .block h4 .tag{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    background:var(--cream-2);
+    color:var(--ink-soft);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .block .role{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    font-weight:700;
+    color:var(--amber);
+    margin:0 0 12px;
+  }
+  .block dl{
+    margin:0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:4px 14px;
+    font-size:14.5px;
+  }
+  .block dt{
+    font-weight:700;
+    color:var(--forest-2);
+    white-space:nowrap;
+  }
+  .block dd{margin:0;color:var(--ink-soft);}
+  .block .why{
+    margin:14px 0 0;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .block .why b{color:var(--forest);}
+
+  /* ---------- FLOW DIAGRAM ---------- */
+  .flow{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px;
+    margin:0 0 26px;
+    font-size:13.5px;
+    font-weight:600;
+  }
+  .flow span.node{
+    background:var(--cream-2);
+    color:var(--forest);
+    padding:7px 13px;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .flow span.node.hi{
+    background:var(--forest);
+    color:var(--cream);
+  }
+  .flow span.arrow{color:var(--amber);font-weight:800;}
+
+  /* ---------- METRIC CARDS ---------- */
+  .metrics{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px;
+    margin:0 0 26px;
+  }
+  .metric{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .metric .m-label{
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--ink-soft);
+    font-weight:600;
+    margin:0 0 8px;
+  }
+  .metric .m-value{
+    font-size:22px;
+    font-weight:800;
+    color:var(--forest-2);
+    margin:0;
+    letter-spacing:-.02em;
+  }
+
+  /* ---------- CHECKLIST ---------- */
+  ul.checklist{list-style:none;padding-left:0;}
+  ul.checklist li{
+    position:relative;
+    padding-left:30px;
+    margin-bottom:10px;
+  }
+  ul.checklist li::before{
+    content:"\2717";
+    position:absolute;
+    left:0;top:0;
+    color:var(--danger);
+    font-weight:800;
+    font-size:15px;
+  }
+  ul.checklist li.done::before{content:"\2713";color:var(--ok);}
+
+  /* ---------- FOOTER ---------- */
+  footer.doc-footer{
+    border-top:2px solid var(--forest);
+    margin-top:70px;
+    padding-top:26px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  footer.doc-footer b{color:var(--forest);}
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#fff;font-size:11pt;line-height:1.5;}
+    header.masthead{background:#fff !important;color:#000;padding:0 0 20px;border-bottom:3px solid #000;}
+    header.masthead::after{display:none;}
+    .kicker{color:#000;border-color:#000;}
+    .doc-sub,.meta-strip{color:#333;}
+    .meta-strip b{color:#000;}
+    nav.toc{display:none;}
+    .wrap{max-width:none;padding:0;}
+    section{page-break-inside:auto;margin-bottom:26px;}
+    h2.sec-title{page-break-after:avoid;}
+    .block,.layer,.callout,.table-scroll,pre{page-break-inside:avoid;}
+    table{min-width:0;font-size:9.5pt;}
+    th{background:#eee !important;color:#000 !important;border-bottom:1px solid #999;}
+    pre{background:#f4f4f4;color:#111;border-left:3px solid #666;}
+    .flow span.node.hi{background:#ddd;color:#000;}
+    a{color:#000;text-decoration:none;}
+  }
+
+  @media (max-width:640px){
+    body{font-size:16px;}
+    header.masthead{padding:44px 20px 40px;}
+    nav.toc{padding:20px;margin:-26px 0 40px;}
+    .block dl{grid-template-columns:1fr;gap:2px 0;}
+    .block dt{margin-top:8px;}
+    .flow{font-size:12.5px;padding:16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <span class="kicker">Conversion Playbook</span>
+    <h1 class="doc-title">Monkey Forest Guest Exit<br>Conversion to Restaurant</h1>
+    <p class="doc-sub">How to turn guests leaving Ubud Monkey Forest Sanctuary — 200 metres from the door — into seated, paying customers at Tropical View Ubud, using a single-purpose campaign funnel.</p>
+    <div class="meta-strip">
+      <span><b>Venue:</b> Tropical View Ubud</span>
+      <span><b>Trigger point:</b> Sanctuary exit gate</span>
+      <span><b>Distance:</b> 200 m · 2–3 min walk</span>
+      <span><b>Primary conversion:</b> WhatsApp claim click</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#moment">The Moment</a></li>
+      <li><a href="#strategy">The Strategy — Three Bets</a></li>
+      <li><a href="#layers">What a Campaign Actually Is</a></li>
+      <li><a href="#page">Campaign Page Anatomy</a></li>
+      <li><a href="#whatsapp">The WhatsApp Mechanic</a></li>
+      <li><a href="#loop">The Attribution Loop</a></li>
+      <li><a href="#why-not-home">Why Not Just the Homepage</a></li>
+      <li><a href="#metrics">What Success Looks Like</a></li>
+      <li><a href="#not">What This Campaign Is Not</a></li>
+      <li><a href="#gaps">Appendix A — Current Gaps</a></li>
+      <li><a href="#build">Appendix B — Build Order</a></li>
+      <li><a href="#assets">Appendix C — Asset Checklist</a></li>
+    </ol>
+  </nav>
+
+  <!-- ================= 1 ================= -->
+  <section id="moment">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">The Moment</h2>
+    </div>
+
+    <p>A guest exits Ubud Monkey Forest. Their state is not "browsing for a restaurant." It is something far more specific — and everything in this playbook is designed around it.</p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>Guest state at the sanctuary exit</caption>
+        <thead>
+          <tr><th>Dimension</th><th>Actual state</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Physical</td><td>Hot, sweaty, ~32°C humid, has been walking 1–2 hours</td></tr>
+          <tr><td>Mental</td><td>Decision fatigue. Possibly hungry, definitely thirsty. Slightly frazzled — monkeys stole something, kids are tired.</td></tr>
+          <tr><td>Digital</td><td>Phone in hand, possibly weak wifi, occasional low-battery anxiety</td></tr>
+          <tr><td>Attention window</td><td><strong>3–10 seconds</strong></td></tr>
+          <tr><td>Capacity to think</td><td>Carrying bags, maybe holding a child — one thumb free</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="label">The brutal truth</span>
+      <p>Monkey Forest Street is dense with restaurants. If you do not interrupt the default "walk and see what catches my eye" behaviour within seconds, you lose them to the lottery. They will walk past twelve places and pick whichever one has a menu board at eye level.</p>
+      <p>Your job is not to <em>inform</em> them. Your job is to <strong>interrupt, answer, and close — in under 15 seconds.</strong></p>
+    </div>
+  </section>
+
+  <!-- ================= 2 ================= -->
+  <section id="strategy">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">The Strategy — Three Bets</h2>
+    </div>
+
+    <p>Everything reduces to three decisions. Get these right and the page almost writes itself. Get them wrong and no amount of design polish will save the funnel.</p>
+
+    <h3>Bet 1 — Interrupt before the walk-away</h3>
+    <p>The QR must live at the exit gate, on the ticket, or in the hands of staff. The landing page must render in under two seconds on weak wifi. If the page takes six seconds to load, the guest has already walked 400 metres and is now reading someone else's menu board.</p>
+
+    <h3>Bet 2 — Make the offer atomic</h3>
+    <p>Not "we have many promotions." <strong>One combo. One price. One tap.</strong> Decision paralysis is the silent killer of exit-traffic conversion. The guest should never have to compare options — they should simply claim the thing.</p>
+
+    <h3>Bet 3 — Close the loop through WhatsApp</h3>
+    <p>In Indonesia, WhatsApp <em>is</em> the conversion channel. A form is friction. A phone call is friction. WhatsApp is one tap, familiar, asynchronous, and creates a thread your staff can respond to — including photos of the sanctuary ticket.</p>
+
+    <div class="callout forest">
+      <span class="label">Key insight</span>
+      <p>The claim is not a purchase — it is a <strong>soft commitment</strong>. "I messaged them, they said come over, I am going." That is the psychological step that beats the walk-past.</p>
+    </div>
+  </section>
+
+  <!-- ================= 3 ================= -->
+  <section id="layers">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">What a Campaign Actually Is</h2>
+    </div>
+
+    <p>A campaign is not a page. It is a six-layer stack. Break any single layer and the chain fails — regardless of how good the other five are.</p>
+
+    <div class="layers">
+      <div class="layer">
+        <span class="n">1</span>
+        <h4>Physical</h4>
+        <p>Where the QR code actually lives in the real world.</p>
+        <p class="eg">Sticker at exit gate · ticket back · guesthouse card · driver dashboard</p>
+      </div>
+      <div class="layer">
+        <span class="n">2</span>
+        <h4>Landing</h4>
+        <p>The <code>/after-monkey-forest</code> page. Fast, single-purpose, offer-first.</p>
+        <p class="eg">Loads under 2s · one audience · one action</p>
+      </div>
+      <div class="layer">
+        <span class="n">3</span>
+        <h4>Offer</h4>
+        <p>The specific, unambiguous deal.</p>
+        <p class="eg">"Sanctuary Cool-Down Combo — 15% off mains + free iced tea"</p>
+      </div>
+      <div class="layer">
+        <span class="n">4</span>
+        <h4>Conversion</h4>
+        <p>The one-tap claim mechanism.</p>
+        <p class="eg">WhatsApp deep link with pre-filled message</p>
+      </div>
+      <div class="layer">
+        <span class="n">5</span>
+        <h4>Tracking</h4>
+        <p>Per-placement attribution so you learn what works.</p>
+        <p class="eg"><code>utm_source=qr_exit</code> → <code>promotion_code</code> → redemption log</p>
+      </div>
+      <div class="layer">
+        <span class="n">6</span>
+        <h4>Fulfillment</h4>
+        <p>How staff verify and serve on arrival.</p>
+        <p class="eg">Show ticket + WhatsApp thread → combo served → logged</p>
+      </div>
+    </div>
+
+    <h3>Per-placement codes</h3>
+    <p>Each physical QR placement receives its own code. Same offer, different source tracking. This is the only way to learn which placement actually converts.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Placement</th><th>Code</th><th>utm_source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Exit gate sticker</td><td>MF-EXIT-01</td><td>qr_exit</td></tr>
+          <tr><td>Ticket back</td><td>MF-TICKET-01</td><td>qr_ticket</td></tr>
+          <tr><td>Guesthouse card</td><td>MF-GUEST-01</td><td>qr_guesthouse</td></tr>
+          <tr><td>Driver dashboard</td><td>MF-DRIVER-01</td><td>qr_driver</td></tr>
+          <tr><td>Guide card</td><td>MF-GUIDE-01</td><td>guide_card</td></tr>
+          <tr><td>Table sticker</td><td>MF-TABLE-01</td><td>sticker_table</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 4 ================= -->
+  <section id="page">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">Campaign Page Anatomy</h2>
+    </div>
+
+    <p>The <code>/after-monkey-forest</code> page has exactly one job. Every section below either <strong>increases desire</strong> or <strong>reduces friction</strong>. Nothing else belongs on this page.</p>
+
+    <div class="block">
+      <h4>1. Sticky Offer Bar <span class="tag">Mobile</span></h4>
+      <p class="role">Keep the offer permanently on screen</p>
+      <dl>
+        <dt>Copy</dt><dd>15% off mains + free iced tea · 2 min walk &nbsp;→&nbsp; [Claim]</dd>
+      </dl>
+      <p class="why"><b>Why:</b> Guests scroll. The moment the CTA scrolls out of view, the conversion rate collapses. The claim button must always be one tap away.</p>
+    </div>
+
+    <div class="block">
+      <h4>2. Hero</h4>
+      <p class="role">Pattern-interrupt — mirror their internal monologue</p>
+      <dl>
+        <dt>H1</dt><dd>"Just finished the Sanctuary? Cool down 2 minutes away."</dd>
+        <dt>Sub</dt><dd>Offer + proximity, in one line</dd>
+        <dt>CTA</dt><dd><strong>Claim on WhatsApp</strong> (primary) · See menu (secondary)</dd>
+        <dt>Note</dt><dd>Open now · 2–3 min walk from the exit</dd>
+      </dl>
+      <p class="why"><b>Why:</b> The H1 proves you know where they are <em>right now</em>. That single line builds more trust than any photo.</p>
+    </div>
+
+    <div class="block">
+      <h4>3. Offer Card</h4>
+      <p class="role">Answer "what do I get?"</p>
+      <dl>
+        <dt>Contains</dt><dd>Badge (15% OFF) · title · what's included · validity window · "show your ticket" · price · claim CTA</dd>
+      </dl>
+      <p class="why"><b>Why:</b> This is the actual product. It must be visual, scannable and completely unambiguous. No fine print games.</p>
+    </div>
+
+    <div class="block">
+      <h4>4. Why Sit Down Here</h4>
+      <p class="role">Pre-empt the four objections</p>
+      <dl>
+        <dt>Far?</dt><dd>2–3 min walk</dd>
+        <dt>Comfortable?</dt><dd>Shaded, rice-field view</dd>
+        <dt>Slow?</dt><dd>Fast service</dd>
+        <dt>Kids?</dt><dd>Family friendly</dd>
+      </dl>
+      <p class="why"><b>Why:</b> Each benefit kills a specific reason to keep walking.</p>
+    </div>
+
+    <div class="block">
+      <h4>5. Popular Right Now</h4>
+      <p class="role">Answer "what do they serve?"</p>
+      <dl>
+        <dt>Contains</dt><dd>3–6 dishes with photos, dual pricing (dine-in vs takeaway), add-to-cart</dd>
+      </dl>
+      <p class="why"><b>Why:</b> "I don't know what they have" is a silent dealbreaker. Nobody asks; they just keep walking.</p>
+    </div>
+
+    <div class="block">
+      <h4>6. Active Promotions</h4>
+      <p class="role">Prove the deals are real and live</p>
+      <dl>
+        <dt>Contains</dt><dd>Cards from the database, filtered to <code>audience=monkey_forest_guest</code>, expiry-aware</dd>
+      </dl>
+      <p class="why"><b>Why:</b> Signals this is an ongoing programme, not a one-off gimmick.</p>
+    </div>
+
+    <div class="block">
+      <h4>7. Social Proof</h4>
+      <p class="role">The tiebreaker</p>
+      <dl>
+        <dt>Contains</dt><dd>Google rating · 2–3 review quotes · "N guests from the sanctuary this week"</dd>
+      </dl>
+      <p class="why"><b>Why:</b> Low-stakes decisions are won by "other people did this." The redemption counter makes that proof live and specific.</p>
+    </div>
+
+    <div class="block">
+      <h4>8. Getting Here</h4>
+      <p class="role">Kill "where is it?"</p>
+      <dl>
+        <dt>Contains</dt><dd>Map · walking route <em>from the exit specifically</em> · live "Open now" · parking</dd>
+      </dl>
+      <p class="why"><b>Why:</b> "Just steps away" without an actual route still leaves doubt in a hot, tired brain.</p>
+    </div>
+
+    <div class="block">
+      <h4>9. Mini-FAQ</h4>
+      <p class="role">Answer blockers at the decision moment</p>
+      <dl>
+        <dt>Q1</dt><dd>Do I need the ticket? — Yes, show it at the table</dd>
+        <dt>Q2</dt><dd>Is it walkable? — Yes, 2–3 minutes</dd>
+        <dt>Q3</dt><dd>Card / QRIS accepted? — Yes</dd>
+        <dt>Q4</dt><dd>Halal / veg options? — Yes</dd>
+      </dl>
+      <p class="why"><b>Why:</b> These are the real hesitations. Answer them before the guest has to ask — or worse, give up.</p>
+    </div>
+
+    <div class="block">
+      <h4>10. Final CTA</h4>
+      <p class="role">Catch the scrollers</p>
+      <dl>
+        <dt>Copy</dt><dd>"Ready to sit down and relax?" → WhatsApp</dd>
+      </dl>
+      <p class="why"><b>Why:</b> Some people read everything before deciding. Give them a clean, obvious exit.</p>
+    </div>
+
+    <div class="block">
+      <h4>11. Floating WhatsApp Button</h4>
+      <p class="role">Always-available claim</p>
+      <dl>
+        <dt>Behaviour</dt><dd>Persistent, contextual message carrying the offer and source</dd>
+      </dl>
+      <p class="why"><b>Why:</b> If they are convinced at any scroll position, they should never have to hunt for the button.</p>
+    </div>
+  </section>
+
+  <!-- ================= 5 ================= -->
+  <section id="whatsapp">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">The WhatsApp Mechanic</h2>
+    </div>
+
+    <p>This is where the conversion actually happens. The pre-filled message must do three jobs: <strong>identify the source</strong>, <strong>state intent</strong>, and <strong>stay short enough to send without editing</strong>.</p>
+
+    <h3>Pre-filled message template</h3>
+<pre><code>Hi Tropical View Ubud, I just finished the Monkey Forest.
+I'd like to claim: Sanctuary Cool-Down Combo.
+(src: qr_exit)</code></pre>
+
+    <h3>What the restaurant sees</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Signal</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Warm lead</td><td>They are literally standing at the sanctuary exit</td></tr>
+          <tr><td>Clear intent</td><td>They want the combo — not a general enquiry</td></tr>
+          <tr><td>Attribution</td><td>Which QR placement brought them</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Staff reply — this is the conversion</h3>
+    <div class="callout forest">
+      <span class="label">Template reply</span>
+      <p>"Great — come on over, we'll have a table ready. Show this chat plus your sanctuary ticket."</p>
+    </div>
+
+    <p>That reply — not the page view, not the WhatsApp click — is the moment the guest commits. Everything upstream exists to earn it.</p>
+  </section>
+
+  <!-- ================= 6 ================= -->
+  <section id="loop">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2 class="sec-title">The Attribution Loop</h2>
+    </div>
+
+    <p>Without measurement the campaign is blind. The full chain must be instrumented end to end.</p>
+
+    <div class="flow">
+      <span class="node">QR scan</span><span class="arrow">→</span>
+      <span class="node">Page loads</span><span class="arrow">→</span>
+      <span class="node">Offer viewed</span><span class="arrow">→</span>
+      <span class="node hi">WhatsApp claim clicked</span><span class="arrow">→</span>
+      <span class="node">Staff replies</span><span class="arrow">→</span>
+      <span class="node">Guest walks over</span><span class="arrow">→</span>
+      <span class="node">Ticket + chat shown</span><span class="arrow">→</span>
+      <span class="node hi">Redemption logged</span>
+    </div>
+
+    <h3>What the redemption log powers</h3>
+    <ul>
+      <li><strong>Live social proof</strong> — "N guests from the sanctuary this week"</li>
+      <li><strong>Per-placement ROI</strong> — <code>qr_exit</code> vs <code>qr_driver</code> vs <code>qr_guesthouse</code></li>
+      <li><strong>A/B testing</strong> — does 15% off or a free iced tea convert better?</li>
+      <li><strong>Retargeting</strong> — repeat guests receive a different, higher-value offer</li>
+    </ul>
+
+    <div class="callout">
+      <span class="label">Without the log</span>
+      <p>You will know how many people clicked, but never which placement paid for itself — and you will optimise in the dark.</p>
+    </div>
+  </section>
+
+  <!-- ================= 7 ================= -->
+  <section id="why-not-home">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2 class="sec-title">Why Not Just Use the Homepage</h2>
+    </div>
+
+    <p>They serve completely different jobs. The homepage is a hub. This is a funnel.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Homepage</th><th>/after-monkey-forest</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Serves many audiences</td><td>Serves one audience in one moment</td></tr>
+          <tr><td>Menu of options → paralysis</td><td>One offer → one action</td></tr>
+          <tr><td>Generic headline</td><td>Mirrors their exact thought</td></tr>
+          <tr><td>No UTM tracking</td><td>Per-QR attribution</td></tr>
+          <tr><td>Hard to A/B test</td><td>Controlled, isolated surface</td></tr>
+          <tr><td>Slow to optimise</td><td>Tuned weekly</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 8 ================= -->
+  <section id="metrics">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2 class="sec-title">What Success Looks Like</h2>
+    </div>
+
+    <p>Targets for the first sixty days, measured per placement.</p>
+
+    <div class="metrics">
+      <div class="metric">
+        <p class="m-label">Page load · 4G mid-range Android</p>
+        <p class="m-value">&lt; 2.5s</p>
+      </div>
+      <div class="metric">
+        <p class="m-label">QR scans → page views</p>
+        <p class="m-value">&gt; 80%</p>
+      </div>
+      <div class="metric">
+        <p class="m-label">Page views → WhatsApp claims</p>
+        <p class="m-value">&gt; 15%</p>
+      </div>
+      <div class="metric">
+        <p class="m-label">Claims → seated guests</p>
+        <p class="m-value">&gt; 60%</p>
+      </div>
+      <div class="metric">
+        <p class="m-label">Avg order value · sanctuary guests</p>
+        <p class="m-value">≥ dine-in avg</p>
+      </div>
+      <div class="metric">
+        <p class="m-label">Best-performing placement identified</p>
+        <p class="m-value">Week 4</p>
+      </div>
+    </div>
+
+    <div class="callout forest">
+      <span class="label">The compounding math</span>
+      <p>If WhatsApp claims convert at 15% and 60% of those show up, a QR placement doing 200 scans per week yields roughly <strong>18 additional covers per week</strong>. Multiply across placements and the funnel compounds.</p>
+    </div>
+  </section>
+
+  <!-- ================= 9 ================= -->
+  <section id="not">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <h2 class="sec-title">What This Campaign Is Not</h2>
+    </div>
+
+    <ul>
+      <li>Not a "specials" page buried in the site navigation</li>
+      <li>Not a discount coupon you email to a list</li>
+      <li>Not a social media post</li>
+      <li>Not a Google Ads destination</li>
+      <li>Not a one-off flyer</li>
+    </ul>
+
+    <p>It is a <strong>physical → digital → human</strong> chain, triggered at the exact moment of maximum need, with one tap to commit.</p>
+
+    <div class="callout">
+      <span class="label">The one-sentence version</span>
+      <p>Intercept the guest at the sanctuary exit, answer three questions instantly (where, what, how), reduce commitment to a single WhatsApp tap, and close the loop with staff plus a redemption log.</p>
+    </div>
+  </section>
+
+  <!-- ================= APPENDIX A ================= -->
+  <section id="gaps">
+    <div class="sec-head">
+      <span class="sec-num">A</span>
+      <h2 class="sec-title">Appendix A — Current Gaps</h2>
+    </div>
+
+    <p>What the live site has today versus what this playbook requires.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Status today</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>/after-monkey-forest campaign funnel</td><td>Does not exist</td></tr>
+          <tr><td>WhatsApp claim CTA</td><td>Only "Get Directions"</td></tr>
+          <tr><td>Offer / promotion system</td><td>No offer shown despite mentioning "special deals"</td></tr>
+          <tr><td>Menu with pricing</td><td>"View Our Menus" goes nowhere useful</td></tr>
+          <tr><td>Live "Open now" indicator</td><td>Static text only</td></tr>
+          <tr><td>Social proof on site</td><td>Zero — rating exists off-site, unsurfaced</td></tr>
+          <tr><td>Mini-FAQ</td><td>None</td></tr>
+          <tr><td>Walking route from exit</td><td>Just a map pin</td></tr>
+          <tr><td>Reservation page</td><td>Does not exist</td></tr>
+          <tr><td>Promotions hub</td><td>Does not exist</td></tr>
+          <tr><td>QR / UTM tracking</td><td>No plumbing</td></tr>
+          <tr><td>Backend promotion entities</td><td>None</td></tr>
+          <tr><td>Bilingual EN / ID</td><td>English only</td></tr>
+          <tr><td>JSON-LD · hreflang · sitemap</td><td>None</td></tr>
+          <tr><td>Analytics events</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The five questions test</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Guest question</th><th>Live site today</th><th>Required</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Why here?</td><td>Partial</td><td>Hero with moment-specific H1</td></tr>
+          <tr><td>What do I get?</td><td>Nothing</td><td>Offer card + combo</td></tr>
+          <tr><td>How do I lock it in?</td><td>Nothing</td><td>WhatsApp claim button</td></tr>
+          <tr><td>Is it worth it?</td><td>Nothing</td><td>Rating + weekly guest count</td></tr>
+          <tr><td>How do I get there?</td><td>Map pin</td><td>Walking route from the exit</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= APPENDIX B ================= -->
+  <section id="build">
+    <div class="sec-head">
+      <span class="sec-num">B</span>
+      <h2 class="sec-title">Appendix B — Build Order</h2>
+    </div>
+
+    <p>Stack: Nuxt 4 · MikroORM · SQLite · i18n with <code>prefix_except_default</code>.</p>
+
+    <h3>Phase 1 — P0 campaign</h3>
+    <ul class="checklist">
+      <li>Fix the coordinate mismatch on the location page</li>
+      <li>Migrate <code>promotion</code> + <code>promotion_category</code> entities</li>
+      <li>Seed "Sanctuary Cool-Down Combo" with EN + ID translations</li>
+      <li>Seed one <code>promotion_code</code> per QR placement</li>
+      <li>Build <code>/after-monkey-forest</code> — hero, offer card, proof, map, sticky bar</li>
+      <li>Wire QR + UTM plumbing through to the campaign resolver endpoint</li>
+      <li>Update Google Business Profile — category, hours, menu link, offers, photos, Q&amp;A</li>
+    </ul>
+
+    <h3>Phase 2 — P0 content</h3>
+    <ul class="checklist">
+      <li><code>/promotions</code> with database-driven tabs, expiry filtering, featured-first ordering</li>
+      <li><code>/menu</code> with the "Sanctuary offer applies" banner</li>
+      <li>Home page dual-intent hero with secondary "Coming from Monkey Forest?" CTA</li>
+    </ul>
+
+    <h3>Phase 3 — P1</h3>
+    <ul class="checklist">
+      <li><code>/reserve</code> — form to database, returns a WhatsApp confirmation link</li>
+      <li><code>/visit</code> with live "Open now" computed from opening hours</li>
+      <li>Redemption tracking and analytics events</li>
+    </ul>
+
+    <h3>Phase 4 — P2 / P3</h3>
+    <ul class="checklist">
+      <li><code>/about</code>, <code>/contact</code>, legal pages</li>
+      <li>Additional tourist languages (zh, ja, ko, fr, de, es, it, nl, ru, ar)</li>
+      <li><code>promotion_translation</code> for per-locale promotional copy</li>
+    </ul>
+
+    <h3>Data model required</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Entity</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>promotion</td><td>Campaign-capable promotions with audience, validity, bundles, caps</td></tr>
+          <tr><td>promotion_category</td><td>Database-driven filter tabs, replacing hardcoded ones</td></tr>
+          <tr><td>promotion_item</td><td>Bundles and combos (included, choice, free, discount target)</td></tr>
+          <tr><td>promotion_code</td><td>One voucher code per QR placement for tracking and anti-abuse</td></tr>
+          <tr><td>promotion_redemption</td><td>Analytics — powers the weekly guest count and channel ROI</td></tr>
+          <tr><td>campaign</td><td>Placement registry mapping a physical spot to a landing path and default offer</td></tr>
+          <tr><td>promotion_translation</td><td>Per-locale promo copy, kept out of UI translation files</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= APPENDIX C ================= -->
+  <section id="assets">
+    <div class="sec-head">
+      <span class="sec-num">C</span>
+      <h2 class="sec-title">Appendix C — Asset Checklist</h2>
+    </div>
+
+    <p>Seed rows reference image paths. The files themselves are dropped in later — the database stores a reference, not a binary. The UI must degrade gracefully until the real assets exist.</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Path</th><th>Spec</th><th>Content</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>/images/hero-rice-field.webp</td><td>1920×1080 · WebP q82 · max 180 KB</td><td>Shaded thatched-roof seating with rice field visible, warm afternoon light</td></tr>
+          <tr><td>/images/offer-sanctuary-combo.webp</td><td>1200×800 · WebP q82 · max 120 KB</td><td>The combo plate (main + iced tea), top-down or 45°, on a wooden table</td></tr>
+          <tr><td>/images/placeholder.svg</td><td>1200×800 SVG</td><td>Neutral dark-green fallback with venue name and rice-field line art</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Handling missing assets</h3>
+    <ul>
+      <li>Wrap every image in an <code>AppImage</code> component with a reactive <code>failed</code> flag</li>
+      <li>On error, swap to <code>/images/placeholder.svg</code> — never render a broken-image icon</li>
+      <li>Log a single development-only warning per missing path</li>
+      <li>When the real WebP lands in <code>/public/images/</code>, the page picks it up with zero code changes</li>
+    </ul>
+
+    <div class="callout">
+      <span class="label">Contract</span>
+      <p>The seed is a reference layer, not an asset host. Missing files are expected during build. The fallback plus the dev warning is the safety net.</p>
+    </div>
+  </section>
+
+  <footer class="doc-footer">
+    <span><b>Monkey Forest Guest Exit Conversion to Restaurant</b> — Tropical View Ubud</span>
+    <span>Conversion playbook · Single-file export</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/after-monkey-forest — Visual Mockup</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#0f1512;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:#e8e4dc;
+    padding:40px 20px 80px;
+  }
+  .stage{max-width:1400px;margin:0 auto;}
+  h1{
+    font-size:24px;
+    font-weight:800;
+    color:#f5efe6;
+    margin-bottom:6px;
+    letter-spacing:-.02em;
+  }
+  .sub{
+    font-size:14px;
+    color:#8a9a8e;
+    margin-bottom:40px;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .mockup-grid{
+    display:grid;
+    grid-template-columns:1fr 380px;
+    gap:40px;
+    align-items:start;
+  }
+  @media(max-width:1100px){
+    .mockup-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- DEVICE FRAMES ---------- */
+  .device{
+    background:#1a2420;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06);
+    position:relative;
+  }
+  .device-label{
+    position:absolute;
+    top:-28px;left:0;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#c97b2e;
+    font-weight:700;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+
+  /* desktop browser chrome */
+  .browser-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 0 12px;
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#e05a4a;}
+  .dot.y{background:#e0b84a;}
+  .dot.g{background:#4ae07a;}
+  .url-bar{
+    flex:1;
+    background:#0f1512;
+    border-radius:6px;
+    padding:6px 12px;
+    font-size:11px;
+    color:#7a8a7e;
+    font-family:ui-monospace,Menlo,monospace;
+    margin-left:8px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .url-bar b{color:#c97b2e;}
+
+  /* mobile phone frame */
+  .phone{
+    background:#1a2420;
+    border-radius:32px;
+    padding:12px;
+    box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06);
+    position:relative;
+  }
+  .phone::before{
+    content:"";
+    position:absolute;
+    top:12px;left:50%;
+    transform:translateX(-50%);
+    width:80px;height:5px;
+    background:#0f1512;
+    border-radius:3px;
+    z-index:10;
+  }
+  .phone-screen{
+    border-radius:22px;
+    overflow:hidden;
+    background:#f7f3ec;
+  }
+
+  /* ---------- PAGE CANVAS ---------- */
+  .page{
+    background:#f7f3ec;
+    border-radius:8px;
+    overflow:hidden;
+    color:#1a1a1a;
+    font-size:13px;
+    line-height:1.5;
+  }
+  .phone .page{border-radius:22px;font-size:11px;}
+
+  /* section annotation marker */
+  .sec-marker{
+    position:relative;
+  }
+  .sec-marker::before{
+    content:attr(data-n);
+    position:absolute;
+    left:-44px;
+    top:8px;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:#c97b2e;
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:ui-monospace,Menlo,monospace;
+    z-index:5;
+  }
+  @media(max-width:1100px){
+    .sec-marker::before{left:auto;right:8px;top:8px;}
+  }
+
+  /* ---------- BLOCK 1: STICKY OFFER BAR ---------- */
+  .sticky-bar{
+    background:#1f2a24;
+    color:#f5efe6;
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    font-size:11px;
+    font-weight:600;
+  }
+  .sticky-bar .msg{display:flex;align-items:center;gap:6px;}
+  .sticky-bar .msg .emoji{font-size:13px;}
+  .sticky-bar .claim{
+    background:#c97b2e;
+    color:#fff;
+    padding:5px 12px;
+    border-radius:5px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  /* ---------- BLOCK 2: HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      linear-gradient(180deg,rgba(15,21,18,.72) 0%,rgba(15,21,18,.55) 50%,rgba(15,21,18,.85) 100%),
+      radial-gradient(ellipse at 30% 40%,#3f6b4a 0%,#1f2a24 70%);
+    color:#f5efe6;
+    padding:38px 22px 34px;
+    min-height:280px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .phone .hero{padding:28px 16px 24px;min-height:340px;}
+  .hero .eyebrow{
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#c97b2e;
+    font-weight:800;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:22px;
+    line-height:1.18;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin-bottom:10px;
+    max-width:480px;
+  }
+  .phone .hero h1{font-size:19px;}
+  .hero .sub{
+    font-size:12.5px;
+    color:rgba(245,239,230,.82);
+    max-width:460px;
+    margin-bottom:18px;
+    line-height:1.5;
+  }
+  .hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .hero .btn-primary{
+    background:#c97b2e;
+    color:#fff;
+    padding:11px 18px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:800;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    box-shadow:0 6px 16px rgba(201,123,46,.35);
+  }
+  .hero .btn-secondary{
+    background:transparent;
+    color:#f5efe6;
+    padding:11px 18px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:700;
+    border:1.5px solid rgba(245,239,230,.45);
+  }
+  .hero .note{
+    font-size:10.5px;
+    color:rgba(245,239,230,.7);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .hero .note .dot-live{
+    width:6px;height:6px;border-radius:50%;background:#4ae07a;
+    box-shadow:0 0 8px #4ae07a;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+  /* ---------- BLOCK 3: OFFER CARD ---------- */
+  .section-pad{padding:22px 22px;}
+  .phone .section-pad{padding:18px 16px;}
+  .offer-card{
+    background:#fff;
+    border-radius:10px;
+    border:1px solid #e5ddd0;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(31,42,36,.08);
+  }
+  .offer-card .badge-row{
+    background:#1f2a24;
+    color:#f5efe6;
+    padding:8px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .offer-card .badge{
+    background:#c97b2e;
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.06em;
+    padding:3px 9px;
+    border-radius:4px;
+  }
+  .offer-card .ticket{
+    font-size:10px;
+    color:rgba(245,239,230,.75);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .offer-card .body{padding:16px 18px;}
+  .offer-card h3{
+    font-size:16px;
+    font-weight:800;
+    color:#1f2a24;
+    margin-bottom:3px;
+    letter-spacing:-.01em;
+  }
+  .offer-card .offer-sub{
+    font-size:12px;
+    color:#6a7a6e;
+    margin-bottom:14px;
+  }
+  .offer-card .included{
+    list-style:none;
+    padding:0;
+    margin-bottom:14px;
+  }
+  .offer-card .included li{
+    font-size:11.5px;
+    color:#3a4a3e;
+    padding-left:20px;
+    position:relative;
+    margin-bottom:6px;
+    line-height:1.45;
+  }
+  .offer-card .included li::before{
+    content:"✓";
+    position:absolute;
+    left:0;top:0;
+    color:#2f7d4f;
+    font-weight:800;
+  }
+  .offer-card .validity{
+    background:#f7f3ec;
+    border-radius:6px;
+    padding:8px 12px;
+    font-size:11px;
+    color:#4a5a4e;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:14px;
+  }
+  .offer-card .validity .clock{color:#c97b2e;font-size:13px;}
+  .offer-card .price-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px dashed #e5ddd0;
+  }
+  .offer-card .price-row .label{font-size:11px;color:#8a9a8e;}
+  .offer-card .price-row .price{
+    font-size:20px;
+    font-weight:800;
+    color:#1f2a24;
+    letter-spacing:-.02em;
+  }
+  .offer-card .price-row .price small{font-size:11px;color:#8a9a8e;font-weight:600;margin-right:3px;}
+  .offer-card .price-row .orig{
+    font-size:11px;
+    color:#b0a898;
+    text-decoration:line-through;
+    margin-left:8px;
+  }
+  .offer-card .cta{
+    width:100%;
+    background:#c97b2e;
+    color:#fff;
+    padding:12px;
+    border-radius:7px;
+    text-align:center;
+    font-size:12.5px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+  }
+  .offer-card .terms-link{
+    text-align:center;
+    font-size:10px;
+    color:#8a9a8e;
+    margin-top:9px;
+    text-decoration:underline;
+  }
+
+  /* ---------- BLOCK 4: WHY HERE ---------- */
+  .why-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .phone .why-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .why-item{
+    background:#fff;
+    border:1px solid #e5ddd0;
+    border-radius:8px;
+    padding:13px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .why-item .icon{
+    font-size:18px;
+    line-height:1;
+    flex:none;
+  }
+  .why-item .txt h4{
+    font-size:11.5px;
+    font-weight:800;
+    color:#1f2a24;
+    margin-bottom:2px;
+  }
+  .why-item .txt p{
+    font-size:10.5px;
+    color:#6a7a6e;
+    line-height:1.4;
+  }
+
+  /* ---------- BLOCK 5: POPULAR NOW ---------- */
+  .pop-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .phone .pop-grid{grid-template-columns:1fr;gap:8px;}
+  .dish-card{
+    background:#fff;
+    border:1px solid #e5ddd0;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .dish-card .img{
+    height:70px;
+    background:linear-gradient(135deg,#3f6b4a,#2a4a35);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+  }
+  .dish-card .body{padding:9px 11px;}
+  .dish-card h4{font-size:11.5px;font-weight:800;color:#1f2a24;margin-bottom:3px;}
+  .dish-card .d-price{font-size:11px;color:#2f7d4f;font-weight:800;}
+  .dish-card .d-price small{color:#8a9a8e;font-weight:600;font-size:9.5px;}
+
+  /* ---------- BLOCK 6: PROMOS ---------- */
+  .promo-scroll{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:6px;
+  }
+  .promo-pill{
+    background:#fff;
+    border:1px solid #e5ddd0;
+    border-radius:8px;
+    padding:12px 14px;
+    min-width:180px;
+    flex:none;
+  }
+  .promo-pill .p-badge{
+    display:inline-block;
+    background:#f0d3a8;
+    color:#8a5a1e;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.06em;
+    padding:2px 7px;
+    border-radius:3px;
+    margin-bottom:7px;
+  }
+  .promo-pill h4{font-size:11.5px;font-weight:800;color:#1f2a24;margin-bottom:3px;}
+  .promo-pill p{font-size:10px;color:#6a7a6e;line-height:1.4;}
+
+  /* ---------- BLOCK 7: SOCIAL PROOF ---------- */
+  .proof{
+    background:#1f2a24;
+    color:#f5efe6;
+    border-radius:10px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .proof .rating{display:flex;align-items:center;gap:10px;}
+  .proof .stars{color:#c97b2e;font-size:16px;letter-spacing:1px;}
+  .proof .r-num{font-size:22px;font-weight:800;}
+  .proof .r-label{font-size:10px;color:rgba(245,239,230,.6);}
+  .proof .divider{width:1px;height:36px;background:rgba(245,239,230,.15);}
+  .proof .guests{font-size:11px;line-height:1.4;}
+  .proof .guests b{color:#c97b2e;font-size:14px;display:block;}
+
+  /* ---------- BLOCK 8: MAP ---------- */
+  .map-block{
+    background:#fff;
+    border:1px solid #e5ddd0;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .map-visual{
+    height:130px;
+    background:
+      repeating-linear-gradient(45deg,#e8efe8 0 8px,#dce8dc 8px 16px);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .map-pin{
+    font-size:24px;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,.3));
+  }
+  .map-route{
+    position:absolute;
+    bottom:20px;left:20px;
+    right:20px;
+    height:2px;
+    background:dashed #c97b2e;
+    border-top:2px dashed #c97b2e;
+  }
+  .map-route::before{
+    content:"🚶 2 min";
+    position:absolute;
+    top:-20px;left:50%;
+    transform:translateX(-50%);
+    background:#c97b2e;
+    color:#fff;
+    font-size:9px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .map-body{padding:12px 14px;font-size:11px;color:#4a5a4e;}
+  .map-body .addr{font-weight:700;color:#1f2a24;margin-bottom:4px;}
+
+  /* ---------- BLOCK 9: FAQ ---------- */
+  .faq-item{
+    background:#fff;
+    border:1px solid #e5ddd0;
+    border-radius:8px;
+    padding:11px 14px;
+    margin-bottom:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    font-size:11.5px;
+    font-weight:600;
+    color:#1f2a24;
+  }
+  .faq-item .chev{color:#8a9a8e;font-size:14px;}
+
+  /* ---------- BLOCK 10: FINAL CTA ---------- */
+  .final-cta{
+    background:linear-gradient(135deg,#1f2a24,#2f5d3f);
+    color:#f5efe6;
+    text-align:center;
+    padding:28px 22px;
+  }
+  .final-cta h3{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.01em;}
+  .final-cta p{font-size:11.5px;color:rgba(245,239,230,.75);margin-bottom:16px;}
+  .final-cta .btn{
+    background:#c97b2e;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:7px;
+    font-size:12.5px;
+    font-weight:800;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    box-shadow:0 6px 16px rgba(201,123,46,.4);
+  }
+
+  /* ---------- BLOCK 11: FLOATING WA ---------- */
+  .float-wa{
+    position:absolute;
+    bottom:80px;right:16px;
+    width:52px;height:52px;
+    border-radius:50%;
+    background:#25D366;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    box-shadow:0 8px 20px rgba(37,211,102,.4);
+    z-index:20;
+  }
+  .phone .float-wa{bottom:60px;right:12px;width:46px;height:46px;font-size:21px;}
+
+  /* ---------- ANNOTATION LEGEND ---------- */
+  .legend{
+    margin-top:50px;
+    background:#1a2420;
+    border-radius:12px;
+    padding:24px 28px;
+    border:1px solid rgba(255,255,255,.06);
+  }
+  .legend h2{
+    font-size:14px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#c97b2e;
+    margin-bottom:16px;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .legend-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:10px 24px;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:12.5px;
+    color:#c5cec8;
+    padding:6px 0;
+  }
+  .legend-item .n{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:#c97b2e;
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .legend-item .name{color:#f5efe6;font-weight:600;}
+  .legend-item .desc{color:#7a8a7e;font-size:11px;}
+
+  /* ---------- SECTION LABELS ON MOCKUP ---------- */
+  .section-label{
+    font-size:9px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#c97b2e;
+    font-weight:800;
+    padding:14px 22px 4px;
+    font-family:ui-monospace,Menlo,monospace;
+    border-top:1px solid rgba(201,123,46,.15);
+    background:rgba(201,123,46,.04);
+  }
+  .phone .section-label{padding:12px 16px 4px;font-size:8px;}
+
+  .footer-note{
+    text-align:center;
+    margin-top:50px;
+    font-size:11px;
+    color:#4a5a4e;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <h1>/after-monkey-forest — Visual Mockup</h1>
+  <p class="sub">Tropical View Ubud · Campaign funnel · Desktop + Mobile</p>
+
+  <div class="mockup-grid">
+
+    <!-- ============ DESKTOP ============ -->
+    <div class="device">
+      <span class="device-label">Desktop · 1440px</span>
+      <div class="browser-bar">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+        <div class="url-bar">tropicalviewubud.com<b>/after-monkey-forest</b>?offer=sanctuary-combo&utm_source=qr_exit</div>
+      </div>
+
+      <div class="page">
+
+        <!-- BLOCK 1: STICKY BAR (desktop hides per spec — shown faint) -->
+        <div class="section-label">01 · Sticky Offer Bar (mobile-only)</div>
+        <div class="sticky-bar" style="opacity:.35;">
+          <div class="msg"><span class="emoji">🌿</span> 15% off mains + free iced tea · 2 min walk</div>
+          <div class="claim">Claim</div>
+        </div>
+
+        <!-- BLOCK 2: HERO -->
+        <div class="section-label">02 · Hero</div>
+        <div class="hero sec-marker" data-n="2">
+          <div class="eyebrow">Ubud Monkey Forest · 200m from the exit</div>
+          <h1>Just finished the Sanctuary? Cool down 2 minutes away.</h1>
+          <p class="sub">Shaded rice-field seating, cold drinks, and hot food — 200 meters from the Monkey Forest exit. Show your sanctuary ticket for 15% off mains + a free iced tea.</p>
+          <div class="ctas">
+            <span class="btn-primary">💬 Claim on WhatsApp</span>
+            <span class="btn-secondary">See menu</span>
+          </div>
+          <div class="note"><span class="dot-live"></span> Open now · 2–3 min walk from the exit</div>
+        </div>
+
+        <!-- BLOCK 3: OFFER CARD -->
+        <div class="section-label">03 · Offer Card</div>
+        <div class="section-pad sec-marker" data-n="3">
+          <div class="offer-card">
+            <div class="badge-row">
+              <span class="badge">15% OFF</span>
+              <span class="ticket">🎫 Show your ticket</span>
+            </div>
+            <div class="body">
+              <h3>Sanctuary Cool-Down Combo</h3>
+              <p class="offer-sub">1 main of your choice + 1 free iced tea</p>
+              <ul class="included">
+                <li>Choose 1 main: Nasi Goreng, Crispy Fried Duck, or Rib-Eye Steak</li>
+                <li>1 free iced tea (refillable once)</li>
+              </ul>
+              <div class="validity">
+                <span class="clock">🕐</span> Valid today, 11:00–15:00 · Show your sanctuary ticket or stamp
+              </div>
+              <div class="price-row">
+                <div>
+                  <div class="label">From</div>
+                  <div class="price"><small>IDR</small>85,000 <span class="orig">100,000</span></div>
+                </div>
+              </div>
+              <div class="cta">💬 Claim on WhatsApp</div>
+              <div class="terms-link">Terms &amp; conditions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCK 4: WHY HERE -->
+        <div class="section-label">04 · Why Sit Down Here</div>
+        <div class="section-pad sec-marker" data-n="4">
+          <div class="why-grid">
+            <div class="why-item"><span class="icon">🚶</span><div class="txt"><h4>2–3 Minutes Walk</h4><p>From the sanctuary exit straight to our door</p></div></div>
+            <div class="why-item"><span class="icon">🌾</span><div class="txt"><h4>Cool &amp; Shaded</h4><p>Thatched roof with rice field views</p></div></div>
+            <div class="why-item"><span class="icon">⚡</span><div class="txt"><h4>Quick Service</h4><p>We know you're hot — we serve fast</p></div></div>
+            <div class="why-item"><span class="icon">👪</span><div class="txt"><h4>Family Friendly</h4><p>Space for groups, couples, and kids</p></div></div>
+          </div>
+        </div>
+
+        <!-- BLOCK 5: POPULAR NOW -->
+        <div class="section-label">05 · Popular Right Now</div>
+        <div class="section-pad sec-marker" data-n="5">
+          <div class="pop-grid">
+            <div class="dish-card"><div class="img">🍜</div><div class="body"><h4>Nasi Goreng</h4><div class="d-price"><small>IDR </small>65,000</div></div></div>
+            <div class="dish-card"><div class="img">🦆</div><div class="body"><h4>Crispy Fried Duck</h4><div class="d-price"><small>IDR </small>95,000</div></div></div>
+            <div class="dish-card"><div class="img">🥩</div><div class="body"><h4>Rib-Eye Steak</h4><div class="d-price"><small>IDR </small>145,000</div></div></div>
+          </div>
+        </div>
+
+        <!-- BLOCK 6: PROMOS -->
+        <div class="section-label">06 · Active Promotions</div>
+        <div class="section-pad sec-marker" data-n="6">
+          <div class="promo-scroll">
+            <div class="promo-pill"><span class="p-badge">FEATURED</span><h4>Sanctuary Combo</h4><p>15% off + free iced tea</p></div>
+            <div class="promo-pill"><span class="p-badge">HAPPY HOUR</span><h4>2-for-1 Cocktails</h4><p>Daily 16:00–18:00</p></div>
+            <div class="promo-pill"><span class="p-badge">FAMILY</span><h4>Kids Eat Free</h4><p>With 2 adult mains</p></div>
+          </div>
+        </div>
+
+        <!-- BLOCK 7: SOCIAL PROOF -->
+        <div class="section-label">07 · Social Proof</div>
+        <div class="section-pad sec-marker" data-n="7">
+          <div class="proof">
+            <div class="rating">
+              <div class="stars">★★★★★</div>
+              <div>
+                <div class="r-num">4.5</div>
+                <div class="r-label">1,100+ Google reviews</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="guests"><b>142 guests</b>from the sanctuary this week</div>
+          </div>
+        </div>
+
+        <!-- BLOCK 8: MAP -->
+        <div class="section-label">08 · Getting Here</div>
+        <div class="section-pad sec-marker" data-n="8">
+          <div class="map-block">
+            <div class="map-visual">
+              <span class="map-pin">📍</span>
+              <div class="map-route"></div>
+            </div>
+            <div class="map-body">
+              <div class="addr">Tropical View Ubud</div>
+              Jl. Monkey Forest · 200m from the sanctuary exit
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCK 9: FAQ -->
+        <div class="section-label">09 · Mini-FAQ</div>
+        <div class="section-pad sec-marker" data-n="9">
+          <div class="faq-item">Do I need the sanctuary ticket? <span class="chev">▾</span></div>
+          <div class="faq-item">Is it really a 2-minute walk? <span class="chev">▾</span></div>
+          <div class="faq-item">Do you accept card / QRIS? <span class="chev">▾</span></div>
+          <div class="faq-item">Halal &amp; vegetarian options? <span class="chev">▾</span></div>
+        </div>
+
+        <!-- BLOCK 10: FINAL CTA -->
+        <div class="section-label">10 · Final CTA</div>
+        <div class="final-cta sec-marker" data-n="10">
+          <h3>Ready to sit down and relax?</h3>
+          <p>We'll have a table ready. Just message us.</p>
+          <span class="btn">💬 Claim on WhatsApp</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ MOBILE ============ -->
+    <div class="phone">
+      <span class="device-label" style="position:static;display:block;margin-bottom:14px;text-align:center;">Mobile · 390px</span>
+      <div class="phone-screen">
+        <div class="page">
+
+          <!-- STICKY BAR -->
+          <div class="sticky-bar">
+            <div class="msg"><span class="emoji">🌿</span> 15% off · free iced tea</div>
+            <div class="claim">Claim</div>
+          </div>
+
+          <!-- HERO -->
+          <div class="hero">
+            <div class="eyebrow">Ubud Monkey Forest · 200m</div>
+            <h1>Just finished the Sanctuary? Cool down 2 minutes away.</h1>
+            <p class="sub">Shaded rice-field seating, cold drinks, hot food — 200m from the exit. Show your ticket for 15% off + free iced tea.</p>
+            <div class="ctas" style="flex-direction:column;">
+              <span class="btn-primary" style="justify-content:center;">💬 Claim on WhatsApp</span>
+              <span class="btn-secondary" style="text-align:center;">See menu</span>
+            </div>
+            <div class="note"><span class="dot-live"></span> Open now · 2–3 min walk</div>
+          </div>
+
+          <!-- OFFER CARD -->
+          <div class="section-pad">
+            <div class="offer-card">
+              <div class="badge-row">
+                <span class="badge">15% OFF</span>
+                <span class="ticket">🎫 Ticket</span>
+              </div>
+              <div class="body">
+                <h3>Sanctuary Cool-Down Combo</h3>
+                <p class="offer-sub">1 main + 1 free iced tea</p>
+                <ul class="included">
+                  <li>Nasi Goreng, Crispy Duck, or Rib-Eye</li>
+                  <li>1 free iced tea</li>
+                </ul>
+                <div class="validity"><span class="clock">🕐</span> Today, 11:00–15:00</div>
+                <div class="price-row">
+                  <div>
+                    <div class="label">From</div>
+                    <div class="price"><small>IDR</small>85K</div>
+                  </div>
+                </div>
+                <div class="cta">💬 Claim on WhatsApp</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WHY -->
+          <div class="section-pad" style="padding-top:0;">
+            <div class="why-grid">
+              <div class="why-item"><span class="icon">🚶</span><div class="txt"><h4>2–3 min</h4><p>From exit</p></div></div>
+              <div class="why-item"><span class="icon">🌾</span><div class="txt"><h4>Shaded</h4><p>Rice field view</p></div></div>
+            </div>
+          </div>
+
+          <!-- PROOF -->
+          <div class="section-pad">
+            <div class="proof" style="padding:14px;">
+              <div class="rating">
+                <div class="stars" style="font-size:14px;">★★★★★</div>
+                <div><div class="r-num" style="font-size:18px;">4.5</div><div class="r-label">1.1K reviews</div></div>
+              </div>
+              <div class="guests"><b style="font-size:12px;">142</b>guests this week</div>
+            </div>
+          </div>
+
+          <!-- FINAL CTA -->
+          <div class="final-cta" style="padding:22px 16px;">
+            <h3 style="font-size:15px;">Ready to relax?</h3>
+            <p style="font-size:10.5px;">We'll have a table ready.</p>
+            <span class="btn" style="font-size:11.5px;padding:10px 18px;">💬 Claim on WhatsApp</span>
+          </div>
+
+        </div>
+
+        <!-- FLOATING WA -->
+        <div class="float-wa" style="position:absolute;">💬</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ LEGEND ============ -->
+  <div class="legend">
+    <h2>Section Legend · 11 Blocks</h2>
+    <div class="legend-grid">
+      <div class="legend-item"><span class="n">1</span><div><span class="name">Sticky Offer Bar</span><br><span class="desc">Mobile only · always-visible claim</span></div></div>
+      <div class="legend-item"><span class="n">2</span><div><span class="name">Hero</span><br><span class="desc">Moment-specific H1 + dual CTA</span></div></div>
+      <div class="legend-item"><span class="n">3</span><div><span class="name">Offer Card</span><br><span class="desc">Combo · validity · price · claim</span></div></div>
+      <div class="legend-item"><span class="n">4</span><div><span class="name">Why Sit Down Here</span><br><span class="desc">4 objection-killers</span></div></div>
+      <div class="legend-item"><span class="n">5</span><div><span class="name">Popular Right Now</span><br><span class="desc">3–6 dishes · dual pricing</span></div></div>
+      <div class="legend-item"><span class="n">6</span><div><span class="name">Active Promotions</span><br><span class="desc">DB-driven · expiry-aware</span></div></div>
+      <div class="legend-item"><span class="n">7</span><div><span class="name">Social Proof</span><br><span class="desc">Rating + weekly guest count</span></div></div>
+      <div class="legend-item"><span class="n">8</span><div><span class="name">Getting Here</span><br><span class="desc">Map + walking route from exit</span></div></div>
+      <div class="legend-item"><span class="n">9</span><div><span class="name">Mini-FAQ</span><br><span class="desc">4 decision-blocker answers</span></div></div>
+      <div class="legend-item"><span class="n">10</span><div><span class="name">Final CTA</span><br><span class="desc">Catches scrollers</span></div></div>
+      <div class="legend-item"><span class="n">11</span><div><span class="name">Floating WhatsApp</span><br><span class="desc">Always available · contextual msg</span></div></div>
+    </div>
+  </div>
+
+  <p class="footer-note">Save as mockup-after-monkey-forest.html · open in browser · screenshot for design handoff</p>
+
+</div>
+
+</body>
+</html>

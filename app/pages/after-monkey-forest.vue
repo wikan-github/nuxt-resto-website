@@ -35,6 +35,16 @@
       </div>
     </section>
 
+    <!-- ═══════════ OFFER DETAIL — live from /api/campaigns ═══════════ -->
+    <!-- Rendered only when the campaign resolver returns an offer for the
+         given utm_source + audience. Auto-registered as CampaignOfferCard
+         (Nuxt prefixes nested components with the directory name). -->
+    <section v-if="data?.offer" class="section">
+      <div class="container">
+        <CampaignOfferCard :offer="data.offer" />
+      </div>
+    </section>
+
     <!-- ═══════════ BENEFITS — why stop here ═══════════ -->
     <section class="section">
       <div class="container">
@@ -162,15 +172,58 @@ function firstQueryParam(value: string | string[] | null | undefined): string | 
 const offerSlug = computed<string | null>(() => firstQueryParam(route.query.offer))
 const utmSource = computed<string | null>(() => firstQueryParam(route.query.utm_source))
 
-// Page-specific SEO so this landing page isn't treated as duplicate content.
+// Campaign resolver: utm_source (or the default channel) → offer + code.
+// Awaited, so SSR renders the offer card on first paint when it resolves.
+const { data } = await useFetch(`/api/campaigns/${utmSource.value || 'qr_exit'}`, {
+  query: { audience: 'monkey_forest_guest' },
+  key: `campaign-${utmSource.value}`,
+})
+
+// Page SEO (fixed campaign strings per spec; description mirrors hero.sub EN).
 // NOTE: useI18n() exposes `t` (not `$t`) in <script setup>; $t is template-only.
 const { t } = useI18n()
 useSeoMeta({
-  title: () => t('seo.afterForest.title'),
-  description: () => t('seo.afterForest.description'),
-  ogTitle: () => t('seo.afterForest.title'),
-  ogDescription: () => t('seo.afterForest.description'),
+  title: 'Just finished Ubud Monkey Forest? Cool down 2 minutes away — Tropical View Ubud',
+  description: () => t('campaignHero.sub'),
+  ogTitle: 'Just finished Ubud Monkey Forest? Cool down 2 minutes away — Tropical View Ubud',
+  ogDescription: () => t('campaignHero.sub'),
   ogType: 'website',
+})
+
+// Offer JSON-LD for search engines, only when an offer resolved.
+const offerJsonLd = computed(() => {
+  const offer = data.value?.offer
+  if (!offer) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Offer',
+    name: offer.translations?.en?.title ?? offer.slug,
+    description: offer.translations?.en?.description ?? '',
+    availability: 'https://schema.org/InStock',
+    seller: { '@type': 'Restaurant', name: 'Tropical View Ubud' },
+  }
+})
+useHead(() => ({
+  script: offerJsonLd.value
+    ? [{ type: 'application/ld+json', innerHTML: JSON.stringify(offerJsonLd.value) }]
+    : [],
+}))
+
+// Analytics: fire once on mount when an offer resolved. dataLayer push is the
+// GTM convention; harmless no-op until a tag manager is installed (follow-up).
+onMounted(() => {
+  const offer = data.value?.offer
+  if (!offer) return
+  try {
+    (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({
+      event: 'offer_view',
+      offer_slug: offer.slug,
+      utm_source: utmSource.value,
+    })
+  }
+  catch {
+    // Analytics must never break the page.
+  }
 })
 
 // Sticky offer bar visibility. Persisted in shared state so dismissing it

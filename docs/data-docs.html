@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data docs — why /data and resto.db live outside /server</title>
+<style>
+  :root {
+    --green: #034833;
+    --bg: #f9f9f9;
+    --border: #e5e5e5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: Inter, Mulish, system-ui, sans-serif;
+    background: var(--bg);
+    color: #111;
+    line-height: 1.6;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* Left: TOC. Native horizontal resize; the border doubles as the divider. */
+  nav.toc {
+    width: 280px;
+    min-width: 180px;
+    max-width: 60vw;
+    resize: horizontal;
+    overflow: auto;
+    background: #fff;
+    border-right: 3px solid var(--green);
+    padding: 1.5rem 1.25rem;
+    flex-shrink: 0;
+  }
+  nav.toc h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--green); margin-bottom: 1rem; }
+  /* Search lives in the TOC so it resizes with the panel. */
+  #toc-search {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+  #toc-search:focus { outline: none; border-color: var(--green); }
+  #toc-count { font-size: 0.75rem; color: #636363; margin-bottom: 0.75rem; min-height: 1.1em; }
+  nav.toc ol { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  nav.toc a { color: #111; text-decoration: none; font-size: 0.95rem; }
+  nav.toc a:hover { color: var(--green); text-decoration: underline; }
+  nav.toc .hint { margin-top: 1.5rem; font-size: 0.75rem; color: #636363; }
+  /* Right: content takes all remaining space, scrolls independently. */
+  main.content {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+  }
+  main.content article { max-width: 860px; }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--green); margin-bottom: 0.5rem; }
+  .meta { color: #636363; font-size: 0.85rem; margin-bottom: 2rem; }
+  h2 { font-size: 1.25rem; color: var(--green); margin: 2rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  p { margin-bottom: 1rem; }
+  .question {
+    background: #f1f5eb;
+    border-left: 4px solid var(--green);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+  }
+  code { background: #eee; padding: 0.1rem 0.4rem; border-radius: 6px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <input id="toc-search" type="search" placeholder="Search this doc…" aria-label="Search this doc" autocomplete="off" />
+    <p id="toc-count" aria-live="polite"></p>
+    <ol>
+      <li><a href="#question">The question</a></li>
+      <li><a href="#build-boundary">1. Build boundary</a></li>
+      <li><a href="#writability">2. Runtime writability</a></li>
+      <li><a href="#git-hygiene">3. Git hygiene</a></li>
+      <li><a href="#tradeoff">Trade-off</a></li>
+    </ol>
+    <p class="hint">Drag the green divider to resize this panel.</p>
+  </nav>
+  <main class="content">
+    <article>
+      <h1>Why /data and resto.db are not inside /server</h1>
+      <p class="meta">Nuxt-Resto-Website · data-docs · 2026-10-15</p>
+
+      <h2 id="question">The question</h2>
+      <div class="question">Why is the <code>/data</code> folder and its <code>resto.db</code> not inside <code>/server</code>?</div>
+      <p>It is deliberate, for three reasons:</p>
+
+      <h2 id="build-boundary">1. Build boundary</h2>
+      <p>Everything under <code>server/</code> is build <em>input</em>: Nitro bundles it into <code>.output/server/</code>. A live SQLite file inside <code>server/</code> would either get copied into the bundle (a stale snapshot baked into deploys) or wiped on rebuild. <code>data/</code> at root sits outside the bundler's reach, so the database survives <code>pnpm build</code> untouched.</p>
+
+      <h2 id="writability">2. Runtime writability</h2>
+      <p>The app writes to the DB (orders, reservations, redemption tracking). Deploy targets typically treat the bundled <code>server/</code> output as immutable/read-only, while a root-level <code>data/</code> dir can be mounted as a persistent volume. <code>dbName: './data/resto.db'</code> resolves from process cwd in both dev and prod, so the same path works everywhere.</p>
+
+      <h2 id="git-hygiene">3. Git hygiene</h2>
+      <p><code>data/*.db*</code> is gitignored as a unit. Inside <code>server/</code> it would sit next to tracked source files, inviting accidental commits of a binary blob (and merge conflicts on it).</p>
+
+      <h2 id="tradeoff">Trade-off</h2>
+      <p>Two top-level data locations (<code>data/</code> for SQLite, <code>server/data/*.json</code> legacy seeds). The JSON dir is orphaned seed reference only — the clean move is deleting <code>server/data/</code> once the DB seed is trusted, not moving <code>data/</code> inward.</p>
+    </article>
+  </main>
+<script>
+  // TOC search: filters TOC entries + content sections by the same query.
+  // Sections are aligned by index (TOC link[i] <-> content h2[i]).
+  (function () {
+    var input = document.getElementById('toc-search');
+    var count = document.getElementById('toc-count');
+    var items = Array.prototype.slice.call(document.querySelectorAll('nav.toc ol li'));
+    var heads = Array.prototype.slice.call(document.querySelectorAll('main.content h2'));
+
+    // Block of a section = its h2 plus following siblings up to the next h2.
+    function blockNodes(h2) {
+      var nodes = [h2], el = h2.nextElementSibling;
+      while (el && el.tagName !== 'H2') { nodes.push(el); el = el.nextElementSibling; }
+      return nodes;
+    }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase(), hits = 0;
+      heads.forEach(function (h2, i) {
+        var text = blockNodes(h2).map(function (n) { return n.textContent || ''; }).join(' ').toLowerCase();
+        var match = !q || text.indexOf(q) !== -1;
+        blockNodes(h2).forEach(function (n) { n.style.display = match ? '' : 'none'; });
+        if (items[i]) items[i].style.display = match ? '' : 'none';
+        if (match && q) hits++;
+      });
+      count.textContent = q ? (hits + (hits === 1 ? ' section' : ' sections') + ' match') : '';
+    });
+  })();
+</script>
+</body>
+</html>
