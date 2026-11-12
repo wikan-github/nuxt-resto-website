@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>i18n / translation system — Nuxt-Resto-Website</title>
+<style>
+  :root {
+    --green: #034833;
+    --green-light: #f1f5eb;
+    --bg: #f9f9f9;
+    --border: #e5e5e5;
+    --muted: #636363;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: Inter, Mulish, system-ui, sans-serif;
+    background: var(--bg);
+    color: #111;
+    line-height: 1.65;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* ── Left: TOC. Native horizontal resize; border is the divider. ── */
+  nav.toc {
+    width: 300px;
+    min-width: 190px;
+    max-width: 60vw;
+    resize: horizontal;
+    overflow: auto;
+    background: #fff;
+    border-right: 3px solid var(--green);
+    padding: 1.5rem 1.25rem;
+    flex-shrink: 0;
+  }
+  nav.toc h2 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--green); margin-bottom: 1rem;
+  }
+  #toc-search {
+    width: 100%; font-size: 0.9rem; padding: 0.5rem 0.65rem;
+    border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem;
+  }
+  #toc-search:focus { outline: none; border-color: var(--green); }
+  #toc-count { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; min-height: 1.1em; }
+  nav.toc ol { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  nav.toc a { color: #111; text-decoration: none; font-size: 0.92rem; }
+  nav.toc a:hover { color: var(--green); text-decoration: underline; }
+  nav.toc .hint { margin-top: 1.5rem; font-size: 0.72rem; color: var(--muted); }
+  /* ── Right: content takes all remaining space, scrolls independently. ── */
+  main.content {
+    flex: 1 1 auto; min-width: 0; overflow-y: auto;
+    padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+  }
+  main.content article { max-width: 900px; }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--green); margin-bottom: 0.4rem; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  h2 {
+    font-size: 1.2rem; color: var(--green); margin: 2.25rem 0 0.75rem;
+    padding-top: 1.1rem; border-top: 1px solid var(--border);
+  }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  h3 { font-size: 1rem; color: var(--green); margin: 1.25rem 0 0.5rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { margin: 0 0 1rem 1.4rem; }
+  li { margin-bottom: 0.35rem; }
+  code {
+    background: #eef1ee; padding: 0.12rem 0.4rem; border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.87em;
+  }
+  pre {
+    background: #12241c; color: #e8f0ea; padding: 1rem 1.15rem; border-radius: 10px;
+    overflow-x: auto; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.55;
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); }
+  th { background: var(--green-light); color: var(--green); font-weight: 600; }
+  .note, .warn {
+    border-radius: 0 10px 10px 0; padding: 0.9rem 1.15rem; margin-bottom: 1rem;
+  }
+  .note { background: var(--green-light); border-left: 4px solid var(--green); }
+  .warn { background: var(--warn-bg); border-left: 4px solid var(--warn); }
+  .warn strong { color: var(--warn); }
+  .flow {
+    background: #fff; border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.15rem; font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.85rem; line-height: 1.7; margin-bottom: 1rem; white-space: pre;
+    overflow-x: auto;
+  }
+</style>
+</head>
+<body>
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <input id="toc-search" type="search" placeholder="Search this doc…" aria-label="Search this doc" autocomplete="off" />
+    <p id="toc-count" aria-live="polite"></p>
+    <ol>
+      <li><a href="#overview">1. Overview</a></li>
+      <li><a href="#urls">2. URL strategy</a></li>
+      <li><a href="#lookup">3. Looking up strings</a></li>
+      <li><a href="#switching">4. Switching language</a></li>
+      <li><a href="#links">5. Locale-aware links (bug)</a></li>
+      <li><a href="#gaps">6. Related gaps</a></li>
+      <li><a href="#adding">7. Adding strings</a></li>
+      <li><a href="#reference">8. Quick reference</a></li>
+    </ol>
+    <p class="hint">Drag the green divider to resize this panel. Search filters both the TOC and the sections.</p>
+  </nav>
+
+  <main class="content">
+    <article>
+      <h1>How the translation (i18n) system works</h1>
+      <p class="meta">Nuxt-Resto-Website · i18n-translation-docs · 2026-10-17</p>
+
+      <h2 id="overview">1. Overview</h2>
+      <p>The site is bilingual (English + Indonesian) via <code>@nuxtjs/i18n</code> v10.6 — the only Nuxt module in the project (<code>nuxt.config.ts:134</code>). All translatable copy lives in two JSON files, keyed by nested namespaces.</p>
+      <table>
+        <tr><th>Item</th><th>Value</th></tr>
+        <tr><td>Module</td><td><code>@nuxtjs/i18n</code> 10.6.0</td></tr>
+        <tr><td>Locales</td><td><code>en</code> (default), <code>id</code></td></tr>
+        <tr><td>Files</td><td><code>i18n/locales/en.json</code>, <code>i18n/locales/id.json</code></td></tr>
+        <tr><td>Strategy</td><td><code>prefix_except_default</code></td></tr>
+        <tr><td>Loading</td><td><code>lazy: true</code> — only the active locale is downloaded</td></tr>
+        <tr><td>Persistence</td><td>cookie <code>i18n_lang</code></td></tr>
+        <tr><td>Config location</td><td><code>nuxt.config.ts:108-131</code></td></tr>
+      </table>
+
+      <h2 id="urls">2. URL strategy — <code>prefix_except_default</code></h2>
+      <p>The default locale gets <strong>no prefix</strong>; every other locale does:</p>
+      <table>
+        <tr><th>Locale</th><th>Route</th></tr>
+        <tr><td>EN (default)</td><td><code>/menu</code></td></tr>
+        <tr><td>ID</td><td><code>/id/menu</code></td></tr>
+      </table>
+      <div class="note">
+        <strong>Do not create <code>pages/[lang]/</code>.</strong> The module already owns the locale prefix. A file at <code>app/pages/monkey-forest-exit.vue</code> automatically serves both <code>/monkey-forest-exit</code> and <code>/id/monkey-forest-exit</code>.
+      </div>
+
+      <h2 id="lookup">3. Looking up strings</h2>
+      <p>There are two syntaxes, and using the wrong one in the wrong place is the most common mistake:</p>
+      <table>
+        <tr><th>Where</th><th>How</th><th>Why</th></tr>
+        <tr><td>Template</td><td><code>{{ $t('nav.menu') }}</code></td><td><code>$t</code> is injected into template scope by the module (~230 call sites)</td></tr>
+        <tr><td><code>&lt;script setup&gt;</code></td><td><code>const { t } = useI18n()</code> then <code>t('nav.menu')</code></td><td><code>$t</code> is <strong>not</strong> available in script — only <code>t</code></td></tr>
+      </table>
+      <p>This distinction is documented in <code>app/pages/monkey-forest.vue:185</code>.</p>
+      <p>Both are <strong>reactive</strong>: switching locale re-renders every <code>$t</code> in place, with no page reload.</p>
+      <p><strong>Lazy loading</strong> (<code>lazy: true</code>) means only the active locale's JSON is fetched — an EN visitor never downloads <code>id.json</code>. A side effect: a key missing from one file does not throw, it simply renders the key path as visible text.</p>
+
+      <h2 id="switching">4. Switching language</h2>
+      <p><code>app/components/LanguageSwitcher.vue</code> loops the configured locales and calls <code>setLocale()</code>:</p>
+      <pre><code>const { locale, locales, setLocale } = useI18n()
+// &lt;button v-for="loc in locales" @click="setLocale(loc.code)"&gt;EN / ID&lt;/button&gt;</code></pre>
+      <ul>
+        <li><code>setLocale(code)</code> updates the URL <em>and</em> the rendered copy.</li>
+        <li>The choice persists in the <code>i18n_lang</code> cookie.</li>
+        <li><code>detectBrowserLanguage.redirectOn: 'root'</code> — browser-language detection only fires at <code>/</code>; deep links such as <code>/id/menu</code> are never auto-redirected.</li>
+      </ul>
+
+      <h2 id="links">5. Locale-aware links — known bug</h2>
+      <div class="warn">
+        <strong>Bug:</strong> <code>@nuxtjs/i18n</code> does <em>not</em> auto-prefix a plain <code>&lt;NuxtLink&gt;</code>. Verified: <code>NuxtLinkLocale</code> is used nowhere in this repo, and <code>localePath()</code> appears in exactly one place (<code>NavBreadcrumb.vue:139</code>).
+      </div>
+      <p>Live proof — the header nav rendered on <code>/id/</code>:</p>
+      <pre><code>['/', '/menu', '/promotions', '/monkey-forest', '/about', '/contact']</code></pre>
+      <p>So an Indonesian visitor on <code>/id/</code> who taps header “Menu” is sent to <code>/menu</code> — <strong>silently switched back to English</strong>.</p>
+      <h3>Affected files</h3>
+      <ul>
+        <li><code>app/layouts/default.vue</code> — 6 nav links + logo (the whole header)</li>
+        <li><code>app/pages/index.vue</code> — CTA buttons</li>
+        <li><code>app/pages/about.vue</code> — CTA buttons</li>
+        <li><code>app/components/campaign/HeroAfterMonkeyForest.vue</code> — “See menu” CTA</li>
+      </ul>
+      <h3>Correct pattern</h3>
+      <p>Already used in <code>NavBreadcrumb.vue</code> and <code>monkey-forest-exit.vue</code>:</p>
+      <pre><code>const localePath = useLocalePath()
+// :to="localePath('/menu')"  →  '/menu' (EN) or '/id/menu' (ID)</code></pre>
+      <p>Fix = swap <code>&lt;NuxtLink to="/x"&gt;</code> for <code>&lt;NuxtLink :to="localePath('/x')"&gt;</code> (or use <code>&lt;NuxtLinkLocale&gt;</code>) in the affected files.</p>
+
+      <h2 id="gaps">6. Related gaps</h2>
+      <ul>
+        <li><code>nuxt.config.ts:62</code> hardcodes <code>htmlAttrs: { lang: 'en' }</code>, and no <code>useLocaleHead()</code> is called anywhere — so <code>&lt;html lang&gt;</code> stays <code>"en"</code> even on <code>/id/</code>.</li>
+        <li>No <code>hreflang</code> alternates are emitted (<code>i18n.baseUrl</code> is unset), so search engines get no EN↔ID signal.</li>
+      </ul>
+
+      <h2 id="adding">7. Adding strings</h2>
+      <ol>
+        <li>Add the key to <strong>both</strong> <code>en.json</code> and <code>id.json</code> with identical structure.</li>
+        <li>Keep namespaces per-feature (<code>nav</code>, <code>hero</code>, <code>campaignOffer</code>, <code>monkey_forest_exit</code>, …).</li>
+        <li>Reuse an existing namespace before creating a new one.</li>
+        <li>Verify parity with a key-diff — asymmetry is the failure mode this convention exists to prevent.</li>
+      </ol>
+      <p>Every locale change must be logged in <code>handoffs/i18n.md</code> under <code>## Changelog</code>.</p>
+
+      <h2 id="reference">8. Quick reference</h2>
+      <div class="flow">URL (/id/menu)
+  → i18n module resolves locale = 'id'
+  → loads id.json (lazy)
+  → $t('nav.menu') / t('nav.menu') look up id.json → "Menu"
+  → useLocalePath() keeps links inside /id/*</div>
+      <table>
+        <tr><th>Need</th><th>Use</th></tr>
+        <tr><td>Translate in template</td><td><code>$t('key')</code></td></tr>
+        <tr><td>Translate in script</td><td><code>const { t } = useI18n()</code> → <code>t('key')</code></td></tr>
+        <tr><td>Active locale code</td><td><code>const { locale } = useI18n()</code></td></tr>
+        <tr><td>All locales</td><td><code>const { locales } = useI18n()</code></td></tr>
+        <tr><td>Change language</td><td><code>setLocale('id')</code></td></tr>
+        <tr><td>Locale-aware URL</td><td><code>useLocalePath()('/menu')</code></td></tr>
+        <tr><td>Locale-aware link</td><td><code>&lt;NuxtLinkLocale to="/menu"&gt;</code></td></tr>
+      </table>
+    </article>
+  </main>
+<script>
+  // TOC search: filters TOC entries + content sections by the same query.
+  // Sections are aligned by index (TOC link[i] <-> content h2[i]).
+  (function () {
+    var input = document.getElementById('toc-search');
+    var count = document.getElementById('toc-count');
+    var items = Array.prototype.slice.call(document.querySelectorAll('nav.toc ol li'));
+    var heads = Array.prototype.slice.call(document.querySelectorAll('main.content h2'));
+
+    // Block of a section = its h2 plus following siblings up to the next h2.
+    function blockNodes(h2) {
+      var nodes = [h2], el = h2.nextElementSibling;
+      while (el && el.tagName !== 'H2') { nodes.push(el); el = el.nextElementSibling; }
+      return nodes;
+    }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase(), hits = 0;
+      heads.forEach(function (h2, i) {
+        var text = blockNodes(h2).map(function (n) { return n.textContent || ''; }).join(' ').toLowerCase();
+        var match = !q || text.indexOf(q) !== -1;
+        blockNodes(h2).forEach(function (n) { n.style.display = match ? '' : 'none'; });
+        if (items[i]) items[i].style.display = match ? '' : 'none';
+        if (match && q) hits++;
+      });
+      count.textContent = q ? (hits + (hits === 1 ? ' section' : ' sections') + ' match') : '';
+    });
+  })();
+</script>
+</body>
+</html>

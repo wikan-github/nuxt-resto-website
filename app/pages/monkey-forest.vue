@@ -1,9 +1,11 @@
 <!--
   ============================================================================
-  after-monkey-forest.vue — Conversion landing page for Ubud Monkey Forest guests
+  monkey-forest.vue — Conversion landing page for Ubud Monkey Forest guests
   ============================================================================
   Dedicated URL for Sanctuary-exit traffic (flyers, QR codes, guides):
-  `/after-monkey-forest` (EN) and `/id/after-monkey-forest` (ID).
+  `/monkey-forest` (EN) and `/id/monkey-forest` (ID).
+  (Renamed from after-monkey-forest.vue on 2026-10-15; old URLs 301-redirect
+  via routeRules in nuxt.config.ts.)
 
   Funnel: hero (special offer) → ticket banner → benefits → location → final CTA.
   Every WhatsApp button uses the special-offer message (i18n `hero.monkeyForestMessage`)
@@ -203,6 +205,7 @@ const offerJsonLd = computed(() => {
     seller: { '@type': 'Restaurant', name: 'Tropical View Ubud' },
   }
 })
+
 useHead(() => ({
   script: offerJsonLd.value
     ? [{ type: 'application/ld+json', innerHTML: JSON.stringify(offerJsonLd.value) }]

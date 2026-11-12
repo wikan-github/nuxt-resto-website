@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<!--
+  PURPOSE: Declares this document as HTML5.
+  BEHAVIOR: Tells the browser to use standards mode (not quirks mode).
+  REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Quirks_Mode_and_Standards_Mode
+-->
+<html lang="en">
+<!--
+  PURPOSE: Root element of the document.
+  BEHAVIOR: lang="en" tells screen readers and search engines the page is English.
+  REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang
+-->
+<head>
+  <!--
+    PURPOSE: Container for metadata (not visible on the page itself).
+    BEHAVIOR: Loaded before <body> so the browser knows encoding/title early.
+  -->
+  <meta charset="UTF-8">
+  <!--
+    PURPOSE: Declares character encoding as UTF-8.
+    BEHAVIOR: Ensures emoji (🌿, 🍽️) and accented characters render correctly.
+    DETAIL: Must be the first <meta> tag, within the first 1024 bytes of the file.
+    REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset
+  -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    PURPOSE: Makes the page responsive on mobile devices.
+    BEHAVIOR: Sets viewport width to the device width and disables initial zoom-out.
+    DETAIL: Without this, mobile browsers render at ~980px and shrink the page.
+    REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
+  -->
+
+  <title>UTM Explained — Monkey Forest Exit Campaign</title>
+  <!--
+    PURPOSE: Text shown in the browser tab and used by search engines.
+    REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title
+  -->
+
+  <meta name="description" content="A beginner-friendly guide to UTM parameters (Urchin Tracking Module) for the Monkey Forest Guest Exit conversion campaign.">
+  <!--
+    PURPOSE: Short summary for search engine results and social previews.
+    DETAIL: Best kept under ~155 characters.
+    REF: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name
+  -->
+
+  <style>
+    /*
+      PURPOSE: All page styles live here so the file is fully self-contained.
+      DETAIL: No external CSS = works offline, easy to email/archive.
+    */
+
+    /* :root holds CSS custom properties (variables) used throughout the page.
+       PURPOSE: Central palette + spacing so the page looks consistent.
+       DETAIL: Change once here, updates everywhere via var(--name).
+       REF: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
+    :root {
+      --forest: #1f2a24;        /* Deep green — masthead background */
+      --forest-2: #2f5d3f;      /* Mid green — headings, accents */
+      --forest-3: #3f7a52;      /* Light green — borders, list markers */
+      --cream: #f7f3ec;         /* Page background */
+      --cream-2: #efe8dc;       /* Inline code background */
+      --ink: #1a1a1a;           /* Primary text color */
+      --ink-soft: #4a4a4a;      /* Secondary text */
+      --amber: #c97b2e;         /* Accent / highlight */
+      --amber-soft: #f0d3a8;    /* Light amber — on dark backgrounds */
+      --line: #ddd4c6;          /* Hairline borders */
+      --danger: #a33a2a;        /* "Don't do this" red */
+      --ok: #2f7d4f;            /* "Do this" green */
+      --radius: 10px;           /* Consistent corner rounding */
+      --maxw: 820px;            /* Max content width for readability */
+    }
+
+    /* Universal selector reset.
+       PURPOSE: Makes width/height math predictable (padding inside width).
+       REF: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing */
+    * { box-sizing: border-box; }
+
+    /* Smooth scrolling when clicking anchor links (e.g., table of contents). */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 24px; /* Offsets for sticky elements */
+    }
+
+    /* Body — sets the page's base typography and background. */
+    body {
+      margin: 0;                        /* Remove default 8px browser margin */
+      background: var(--cream);
+      color: var(--ink);
+      /* System font stack: uses the OS's native font for speed + familiarity */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16.5px;
+      line-height: 1.65;                /* Comfortable reading rhythm */
+      -webkit-font-smoothing: antialiased; /* Smoother text on macOS/iOS */
+    }
+
+    /* ---------- MASTHEAD (top banner) ---------- */
+    header.masthead {
+      /* Diagonal gradient from dark to lighter green — gives depth */
+      background: linear-gradient(155deg, var(--forest) 0%, var(--forest-2) 65%, var(--forest-3) 100%);
+      color: var(--cream);
+      padding: 56px 22px 48px;
+      position: relative;
+      overflow: hidden; /* Clips the decorative circle below */
+    }
+
+    /* Decorative radial glow — pure visual polish, no content.
+       ::after creates a pseudo-element without touching the HTML. */
+    header.masthead::after {
+      content: "";
+      position: absolute;
+      right: -80px; bottom: -120px;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      /* Soft amber glow fading to transparent */
+      background: radial-gradient(circle, rgba(201,123,46,.30), transparent 68%);
+      pointer-events: none; /* Lets clicks pass through to elements underneath */
+    }
+
+    /* Inner wrapper — constrains masthead content to the same width as body. */
+    .masthead-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1; /* Sits above the ::after glow */
+    }
+
+    /* Kicker badge — small uppercase label above the title. */
+    .kicker {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: .16em;       /* Wide tracking = "technical" feel */
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--amber-soft);
+      border: 1px solid rgba(240,211,168,.4);
+      padding: 5px 12px;
+      border-radius: 999px;        /* Pill shape */
+      margin-bottom: 20px;
+    }
+
+    /* Main page title. */
+    h1.doc-title {
+      /* clamp(min, preferred, max) = fluid type that scales with viewport */
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.14;
+      margin: 0 0 14px;
+      letter-spacing: -.02em; /* Slightly tighter = looks more modern at large sizes */
+      font-weight: 800;
+    }
+
+    /* Subhead under the title. */
+    .doc-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      color: rgba(247,243,236,.86);
+      max-width: 60ch;  /* 60 characters per line = optimal readability */
+      margin: 0 0 26px;
+    }
+
+    /* Horizontal strip of metadata below the subhead. */
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 26px;
+      font-size: 13.5px;
+      color: rgba(247,243,236,.72);
+      border-top: 1px solid rgba(247,243,236,.18);
+      padding-top: 18px;
+    }
+    .meta-strip b { color: var(--cream); font-weight: 600; }
+
+    /* ---------- MAIN WRAPPER ---------- */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 22px 80px;
+    }
+
+    /* ---------- SECTIONS ---------- */
+    section {
+      margin: 0 0 52px;
+      scroll-margin-top: 22px; /* Offset for anchor-link scrolling */
+    }
+
+    /* Section header row: number + title. */
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      border-bottom: 2px solid var(--forest);
+      padding-bottom: 10px;
+      margin-bottom: 22px;
+    }
+
+    /* Two-digit section number (01, 02, ...). */
+    .sec-num {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--amber);
+      letter-spacing: .06em;
+      flex: none; /* Prevents shrinking if title is long */
+      font-variant-numeric: tabular-nums; /* Monospaced digits = aligned */
+    }
+
+    h2.sec-title {
+      font-size: clamp(20px, 2.8vw, 26px);
+      margin: 0;
+      letter-spacing: -.015em;
+      line-height: 1.25;
+      color: var(--forest);
+      font-weight: 800;
+    }
+
+    /* Sub-headings inside sections. */
+    h3 {
+      font-size: 17.5px;
+      margin: 30px 0 10px;
+      color: var(--forest-2);
+      letter-spacing: -.01em;
+      font-weight: 700;
+    }
+
+    h4 {
+      font-size: 15px;
+      margin: 20px 0 8px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    p { margin: 0 0 14px; }
+
+    /* Intro paragraph — slightly larger to draw the eye in. */
+    section > p:first-of-type {
+      font-size: 17px;
+      color: var(--ink-soft);
+    }
+
+    /* Lists. */
+    ul, ol { margin: 0 0 16px; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    li::marker { color: var(--forest-3); } /* Colored bullet/number */
+
+    /* Bold text uses brand green. */
+    strong { color: var(--forest); font-weight: 700; }
+
+    /* ---------- TABLES ---------- */
+    /* Wrapper makes wide tables scrollable on mobile instead of overflowing. */
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* Momentum scroll on iOS */
+      margin: 0 0 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse; /* Merge adjacent borders into one line */
+      font-size: 14.5px;
+      min-width: 480px; /* Forces horizontal scroll rather than squishing */
+    }
+
+    caption {
+      caption-side: top; /* Puts caption above the table (default is bottom in some browsers) */
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: var(--cream-2);
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      text-align: left;
+      padding: 11px 16px;
+      background: var(--forest);
+      color: var(--cream);
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap; /* Headers never wrap mid-word */
+    }
+
+    td {
+      padding: 11px 16px;
+      border-top: 1px solid var(--line);
+      vertical-align: top; /* Aligns multi-line cells to the top */
+    }
+
+    /* Zebra striping — alternating row backgrounds for scannability. */
+    tbody tr:nth-child(even) { background: #fbf9f5; }
+
+    /* First column is bold — usually the "label" or "name". */
+    td:first-child { font-weight: 600; color: var(--forest); }
+
+    /* ---------- CALLOUT BOXES ---------- */
+    .callout {
+      border-left: 4px solid var(--amber);
+      background: #fff;
+      padding: 16px 20px;
+      border-radius: 0 var(--radius) var(--radius) 0; /* Flat left, round right */
+      margin: 0 0 22px;
+      box-shadow: 0 2px 10px rgba(31,42,36,.05);
+    }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* Small uppercase "label" above callout text. */
+    .callout .label {
+      display: block;
+      font-size: 11.5px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    /* Color variants for different semantic meanings. */
+    .callout.forest { border-left-color: var(--forest-2); }
+    .callout.forest .label { color: var(--forest-2); }
+    .callout.danger { border-left-color: var(--danger); }
+    .callout.danger .label { color: var(--danger); }
+    .callout.ok { border-left-color: var(--ok); }
+    .callout.ok .label { color: var(--ok); }
+
+    /* ---------- CODE BLOCKS ---------- */
+    pre {
+      background: var(--forest);
+      color: #d8f0dd;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      overflow-x: auto; /* Long lines scroll instead of wrapping awkwardly */
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0 0 18px;
+      /* Monospace stack: uses OS-native code fonts for speed */
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      border-left: 4px solid var(--amber);
+    }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+
+    /* Inline code (within paragraphs). */
+    code {
+      background: var(--cream-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: .88em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--forest);
+    }
+
+    /* ---------- FLOW DIAGRAM ---------- */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin: 0 0 22px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    /* Individual node in the flow — plain text label. */
+    .flow span.node {
+      background: var(--cream-2);
+      color: var(--forest);
+      padding: 6px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* "Highlighted" node — used for the key conversion steps. */
+    .flow span.node.hi {
+      background: var(--forest);
+      color: var(--cream);
+    }
+
+    /* Arrow between nodes. */
+    .flow span.arrow { color: var(--amber); font-weight: 800; }
+
+    /* ---------- FOOTER ---------- */
+    footer.doc-footer {
+      border-top: 2px solid var(--forest);
+      margin-top: 60px;
+      padding-top: 22px;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    footer.doc-footer b { color: var(--forest); }
+
+    /* ---------- PRINT STYLES ---------- */
+    /* Applied only when printing (Ctrl/Cmd+P) or saving as PDF. */
+    @media print {
+      body { background: #fff; font-size: 11pt; line-height: 1.5; }
+      /* Force masthead to plain black-on-white to save ink */
+      header.masthead {
+        background: #fff !important;
+        color: #000;
+        padding: 0 0 18px;
+        border-bottom: 3px solid #000;
+      }
+      header.masthead::after { display: none; } /* Hide decorative glow */
+      .kicker { color: #000; border-color: #000; }
+      .doc-sub, .meta-strip { color: #333; }
+      .meta-strip b { color: #000; }
+      .wrap { max-width: none; padding: 0; }
+      section { page-break-inside: auto; margin-bottom: 24px; }
+      h2.sec-title { page-break-after: avoid; } /* Don't leave heading alone at bottom of page */
+      .callout, .table-scroll, pre { page-break-inside: avoid; } /* Keep blocks intact */
+      table { min-width: 0; font-size: 9.5pt; }
+      th { background: #eee !important; color: #000 !important; border-bottom: 1px solid #999; }
+      pre { background: #f4f4f4; color: #111; border-left: 3px solid #666; }
+      .flow span.node.hi { background: #ddd; color: #000; }
+      a { color: #000; text-decoration: none; }
+    }
+
+    /* ---------- MOBILE TWEAKS ---------- */
+    @media (max-width: 640px) {
+      header.masthead { padding: 40px 20px 36px; }
+      .flow { font-size: 12.5px; padding: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     MASTHEAD — page title and intro
+     ============================================================ -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <span class="kicker">Beginner Guide</span>
+    <h1 class="doc-title">UTM Explained<br>for the Monkey Forest Exit Campaign</h1>
+    <p class="doc-sub">
+      How five little URL parameters turn "we got some traffic" into
+      "the exit-gate QR code paid for itself."
+    </p>
+    <div class="meta-strip">
+      <span><b>Also known as:</b> Urchin Tracking Module</span>
+      <span><b>Invented by:</b> Urchin (acquired by Google, 2005)</span>
+      <span><b>Used in:</b> Analytics, attribution, A/B testing</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============================================================
+       SECTION 1 — What UTM is
+       ============================================================ -->
+  <section id="what">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">What UTM Actually Is</h2>
+    </div>
+
+    <p>
+      <strong>UTM</strong> stands for <strong>Urchin Tracking Module</strong>.
+      It is a set of <strong>query parameters you add to the end of a URL</strong>
+      so analytics tools can tell you <em>where each visitor came from</em>.
+    </p>
+
+    <p>
+      It was created by a company called <strong>Urchin</strong>, which Google
+      acquired in 2005 — that acquisition became <em>Google Analytics</em>.
+      The name stuck.
+    </p>
+
+    <div class="callout">
+      <span class="label">The one-sentence version</span>
+      <p>
+        UTM tags are URL suffixes that tell your analytics
+        <em>which specific link, QR code, email, or ad</em> brought each visitor —
+        without needing any login or cookie.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — The 5 parameters
+       ============================================================ -->
+  <section id="params">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">The 5 Standard UTM Parameters</h2>
+    </div>
+
+    <p>
+      There are exactly five. Every one is optional, but the more you use
+      consistently, the more you learn. They always start with
+      <code>utm_</code>.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>The five UTM parameters and what they answer</caption>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Question it answers</th>
+            <th>Example value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>utm_source</td>
+            <td>Where did they come from?</td>
+            <td>qr_exit</td>
+          </tr>
+          <tr>
+            <td>utm_medium</td>
+            <td>How did they get here?</td>
+            <td>qr</td>
+          </tr>
+          <tr>
+            <td>utm_campaign</td>
+            <td>Which campaign?</td>
+            <td>monkey_forest_exit</td>
+          </tr>
+          <tr>
+            <td>utm_term</td>
+            <td>Which keyword? (paid search only)</td>
+            <td>restaurant+ubud</td>
+          </tr>
+          <tr>
+            <td>utm_content</td>
+            <td>Which variant? (A/B test, which button)</td>
+            <td>hero_cta</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout forest">
+      <span class="label">For this campaign specifically</span>
+      <p>
+        You will mainly use <code>utm_source</code> (which QR placement),
+        <code>utm_medium=qr</code> (always "qr"), and
+        <code>utm_campaign=monkey_forest_exit</code> (always the same).
+        Add <code>utm_content</code> only when testing A/B creative variants.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — What it looks like in a URL
+       ============================================================ -->
+  <section id="url">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">What It Looks Like in a URL</h2>
+    </div>
+
+    <p>
+      The <code>?</code> starts the query string. Each
+      <code>key=value</code> pair is separated by <code>&amp;</code>.
+      Order does not matter.
+    </p>
+
+<pre><code>https://tropicalviewubud.com/after-monkey-forest
+  ?utm_source=qr_exit
+  &amp;utm_medium=qr
+  &amp;utm_campaign=monkey_forest_exit
+  &amp;utm_content=gate_sticker</code></pre>
+
+    <h3>Anatomy of the URL</h3>
+
+    <div class="flow">
+      <span class="node">https://tropicalviewubud.com</span>
+      <span class="arrow">→</span>
+      <span class="node">/after-monkey-forest</span>
+      <span class="arrow">→</span>
+      <span class="node hi">?utm_source=qr_exit</span>
+      <span class="arrow">→</span>
+      <span class="node">&amp;utm_medium=qr</span>
+      <span class="arrow">→</span>
+      <span class="node">&amp;utm_campaign=...</span>
+    </div>
+
+    <ul>
+      <li><strong>Domain</strong> — the website itself</li>
+      <li><strong>Path</strong> — <code>/after-monkey-forest</code>, the campaign page</li>
+      <li><strong>?</strong> — marks the start of query parameters</li>
+      <li><strong>&amp;</strong> — separates each parameter</li>
+      <li><strong>utm_*</strong> — the attribution tags your analytics reads</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — Why the campaign needs UTM
+       ============================================================ -->
+  <section id="why">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">Why This Campaign Needs UTM</h2>
+    </div>
+
+    <p>
+      In the playbook, every physical QR placement gets its own
+      <code>utm_source</code>. Same landing page, same offer —
+      different tracking label.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>QR placements and their UTM sources</caption>
+        <thead>
+          <tr>
+            <th>Placement</th>
+            <th>Promo code</th>
+            <th>utm_source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Exit gate sticker</td><td>MF-EXIT-01</td><td>qr_exit</td></tr>
+          <tr><td>Ticket back</td><td>MF-TICKET-01</td><td>qr_ticket</td></tr>
+          <tr><td>Guesthouse card</td><td>MF-GUEST-01</td><td>qr_guesthouse</td></tr>
+          <tr><td>Driver dashboard</td><td>MF-DRIVER-01</td><td>qr_driver</td></tr>
+          <tr><td>Guide card</td><td>MF-GUIDE-01</td><td>guide_card</td></tr>
+          <tr><td>Table sticker</td><td>MF-TABLE-01</td><td>sticker_table</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Without UTM vs with UTM</h3>
+
+    <div class="callout danger">
+      <span class="label">Without UTM</span>
+      <p>"200 people visited the campaign page this week."</p>
+      <p>You have no idea which QR code, which flyer, or which driver
+         brought them — so you cannot decide where to print more.</p>
+    </div>
+
+    <div class="callout ok">
+      <span class="label">With UTM</span>
+      <p>"142 from the exit sticker. 40 from the ticket. 18 from the driver dashboard."</p>
+      <p>Now you know the exit sticker is worth reprinting and the
+         driver dashboard is worth pitching to more drivers.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5 — How UTM differs from the promo code
+       ============================================================ -->
+  <section id="vs-code">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">UTM vs Promotion Code</h2>
+    </div>
+
+    <p>
+      They look similar but do different jobs. You will use
+      <strong>both</strong> in the same campaign.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>Two tracking mechanisms, two purposes</caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>UTM</th>
+            <th>Promotion code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lives in</td>
+            <td>The URL query string</td>
+            <td>Database + QR + URL</td>
+          </tr>
+          <tr>
+            <td>Purpose</td>
+            <td>Marketing attribution</td>
+            <td>Voucher redemption + anti-abuse</td>
+          </tr>
+          <tr>
+            <td>Persisted where</td>
+            <td>Your analytics tool</td>
+            <td>Your <code>promotion_redemption</code> table</td>
+          </tr>
+          <tr>
+            <td>Example</td>
+            <td><code>utm_source=qr_exit</code></td>
+            <td><code>MF-EXIT-01</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout forest">
+      <span class="label">Why both</span>
+      <p>
+        UTM tells you where the visitor came from.
+        The promotion code proves they actually redeemed the offer.
+        Together they let you cross-check:
+        <em>did the analytics-reported source match the voucher redeemed?</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6 — How the data flows
+       ============================================================ -->
+  <section id="flow">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2 class="sec-title">How UTM Flows Through the App</h2>
+    </div>
+
+    <p>
+      From the moment a tourist scans a QR code to the moment you
+      read the weekly report, here is the full path.
+    </p>
+
+    <div class="flow">
+      <span class="node">Tourist scans QR</span><span class="arrow">→</span>
+      <span class="node hi">URL carries utm_source=qr_exit</span><span class="arrow">→</span>
+      <span class="node">Nuxt route reads query</span><span class="arrow">→</span>
+      <span class="node hi">useCampaign() returns source</span><span class="arrow">→</span>
+      <span class="node">Every tracking event includes it</span><span class="arrow">→</span>
+      <span class="node hi">Report: "qr_exit = 22 claims"</span>
+    </div>
+
+    <h3>In code, it looks like this</h3>
+
+<pre><code>// Composable resolves the source from the URL
+const { utmSource } = useCampaign()
+
+// Passed into the WhatsApp URL builder
+const whatsappUrl = computed(() =>
+  buildClaimUrl({
+    offerTitle: offer.value?.title,
+    utmSource: utmSource.value,  // e.g., "qr_exit"
+    locale: locale.value,
+  })
+)
+
+// Every claim click reports the source
+useTrackEvent('wa_claim_click', {
+  source: 'hero',
+  utm_source: utmSource.value,   // Attribution travels with the event
+})</code></pre>
+
+    <p>
+      The same <code>utmSource</code> value appears in every tracking
+      event and in the WhatsApp pre-filled message
+      (<code>src: qr_exit</code>). That is how the analytics dashboard
+      and the restaurant's redemption log stay in sync.
+    </p>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7 — Common beginner mistakes
+       ============================================================ -->
+  <section id="mistakes">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2 class="sec-title">Common Beginner Mistakes</h2>
+    </div>
+
+    <ul>
+      <li>
+        <strong>Case sensitivity.</strong>
+        <code>utm_source=QR_Exit</code> is a <em>different source</em> from
+        <code>utm_source=qr_exit</code> to your analytics tool. Always lowercase.
+      </li>
+      <li>
+        <strong>Inconsistent naming.</strong>
+        <code>qr-exit</code>, <code>qr_exit</code>, and <code>qrexit</code>
+        all look like separate sources. Pick one convention and lock it
+        before printing any QR codes.
+      </li>
+      <li>
+        <strong>Spaces inside values.</strong>
+        Must be URL-encoded as <code>%20</code> or <code>+</code>.
+        Better: use underscores or dashes instead.
+      </li>
+      <li>
+        <strong>Using UTM on internal links.</strong>
+        Linking from your own homepage to your own menu with
+        <code>?utm_source=homepage</code> will <em>overwrite</em>
+        the original source in Google Analytics. UTM is for
+        <strong>inbound</strong> traffic only.
+      </li>
+      <li>
+        <strong>Forgetting UTM on QR codes.</strong>
+        Very common. Without it, all QR traffic looks like
+        "direct" traffic and you learn nothing about which placement works.
+      </li>
+      <li>
+        <strong>Different UTM on the same placement.</strong>
+        If your exit sticker has <code>qr_exit</code> but the printed
+        backup has <code>exit_qr</code>, your data splits into two
+        buckets and looks like two underperforming sources.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       SECTION 8 — Naming convention for this campaign
+       ============================================================ -->
+  <section id="convention">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2 class="sec-title">Naming Convention — Locked</h2>
+    </div>
+
+    <p>
+      Copy this exactly. Do not improvise. Consistency is the entire
+      point of UTM.
+    </p>
+
+<pre><code>utm_source   = qr_exit | qr_ticket | qr_guesthouse |
+               qr_driver | guide_card | sticker_table
+
+utm_medium   = qr
+
+utm_campaign = monkey_forest_exit
+
+utm_content  = &lt;creative variant&gt;    (optional)
+               e.g., combo_a  vs  combo_b</code></pre>
+
+    <div class="callout">
+      <span class="label">Rule of thumb</span>
+      <p>
+        Lowercase. Underscores between words. No spaces. No capital letters.
+        If you ever hesitate, look at the table in Section 4 —
+        that is the source of truth.
+      </p>
+    </div>
+
+    <h3>Full example URLs</h3>
+
+<pre><code>https://tropicalviewubud.com/after-monkey-forest?utm_source=qr_exit&amp;utm_medium=qr&amp;utm_campaign=monkey_forest_exit
+
+https://tropicalviewubud.com/after-monkey-forest?utm_source=qr_ticket&amp;utm_medium=qr&amp;utm_campaign=monkey_forest_exit
+
+https://tropicalviewubud.com/after-monkey-forest?utm_source=qr_driver&amp;utm_medium=qr&amp;utm_campaign=monkey_forest_exit</code></pre>
+
+    <p>
+      These three URLs point to the same page with the same offer.
+      Only the <code>utm_source</code> changes. That difference is what
+      makes the report meaningful.
+    </p>
+  </section>
+
+  <!-- ============================================================
+       SECTION 9 — Further reading
+       ============================================================ -->
+  <section id="reading">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <h2 class="sec-title">Further Reading</h2>
+    </div>
+
+    <ul>
+      <li>
+        <strong>Google Campaign URL Builder</strong> —
+        the official tool that builds UTM-tagged URLs for you.
+        <br>
+        <code>https://ga-dev-tools.google/campaign-url-builder/</code>
+      </li>
+      <li>
+        <strong>Google Analytics — About UTM parameters</strong> —
+        the canonical Google doc explaining each parameter.
+        <br>
+        <code>https://support.google.com/analytics/answer/1033863</code>
+      </li>
+      <li>
+        <strong>MDN — URLSearchParams</strong> —
+        the JS API for reading query strings in the browser.
+        <br>
+        <code>https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams</code>
+      </li>
+      <li>
+        <strong>MDN — URL structure</strong> —
+        the anatomy of a URL, useful for understanding the query string.
+        <br>
+        <code>https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL</code>
+      </li>
+    </ul>
+  </section>
+
+  <footer class="doc-footer">
+    <span><b>UTM Explained</b> — Monkey Forest Exit Campaign</span>
+    <span>Single-file HTML · No dependencies · Works offline</span>
+  </footer>
+
+</div>
+</body>
+</html>

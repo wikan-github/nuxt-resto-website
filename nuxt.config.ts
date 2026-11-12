@@ -132,5 +132,13 @@ export default defineNuxtConfig({
     },
   },
 
+  // ── routeRules: redirects for renamed routes ──
+  // /after-monkey-forest → /monkey-forest (file renamed 2026-10-15).
+  // Keeps printed QRs, bookmarks, and indexed URLs working via 301.
+  routeRules: {
+    '/after-monkey-forest': { redirect: '/monkey-forest' },
+    '/id/after-monkey-forest': { redirect: '/id/monkey-forest' },
+  },
+
   modules: ['@nuxtjs/i18n'],
 })

@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "typecheck": "nuxt typecheck",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -18,18 +19,21 @@
     ]
   },
   "dependencies": {
-    "@mikro-orm/core": "^7.2.5",
-    "@mikro-orm/migrations": "^7.2.5",
-    "@mikro-orm/seeder": "^7.2.5",
-    "@mikro-orm/sqlite": "^7.2.5",
+    "@mikro-orm/core": "^7.2.7",
+    "@mikro-orm/migrations": "^7.2.7",
+    "@mikro-orm/seeder": "^7.2.7",
+    "@mikro-orm/sqlite": "^7.2.7",
     "@nuxtjs/i18n": "10.6.0",
     "better-sqlite3": "^13.0.3",
-    "nuxt": "^4.5.2",
-    "vue": "^3.5.41",
-    "vue-router": "^5.2.0"
+    "nuxt": "^4.6.4",
+    "vue": "^3.5.45",
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "^7.2.5",
-    "tsx": "^4.23.15"
+    "@mikro-orm/cli": "^7.2.7",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vue-tsc": "^3.3.14"
   }
 }

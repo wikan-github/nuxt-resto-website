@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Download Campaign Files</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 24px;
+    background: #f7f3ec;
+    color: #1a1a1a;
+    line-height: 1.55;
+  }
+  h1 { color: #1f2a24; margin-bottom: 6px; }
+  p { color: #4a4a4a; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 14px 28px;
+    margin: 24px 0;
+    background: #c97b2e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(201, 123, 46, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { box-shadow: 0 12px 28px rgba(201, 123, 46, 0.5); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status {
+    margin: 16px 0;
+    padding: 14px 18px;
+    background: #fff;
+    border-left: 4px solid #2f5d3f;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #1f2a24;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.error { border-left-color: #a33a2a; color: #a33a2a; }
+  ul {
+    background: #fff;
+    border: 1px solid #e5ddd0;
+    border-radius: 8px;
+    padding: 18px 22px 18px 42px;
+    font-size: 13.5px;
+    font-family: ui-monospace, Menlo, monospace;
+    color: #4a4a4a;
+  }
+  ul li { padding: 3px 0; }
+  code {
+    background: #efe8dc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Campaign Files</h1>
+<p>Click the button below to download every file as <code>campaign-files.zip</code>.</p>
+
+<button id="downloadBtn" class="btn">
+  <span>📦</span> Download campaign-files.zip
+</button>
+
+<div id="status" class="status"></div>
+
+<h2 style="margin-top:32px;color:#1f2a24;font-size:16px;">What's inside</h2>
+<ul id="filelist"></ul>
+
+<!-- JSZip from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+// ============================================================
+// ALL FILE CONTENTS
+// Each key = the path inside the zip.
+// Each value = the file's exact content.
+// ============================================================
+const files = {
+
+'assets/css/theme.css': `:root {
+  --color-forest: #1f2a24;
+  --color-forest-2: #2f5d3f;
+  --color-cream: #f7f3ec;
+  --color-cream-2: #efe8dc;
+  --color-amber: #c97b2e;
+  --color-amber-soft: #f0d3a8;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #4a4a4a;
+  --color-line: #e5ddd0;
+  --color-white: #ffffff;
+  --color-green: #25D366;
+  --color-ok: #2f7d4f;
+  --color-danger: #a33a2a;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 2px 8px rgba(31, 42, 36, 0.06);
+  --shadow-md: 0 8px 24px rgba(31, 42, 36, 0.08);
+  --shadow-lg: 0 12px 32px rgba(31, 42, 36, 0.15);
+
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-cream);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+`,
+
+'app/composables/useWhatsApp.ts': `export function useWhatsApp() {
+  const config = useRuntimeConfig()
+  const phone = config.public.whatsappPhone
+
+  function buildClaimUrl(opts: {
+    offerTitle?: string
+    utmSource?: string
+    locale?: string
+  }) {
+    const isId = opts.locale === 'id'
+
+    const greeting = isId
+      ? 'Halo Tropical View Ubud, saya baru selesai dari Monkey Forest.'
+      : 'Hi Tropical View Ubud, I just finished the Monkey Forest.'
+
+    const claimLine = opts.offerTitle
+      ? (isId
+          ? \`Saya ingin klaim: \${opts.offerTitle}.\`
+          : \`I'd like to claim: \${opts.offerTitle}.\`)
+      : ''
+
+    const srcLine = opts.utmSource ? \`(src: \${opts.utmSource})\` : ''
+
+    const message = [greeting, claimLine, srcLine].filter(Boolean).join('\\n')
+
+    return \`https://wa.me/\${phone}?text=\${encodeURIComponent(message)}\`
+  }
+
+  return { buildClaimUrl }
+}
+`,
+
+'app/composables/useOpenNow.ts': `export function useOpenNow(hours = { open: '07:00', close: '22:00' }) {
+  const now = ref(new Date())
+
+  onMounted(() => {
+    setInterval(() => (now.value = new Date()), 60_000)
+  })
+
+  const isOpen = computed(() => {
+    const [openHour, openMin] = hours.open.split(':').map(Number)
+    const [closeHour, closeMin] = hours.close.split(':').map(Number)
+    const currentMinutes = now.value.getHours() * 60 + now.value.getMinutes()
+
+    return (
+      currentMinutes >= openHour * 60 + openMin &&
+      currentMinutes < closeHour * 60 + closeMin
+    )
+  })
+
+  const label = computed(() => (isOpen.value ? 'Open now' : 'Closed'))
+
+  return { isOpen, label }
+}
+`,
+
+'app/composables/useCampaign.ts': `export function useCampaign() {
+  const route = useRoute()
+  const { locale } = useI18n()
+
+  const utmSource = computed(() => (route.query.utm_source as string) || 'qr_exit')
+  const offerSlug = computed(() => (route.query.offer as string) || null)
+
+  const { data, pending, error } = useFetch(
+    () => \`/api/campaigns/\${utmSource.value}\`,
+    {
+      query: computed(() => ({
+        audience: 'monkey_forest_guest',
+        offer: offerSlug.value,
+        locale: locale.value,
+      })),
+      key: computed(() => \`campaign-\${utmSource.value}-\${locale.value}\`),
+    }
+  )
+
+  const offer = computed(() => data.value?.offer ?? null)
+  const code = computed(() => data.value?.code ?? null)
+
+  return { offer, code, utmSource, offerSlug, pending, error }
+}
+`,
+
+'app/composables/useTrackEvent.ts': `export function useTrackEvent(
+  eventName: string,
+  payload: Record<string, unknown> = {}
+) {
+  if (import.meta.dev) {
+    console.log(\`[analytics] \${eventName}\`, payload)
+    return
+  }
+
+  if (typeof window !== 'undefined' && (window as any).plausible) {
+    (window as any).plausible(eventName, { props: payload })
+  }
+}
+`,
+
+'app/components/base/AppImage.vue': `<script setup lang="ts">
+const props = withDefaults(defineProps<{
+  src?: string | null
+  alt: string
+  fallback?: string
+}>(), {
+  fallback: '/images/placeholder.svg',
+})
+
+const failed = ref(false)
+
+const resolvedSrc = computed(() =>
+  !props.src || failed.value ? props.fallback : props.src
+)
+
+function handleError() {
+  failed.value = true
+  if (import.meta.dev) {
+    console.warn(\`[AppImage] missing asset: \${props.src} — using fallback\`)
+  }
+}
+<\/script>
+
+<template>
+  <img
+    :src="resolvedSrc"
+    :alt="alt"
+    loading="lazy"
+    class="app-image"
+    @error="handleError"
+  />
+</template>
+
+<style scoped>
+.app-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+`,
+
+'app/components/base/AppButton.vue': `<script setup lang="ts">
+defineProps<{
+  href?: string
+  variant?: 'primary' | 'secondary'
+  block?: boolean
+  disabled?: boolean
+}>()
+
+defineEmits<{ click: [] }>()
+<\/script>
+
+<template>
+  <a
+    v-if="href && !disabled"
+    :href="href"
+    class="btn"
+    :class="[\`btn--\${variant || 'primary'}\`, { 'btn--block': block }]"
+    @click="$emit('click')"
+  >
+    <slot />
+  </a>
+  <button
+    v-else
+    type="button"
+    class="btn"
+    :class="[\`btn--\${variant || 'primary'}\`, { 'btn--block': block }]"
+    :disabled="disabled"
+    @click="$emit('click')"
+  >
+    <slot />
+  </button>
+</template>
+
+<style scoped>
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn--primary {
+  background: var(--color-amber);
+  color: var(--color-white);
+  box-shadow: 0 6px 16px rgba(201, 123, 46, 0.3);
+}
+.btn--primary:hover { box-shadow: 0 8px 20px rgba(201, 123, 46, 0.45); }
+.btn--secondary {
+  background: transparent;
+  color: inherit;
+  border: 1.5px solid currentColor;
+  opacity: 0.85;
+}
+.btn--secondary:hover { opacity: 1; }
+.btn--block { width: 100%; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+`,
+
+'app/components/campaign/StickyOfferBar.vue': `<script setup lang="ts">
+const props = defineProps<{
+  discountLabel: string
+  whatsappUrl: string
+}>()
+
+const emit = defineEmits<{ 'claim-click': [] }>()
+
+const visible = ref(true)
+let lastScroll = 0
+
+function onScroll() {
+  const y = window.scrollY
+  if (window.innerWidth >= 768) {
+    visible.value = !(y < lastScroll && y > 400)
+  }
+  lastScroll = y
+}
+
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
+<\/script>
+
+<template>
+  <div v-show="visible" class="sticky-bar" role="banner">
+    <span class="sticky-bar__msg">
+      <span aria-hidden="true">🌿</span>
+      <span class="sticky-bar__text">{{ discountLabel }} · 2 min walk</span>
+    </span>
+    <a
+      :href="whatsappUrl"
+      class="sticky-bar__cta"
+      @click="emit('claim-click')"
+    >
+      Claim
+    </a>
+  </div>
+</template>
+
+<style scoped>
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-forest);
+  color: var(--color-cream);
+  font-size: 12px;
+  font-weight: 600;
+}
+.sticky-bar__msg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.sticky-bar__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sticky-bar__cta {
+  flex-shrink: 0;
+  background: var(--color-amber);
+  color: var(--color-white);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+@media (min-width: 768px) {
+  .sticky-bar { display: none; }
+}
+</style>
+`,
+
+'app/components/campaign/CampaignHero.vue': `<script setup lang="ts">
+defineProps<{
+  eyebrow: string
+  h1: string
+  sub: string
+  ctaPrimaryLabel: string
+  ctaPrimaryUrl: string
+  ctaSecondaryLabel: string
+  ctaSecondaryUrl: string
+  openNow: boolean
+}>()
+
+defineEmits<{ 'claim-click': [] }>()
+<\/script>
+
+<template>
+  <section class="hero">
+    <AppImage
+      src="/images/hero-rice-field.webp"
+      alt="Shaded rice-field seating at Tropical View Ubud"
+      class="hero__bg"
+    />
+    <div class="hero__content">
+      <p class="hero__eyebrow">{{ eyebrow }}</p>
+      <h1 class="hero__title">{{ h1 }}</h1>
+      <p class="hero__sub">{{ sub }}</p>
+      <div class="hero__ctas">
+        <AppButton
+          :href="ctaPrimaryUrl"
+          variant="primary"
+          @click="$emit('claim-click')"
+        >
+          <span aria-hidden="true">💬</span>
+          {{ ctaPrimaryLabel }}
+        </AppButton>
+        <AppButton :href="ctaSecondaryUrl" variant="secondary">
+          {{ ctaSecondaryLabel }}
+        </AppButton>
+      </div>
+      <p class="hero__note">
+        <span
+          class="hero__dot"
+          :class="openNow ? 'hero__dot--open' : 'hero__dot--closed'"
+        />
+        {{ openNow ? 'Open now' : 'Closed' }} · 2–3 min walk from the exit
+      </p>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 24px 36px;
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+.hero__content {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.hero__eyebrow {
+  margin-bottom: var(--space-3);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-amber);
+}
+.hero__title {
+  margin-bottom: var(--space-3);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.hero__sub {
+  margin-bottom: var(--space-5);
+  max-width: 540px;
+  font-size: 14px;
+  color: rgba(247, 243, 236, 0.82);
+}
+.hero__ctas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.hero__note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: rgba(247, 243, 236, 0.7);
+}
+.hero__dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.hero__dot--open { background: #4ade80; animation: pulse 2s infinite; }
+.hero__dot--closed { background: #f87171; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@media (min-width: 768px) {
+  .hero { padding: 60px 32px 52px; }
+  .hero__title { font-size: 38px; }
+  .hero__sub { font-size: 16px; }
+  .hero__ctas { flex-direction: row; }
+}
+</style>
+`,
+
+'app/components/campaign/OfferCard.vue': `<script setup lang="ts">
+const props = defineProps<{
+  offer: {
+    slug: string
+    title: string
+    subtitle: string
+    discountLabel: string
+    included: string[]
+    validityText: string
+    requiresTicket: boolean
+    promoPriceDinein: number | null
+    originalPriceDinein: number | null
+    validUntil: string | null
+  }
+  whatsappUrl: string
+}>()
+
+defineEmits<{ 'claim-click': []; 'terms-click': [] }>()
+
+const isExpired = computed(() => {
+  if (!props.offer.validUntil) return false
+  return new Date(props.offer.validUntil) < new Date()
+})
+
+const hasPrice = computed(() =>
+  props.offer.promoPriceDinein !== null && props.offer.promoPriceDinein > 0
+)
+
+const formattedPrice = computed(() =>
+  hasPrice.value
+    ? new Intl.NumberFormat('id-ID').format(props.offer.promoPriceDinein!)
+    : ''
+)
+
+const formattedOriginal = computed(() =>
+  props.offer.originalPriceDinein
+    ? new Intl.NumberFormat('id-ID').format(props.offer.originalPriceDinein)
+    : ''
+)
+<\/script>
+
+<template>
+  <article class="offer" :class="{ 'offer--expired': isExpired }">
+    <header class="offer__header">
+      <span class="offer__badge">
+        {{ isExpired ? 'Ended' : offer.discountLabel }}
+      </span>
+      <span v-if="offer.requiresTicket" class="offer__ticket">
+        🎫 Show your ticket
+      </span>
+    </header>
+    <div class="offer__body">
+      <h3 class="offer__title">{{ offer.title }}</h3>
+      <p class="offer__subtitle">{{ offer.subtitle }}</p>
+      <ul class="offer__included">
+        <li v-for="(item, i) in offer.included" :key="i">{{ item }}</li>
+      </ul>
+      <div class="offer__validity">
+        <span aria-hidden="true">🕐</span>
+        {{ offer.validityText }}
+      </div>
+      <div v-if="hasPrice" class="offer__price">
+        <span class="offer__price-label">From</span>
+        <span class="offer__price-value">
+          <small>IDR</small> {{ formattedPrice }}
+        </span>
+        <span v-if="formattedOriginal" class="offer__price-original">
+          {{ formattedOriginal }}
+        </span>
+      </div>
+      <AppButton
+        :href="isExpired ? undefined : whatsappUrl"
+        variant="primary"
+        block
+        :disabled="isExpired"
+        @click="!isExpired && $emit('claim-click')"
+      >
+        <span aria-hidden="true">💬</span> Claim on WhatsApp
+      </AppButton>
+      <button type="button" class="offer__terms" @click="$emit('terms-click')">
+        Terms & conditions
+      </button>
+    </div>
+  </article>
+</template>
+
+<style scoped>
+.offer {
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.offer--expired { opacity: 0.6; }
+.offer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+.offer__badge {
+  padding: 3px 9px;
+  background: var(--color-amber);
+  color: var(--color-white);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.offer__ticket {
+  font-size: 10px;
+  color: rgba(247, 243, 236, 0.75);
+}
+.offer__body { padding: var(--space-5); }
+.offer__title {
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-forest);
+}
+.offer__subtitle {
+  margin-bottom: var(--space-4);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}
+.offer__included {
+  list-style: none;
+  margin-bottom: var(--space-4);
+}
+.offer__included li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+.offer__included li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-ok);
+  font-weight: 800;
+}
+.offer__validity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  color: var(--color-ink-soft);
+}
+.offer__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px dashed var(--color-line);
+}
+.offer__price-label { font-size: 11px; color: var(--color-ink-soft); }
+.offer__price-value {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-forest);
+}
+.offer__price-value small {
+  margin-right: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+.offer__price-original {
+  font-size: 11px;
+  color: rgba(74, 74, 74, 0.5);
+  text-decoration: line-through;
+}
+.offer__terms {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-2);
+  text-align: center;
+  font-size: 10px;
+  color: var(--color-ink-soft);
+  text-decoration: underline;
+}
+</style>
+`,
+
+'app/components/campaign/WhySitHere.vue': `<script setup lang="ts">
+const items = [
+  { icon: '🚶', title: '2–3 Minutes Walk', desc: 'From the sanctuary exit straight to our door' },
+  { icon: '🌾', title: 'Cool & Shaded', desc: 'Thatched roof with rice field views' },
+  { icon: '⚡', title: 'Quick Service', desc: "We know you're hot — we serve fast" },
+  { icon: '👪', title: 'Family Friendly', desc: 'Space for groups, couples, and kids' },
+]
+<\/script>
+
+<template>
+  <section class="why">
+    <div v-for="(item, index) in items" :key="index" class="why__item">
+      <span class="why__icon" aria-hidden="true">{{ item.icon }}</span>
+      <div class="why__text">
+        <h4 class="why__title">{{ item.title }}</h4>
+        <p class="why__desc">{{ item.desc }}</p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.why {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+.why__item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.why__icon { font-size: 20px; flex-shrink: 0; }
+.why__title {
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-forest);
+}
+.why__desc {
+  font-size: 11px;
+  color: var(--color-ink-soft);
+  line-height: 1.5;
+}
+@media (min-width: 640px) {
+  .why { grid-template-columns: 1fr 1fr; }
+}
+</style>
+`,
+
+'app/components/campaign/PopularNow.vue': `<script setup lang="ts">
+const { data } = await useFetch('/api/menu', {
+  query: { featured: true, limit: 6 },
+})
+
+const dishes = computed(() => data.value?.items ?? [])
+<\/script>
+
+<template>
+  <section v-if="dishes.length" class="popular">
+    <h2 class="popular__title">Popular right now</h2>
+    <div class="popular__grid">
+      <article v-for="dish in dishes" :key="dish.id" class="dish">
+        <AppImage :src="dish.image" :alt="dish.name" class="dish__img" />
+        <div class="dish__body">
+          <h4 class="dish__name">{{ dish.name }}</h4>
+          <p class="dish__price">
+            <small>IDR</small>
+            {{ new Intl.NumberFormat('id-ID').format(dish.priceDinein) }}
+          </p>
+        </div>
+      </article>
+    </div>
+    <NuxtLink to="/menu" class="popular__link">See full menu →</NuxtLink>
+  </section>
+</template>
+
+<style scoped>
+.popular__title {
+  margin-bottom: var(--space-3);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-forest);
+}
+.popular__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+.dish {
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.dish__img { width: 100%; height: 96px; object-fit: cover; }
+.dish__body { padding: var(--space-3); }
+.dish__name { font-size: 13px; font-weight: 800; color: var(--color-forest); }
+.dish__price {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-ok);
+}
+.dish__price small { font-weight: 600; color: var(--color-ink-soft); }
+.popular__link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-amber);
+  text-decoration: underline;
+}
+@media (min-width: 640px) {
+  .popular__grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+`,
+
+'app/components/campaign/ActivePromotions.vue': `<script setup lang="ts">
+const { data } = await useFetch('/api/promotions', {
+  query: { audience: 'monkey_forest_guest', active: true, featured: true },
+})
+
+const promos = computed(() =>
+  (data.value?.items ?? []).filter((promo) => {
+    if (!promo.validUntil) return true
+    return new Date(promo.validUntil) > new Date()
+  })
+)
+<\/script>
+
+<template>
+  <section v-if="promos.length" class="promos">
+    <h2 class="promos__title">Active promotions</h2>
+    <div class="promos__scroll">
+      <article v-for="promo in promos" :key="promo.slug" class="promo">
+        <span class="promo__badge">{{ promo.categoryLabel }}</span>
+        <h4 class="promo__title">{{ promo.title }}</h4>
+        <p class="promo__sub">{{ promo.subtitle }}</p>
+      </article>
+    </div>
+    <NuxtLink to="/promotions" class="promos__link">All promotions →</NuxtLink>
+  </section>
+</template>
+
+<style scoped>
+.promos__title {
+  margin-bottom: var(--space-3);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-forest);
+}
+.promos__scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+  -webkit-overflow-scrolling: touch;
+}
+.promo {
+  flex-shrink: 0;
+  min-width: 180px;
+  padding: var(--space-3);
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.promo__badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 7px;
+  background: var(--color-amber-soft);
+  color: #8a5a1e;
+  border-radius: var(--radius-sm);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.promo__title {
+  margin-bottom: 3px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-forest);
+}
+.promo__sub { font-size: 11px; color: var(--color-ink-soft); line-height: 1.4; }
+.promos__link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-amber);
+  text-decoration: underline;
+}
+</style>
+`,
+
+'app/components/campaign/SocialProof.vue': `<script setup lang="ts">
+const props = defineProps<{
+  rating: number
+  reviewCount: number
+  weeklyGuestCount: number
+}>()
+
+const stars = computed(() => '★'.repeat(Math.round(props.rating)))
+<\/script>
+
+<template>
+  <section class="proof">
+    <div class="proof__rating">
+      <div class="proof__stars" aria-hidden="true">{{ stars }}</div>
+      <div class="proof__number">{{ rating.toFixed(1) }}</div>
+      <div class="proof__label">{{ reviewCount }}+ Google reviews</div>
+    </div>
+    <div class="proof__divider" />
+    <div class="proof__guests">
+      <b>{{ weeklyGuestCount }}</b>
+      guests from the sanctuary this week
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: var(--color-forest);
+  color: var(--color-cream);
+  border-radius: var(--radius-lg);
+}
+.proof__stars { color: var(--color-amber); font-size: 16px; letter-spacing: 1px; }
+.proof__number { font-size: 22px; font-weight: 800; }
+.proof__label { font-size: 10px; color: rgba(247, 243, 236, 0.6); }
+.proof__divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(247, 243, 236, 0.15);
+}
+.proof__guests { font-size: 12px; line-height: 1.4; }
+.proof__guests b {
+  display: block;
+  font-size: 16px;
+  color: var(--color-amber);
+}
+</style>
+`,
+
+'app/components/campaign/GettingHere.vue': `<script setup lang="ts">
+const { isOpen, label } = useOpenNow({ open: '07:00', close: '22:00' })
+<\/script>
+
+<template>
+  <section class="map">
+    <div class="map__visual">
+      <div class="map__pin" aria-hidden="true">📍</div>
+      <div class="map__route">
+        <span class="map__route-label">🚶 2 min</span>
+      </div>
+    </div>
+    <div class="map__body">
+      <p class="map__name">Tropical View Ubud</p>
+      <p class="map__addr">Jl. Monkey Forest · 200m from the sanctuary exit</p>
+      <p class="map__status">
+        <span
+          class="map__dot"
+          :class="isOpen ? 'map__dot--open' : 'map__dot--closed'"
+        />
+        {{ label }}
+      </p>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.map {
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+.map__visual {
+  position: relative;
+  height: 130px;
+  background: linear-gradient(to bottom right, #e8efe8, #dce8dc);
+}
+.map__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+.map__route {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  border-top: 2px dashed var(--color-amber);
+}
+.map__route-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 8px;
+  background: var(--color-amber);
+  color: var(--color-white);
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+.map__body {
+  padding: var(--space-3) var(--space-4);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}
+.map__name { font-weight: 800; color: var(--color-forest); margin-bottom: 4px; }
+.map__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.map__dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.map__dot--open { background: var(--color-ok); }
+.map__dot--closed { background: var(--color-danger); }
+</style>
+`,
+
+'app/components/campaign/MiniFaq.vue': `<script setup lang="ts">
+const faqs = ['ticket', 'walkable', 'payment', 'dietary'] as const
+const open = ref<string | null>(null)
+
+function toggle(key: string) {
+  open.value = open.value === key ? null : key
+}
+<\/script>
+
+<template>
+  <section class="faq">
+    <div v-for="key in faqs" :key="key" class="faq__item">
+      <button
+        type="button"
+        class="faq__question"
+        :aria-expanded="open === key"
+        @click="toggle(key)"
+      >
+        {{ \$t(\`faq.\${key}.q\`) }}
+        <span class="faq__chevron" :class="{ 'faq__chevron--up': open === key }">
+          ▾
+        </span>
+      </button>
+      <div v-if="open === key" class="faq__answer">
+        {{ \$t(\`faq.\${key}.a\`) }}
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.faq { display: flex; flex-direction: column; gap: var(--space-2); }
+.faq__item {
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-forest);
+}
+.faq__chevron {
+  color: var(--color-ink-soft);
+  transition: transform 0.2s ease;
+}
+.faq__chevron--up { transform: rotate(180deg); }
+.faq__answer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-line);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}
+</style>
+`,
+
+'app/components/campaign/FinalCta.vue': `<script setup lang="ts">
+defineProps<{ whatsappUrl: string }>()
+defineEmits<{ 'claim-click': [] }>()
+<\/script>
+
+<template>
+  <section class="final-cta">
+    <h3 class="final-cta__title">Ready to sit down and relax?</h3>
+    <p class="final-cta__sub">We'll have a table ready. Just message us.</p>
+    <AppButton :href="whatsappUrl" variant="primary" @click="$emit('claim-click')">
+      <span aria-hidden="true">💬</span> Claim on WhatsApp
+    </AppButton>
+  </section>
+</template>
+
+<style scoped>
+.final-cta {
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  background: linear-gradient(to bottom right, var(--color-forest), var(--color-forest-2));
+  color: var(--color-cream);
+  border-radius: var(--radius-lg);
+}
+.final-cta__title {
+  margin-bottom: 6px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.final-cta__sub {
+  margin-bottom: var(--space-5);
+  font-size: 12px;
+  color: rgba(247, 243, 236, 0.75);
+}
+</style>
+`,
+
+'app/components/campaign/FloatingWhatsApp.vue': `<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    whatsappUrl: string
+    visibleAfter?: number
+  }>(),
+  { visibleAfter: 600 }
+)
+
+const emit = defineEmits<{ 'claim-click': [] }>()
+const show = ref(false)
+
+function onScroll() {
+  show.value = window.scrollY > props.visibleAfter
+}
+
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
+<\/script>
+
+<template>
+  <a
+    v-show="show"
+    :href="whatsappUrl"
+    class="float-wa"
+    aria-label="Claim offer on WhatsApp"
+    @click="emit('claim-click')"
+  >
+    💬
+  </a>
+</template>
+
+<style scoped>
+.float-wa {
+  position: fixed;
+  bottom: 20px;
+  right: 16px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--color-green);
+  color: var(--color-white);
+  border-radius: 50%;
+  font-size: 24px;
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.4);
+}
+</style>
+`,
+
+'app/pages/after-monkey-forest.vue': `<script setup lang="ts">
+const { t, locale } = useI18n()
+const { offer, code, utmSource } = useCampaign()
+const { buildClaimUrl } = useWhatsApp()
+
+const whatsappUrl = computed(() =>
+  buildClaimUrl({
+    offerTitle: offer.value?.title,
+    utmSource: utmSource.value,
+    locale: locale.value,
+  })
+)
+
+const { isOpen } = useOpenNow({ open: '07:00', close: '22:00' })
+
+onMounted(() => {
+  if (offer.value) {
+    useTrackEvent('offer_view', {
+      offer: offer.value.slug,
+      utm_source: utmSource.value,
+      code: code.value,
+    })
+  }
+})
+
+useSeoMeta({
+  title: () => t('campaign.seo.title'),
+  description: () => t('campaign.seo.description'),
+  ogImage: '/images/og-after-monkey-forest.webp',
+})
+<\/script>
+
+<template>
+  <main>
+    <StickyOfferBar
+      v-if="offer"
+      :discount-label="offer.discountLabel"
+      :whatsapp-url="whatsappUrl"
+      @claim-click="useTrackEvent('wa_claim_click', { source: 'sticky_bar', utm_source: utmSource })"
+    />
+    <CampaignHero
+      :eyebrow="t('campaign.hero.eyebrow')"
+      :h1="t('campaign.hero.h1')"
+      :sub="t('campaign.hero.sub')"
+      :cta-primary-label="t('campaign.hero.ctaPrimary')"
+      :cta-primary-url="whatsappUrl"
+      :cta-secondary-label="t('campaign.hero.ctaSecondary')"
+      cta-secondary-url="/menu"
+      :open-now="isOpen"
+      @claim-click="useTrackEvent('wa_claim_click', { source: 'hero', utm_source: utmSource })"
+    />
+    <div class="page-body">
+      <OfferCard
+        v-if="offer"
+        :offer="offer"
+        :whatsapp-url="whatsappUrl"
+        @claim-click="useTrackEvent('wa_claim_click', { source: 'offer_card', utm_source: utmSource })"
+      />
+      <WhySitHere />
+      <PopularNow />
+      <ActivePromotions />
+      <SocialProof :rating="4.5" :review-count="1100" :weekly-guest-count="142" />
+      <GettingHere />
+      <MiniFaq />
+      <FinalCta
+        :whatsapp-url="whatsappUrl"
+        @claim-click="useTrackEvent('wa_claim_click', { source: 'final_cta', utm_source: utmSource })"
+      />
+    </div>
+    <FloatingWhatsApp
+      :whatsapp-url="whatsappUrl"
+      @claim-click="useTrackEvent('wa_claim_click', { source: 'floating', utm_source: utmSource })"
+    />
+  </main>
+</template>
+
+<style scoped>
+.page-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+.page-body > * + * {
+  margin-top: 32px;
+}
+</style>
+`,
+
+'i18n/en.json': `{
+  "campaign": {
+    "seo": {
+      "title": "Just finished Ubud Monkey Forest? Cool down 2 minutes away — Tropical View Ubud",
+      "description": "Shaded rice-field seating 200m from the sanctuary exit. Show your ticket for 15% off mains + free iced tea."
+    },
+    "sticky": { "claim": "Claim" },
+    "hero": {
+      "eyebrow": "Ubud Monkey Forest · 200m from the exit",
+      "h1": "Just finished the Sanctuary? Cool down 2 minutes away.",
+      "sub": "Shaded rice-field seating, cold drinks, and hot food — 200 meters from the Monkey Forest exit. Show your sanctuary ticket for 15% off mains + a free iced tea.",
+      "ctaPrimary": "Claim on WhatsApp",
+      "ctaSecondary": "See menu",
+      "openNow": "Open now",
+      "closed": "Closed",
+      "walkNote": "2–3 min walk from the exit"
+    },
+    "offer": {
+      "ended": "Ended",
+      "showTicket": "Show your ticket",
+      "from": "From",
+      "cta": "Claim on WhatsApp",
+      "terms": "Terms & conditions"
+    },
+    "why": {
+      "walk": { "title": "2–3 Minutes Walk", "desc": "From the sanctuary exit straight to our door" },
+      "shade": { "title": "Cool & Shaded", "desc": "Thatched roof with rice field views" },
+      "quick": { "title": "Quick Service", "desc": "We know you're hot — we serve fast" },
+      "family": { "title": "Family Friendly", "desc": "Space for groups, couples, and kids" }
+    },
+    "popular": { "title": "Popular right now", "seeAll": "See full menu" },
+    "promos": { "title": "Active promotions", "seeAll": "All promotions" },
+    "proof": { "guestsThisWeek": "guests from the sanctuary this week" },
+    "faq": {
+      "ticket": { "q": "Do I need the sanctuary ticket?", "a": "Yes — show your ticket or stamp at the table to claim the combo." },
+      "walkable": { "q": "Is it really a 2-minute walk?", "a": "Yes — 200m from the sanctuary exit, straight down Jl. Monkey Forest." },
+      "payment": { "q": "Do you accept card and QRIS?", "a": "Yes — cash, card, and QRIS are all accepted." },
+      "dietary": { "q": "Halal and vegetarian options?", "a": "Yes — halal and vegetarian dishes are clearly marked on the menu." }
+    },
+    "finalCta": {
+      "title": "Ready to sit down and relax?",
+      "sub": "We'll have a table ready. Just message us.",
+      "cta": "Claim on WhatsApp"
+    },
+    "floatWa": { "label": "Claim offer on WhatsApp" }
+  }
+}
+`,
+
+'i18n/id.json': `{
+  "campaign": {
+    "seo": {
+      "title": "Baru selesai Ubud Monkey Forest? Dinginkan diri 2 menit dari sini — Tropical View Ubud",
+      "description": "Tempat duduk beratap dengan pemandangan sawah 200m dari pintu keluar. Tunjukkan tiket untuk diskon 15% menu utama + es teh gratis."
+    },
+    "sticky": { "claim": "Klaim" },
+    "hero": {
+      "eyebrow": "Ubud Monkey Forest · 200m dari pintu keluar",
+      "h1": "Baru selesai dari Sanctuary? Dinginkan diri 2 menit dari sini.",
+      "sub": "Tempat duduk beratap dengan pemandangan sawah, minuman dingin, dan makanan hangat — 200 meter dari pintu keluar Monkey Forest. Tunjukkan tiket sanctuary Anda untuk diskon 15% menu utama + es teh gratis.",
+      "ctaPrimary": "Klaim via WhatsApp",
+      "ctaSecondary": "Lihat menu",
+      "openNow": "Buka sekarang",
+      "closed": "Tutup",
+      "walkNote": "2–3 menit jalan kaki dari pintu keluar"
+    },
+    "offer": {
+      "ended": "Berakhir",
+      "showTicket": "Tunjukkan tiket",
+      "from": "Mulai dari",
+      "cta": "Klaim via WhatsApp",
+      "terms": "Syarat & ketentuan"
+    },
+    "why": {
+      "walk": { "title": "2–3 Menit Jalan Kaki", "desc": "Dari pintu keluar sanctuary langsung ke pintu kami" },
+      "shade": { "title": "Sejuk & Beratap", "desc": "Atap tradisional dengan pemandangan sawah" },
+      "quick": { "title": "Pelayanan Cepat", "desc": "Kami tahu Anda kepanasan — kami melayani cepat" },
+      "family": { "title": "Ramah Keluarga", "desc": "Cocok untuk kelompok, pasangan, dan anak-anak" }
+    },
+    "popular": { "title": "Populer saat ini", "seeAll": "Lihat menu lengkap" },
+    "promos": { "title": "Promo aktif", "seeAll": "Semua promo" },
+    "proof": { "guestsThisWeek": "tamu dari sanctuary minggu ini" },
+    "faq": {
+      "ticket": { "q": "Apakah saya perlu tiket sanctuary?", "a": "Ya — tunjukkan tiket atau stempel di meja untuk klaim paket." },
+      "walkable": { "q": "Benar-benar 2 menit jalan kaki?", "a": "Ya — 200m dari pintu keluar sanctuary, lurus di Jl. Monkey Forest." },
+      "payment": { "q": "Menerima kartu dan QRIS?", "a": "Ya — tunai, kartu, dan QRIS semuanya diterima." },
+      "dietary": { "q": "Ada opsi halal dan vegetarian?", "a": "Ya — hidangan halal dan vegetarian ditandai jelas di menu." }
+    },
+    "finalCta": {
+      "title": "Siap duduk dan bersantai?",
+      "sub": "Kami akan siapkan meja. Cukup kirim pesan.",
+      "cta": "Klaim via WhatsApp"
+    },
+    "floatWa": { "label": "Klaim penawaran via WhatsApp" }
+  }
+}
+`,
+
+'public/images/placeholder.svg': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#1f2a24"/>
+  <text x="600" y="380" font-family="sans-serif" font-size="48" font-weight="800" fill="#f7f3ec" text-anchor="middle">Tropical View Ubud</text>
+  <text x="600" y="440" font-family="sans-serif" font-size="20" fill="#c97b2e" text-anchor="middle">image coming soon</text>
+</svg>
+`,
+
+'public/images/PLACEHOLDERS.md': `# Missing Assets
+
+| Path | Purpose | Status | Replace by |
+|---|---|---|---|
+| /images/hero-rice-field.webp | Hero background | missing | TBD |
+| /images/offer-sanctuary-combo.webp | Offer card thumbnail | missing | TBD |
+| /images/og-after-monkey-forest.webp | Social share image | missing | TBD |
+`,
+
+'docs/ASSETS.md': `# Asset Specifications
+
+## Hero Image
+- Path: /public/images/hero-rice-field.webp
+- Size: 1920x1080 (min 1280x720)
+- Format: WebP, quality 82
+- Content: shaded thatched-roof seating with rice field visible, warm afternoon light
+- Max size: 180 KB
+
+## Offer Thumbnail
+- Path: /public/images/offer-sanctuary-combo.webp
+- Size: 1200x800
+- Format: WebP, quality 82
+- Content: combo plate (main + iced tea), top-down or 45°, on wooden table
+- Max size: 120 KB
+
+## OG Image
+- Path: /public/images/og-after-monkey-forest.webp
+- Size: 1200x630
+- Format: WebP, quality 82
+- Content: hero copy overlay on shaded seating photo
+- Max size: 200 KB
+`,
+
+'README.md': `# Campaign Files
+
+Files for the /after-monkey-forest campaign funnel.
+
+## Setup
+
+1. Copy every folder into your Nuxt 4 project root.
+2. Add to nuxt.config.ts:
+   css: ['~/assets/css/theme.css'],
+   runtimeConfig: { public: { whatsappPhone: '6281805444270' } }
+3. Run: pnpm dev
+4. Visit: http://localhost:3000/after-monkey-forest?utm_source=qr_exit
+
+## Structure
+
+- assets/css/theme.css          — global CSS variables
+- app/composables/              — 4 reusable logic modules
+- app/components/base/          — AppImage, AppButton
+- app/components/campaign/      — 11 funnel blocks
+- app/pages/                    — the /after-monkey-forest route
+- i18n/                         — EN + ID translations
+- public/images/                — placeholder + docs
+- docs/ASSETS.md                — image specs
+
+## Next Steps
+
+Follow the build checklist:
+1. Create MikroORM entities (promotion, promotion_category, promotion_code, etc.)
+2. Run the migration
+3. Seed the "Sanctuary Cool-Down Combo"
+4. Create the API endpoints
+5. Test end to end
+`,
+};
+
+// ============================================================
+// RENDER FILE LIST
+// ============================================================
+const listEl = document.getElementById('filelist');
+Object.keys(files).sort().forEach(path => {
+  const li = document.createElement('li');
+  li.textContent = path;
+  listEl.appendChild(li);
+});
+
+// ============================================================
+// DOWNLOAD HANDLER
+// ============================================================
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('downloadBtn');
+  const status = document.getElementById('status');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳</span> Building zip...';
+  status.className = 'status show';
+  status.textContent = 'Zipping ' + Object.keys(files).length + ' files...';
+
+  try {
+    if (typeof JSZip === 'undefined') {
+      throw new Error('JSZip failed to load. Check your internet connection and reload the page.');
+    }
+
+    const zip = new JSZip();
+
+    Object.entries(files).forEach(([path, content]) => {
+      zip.file(path, content);
+    });
+
+    // Add empty server directories via placeholder files
+    zip.file('server/api/.gitkeep', '');
+    zip.file('server/database/entities/.gitkeep', '');
+    zip.file('server/database/migrations/.gitkeep', '');
+    zip.file('server/database/seeders/.gitkeep', '');
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'campaign-files.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    status.textContent = '✅ Done! campaign-files.zip has been downloaded.';
+    btn.innerHTML = '<span>✅</span> Downloaded — click to download again';
+  } catch (err) {
+    status.className = 'status show error';
+    status.textContent = '❌ Error: ' + err.message;
+    btn.innerHTML = '<span>📦</span> Try again';
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>

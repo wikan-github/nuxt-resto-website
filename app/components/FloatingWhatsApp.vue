@@ -33,7 +33,7 @@ const { waMeUrl } = useRestaurant()
 const route = useRoute()
 const showOfferBar = useState('offer-bar-visible', () => false)
 const hideFloating = computed(
-  () => showOfferBar.value
-    && (route.path.includes('after-monkey-forest') || route.path.includes('monkey-forest-exit')),
+  // One substring covers /monkey-forest and /monkey-forest-exit (EN + /id/).
+  () => showOfferBar.value && route.path.includes('monkey-forest'),
 )
 </script>

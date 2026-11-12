@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WKPicture — Component Documentation</title>
+<style>
+  :root {
+    --green: #034833;
+    --green-light: #f1f5eb;
+    --bg: #f9f9f9;
+    --border: #e5e5e5;
+    --muted: #636363;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --danger: #b91c1c;
+    --danger-bg: #fef2f2;
+    --info: #1d4ed8;
+    --info-bg: #eff6ff;
+    --ok: #166534;
+    --ok-bg: #f0fdf4;
+    --code-bg: #f4f4f5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: Inter, Mulish, system-ui, -apple-system, Segoe UI, sans-serif;
+    background: var(--bg);
+    color: #111;
+    line-height: 1.65;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  nav.toc {
+    width: 320px;
+    min-width: 200px;
+    max-width: 60vw;
+    resize: horizontal;
+    overflow: auto;
+    background: #fff;
+    border-right: 3px solid var(--green);
+    padding: 1.25rem 1rem 1.5rem;
+    flex-shrink: 0;
+  }
+  nav.toc h2 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem;
+  }
+  .search-wrap { margin-bottom: 0.9rem; position: sticky; top: 0; background: #fff; padding-bottom: 0.5rem; z-index: 2; }
+  .search-wrap input {
+    width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--border);
+    border-radius: 6px; font: inherit; font-size: 0.9rem;
+  }
+  .search-wrap input:focus { outline: 2px solid #cde7d8; border-color: var(--green); }
+  .search-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.35rem; min-height: 1em; }
+  nav.toc ul { list-style: none; }
+  nav.toc li { margin: 0.15rem 0; }
+  nav.toc a {
+    color: var(--green); text-decoration: none; font-size: 0.9rem; display: block;
+    padding: 0.18rem 0.35rem; border-radius: 4px;
+  }
+  nav.toc a:hover { background: var(--green-light); }
+  nav.toc .sub { margin-left: 0.9rem; }
+  nav.toc .sub a { font-size: 0.84rem; color: #145a3a; }
+  nav.toc li.hidden { display: none; }
+
+  main {
+    flex: 1; overflow: auto; padding: 2rem 2.25rem 3rem; max-width: 1100px;
+  }
+  h1 { font-size: 1.8rem; color: var(--green); margin-bottom: 0.35rem; }
+  .subtitle { color: var(--muted); margin-bottom: 1.25rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; color: #0f172a; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+  h3 { font-size: 1.05rem; margin: 1.2rem 0 0.4rem; color: #111827; }
+  h4 { font-size: 0.95rem; margin: 0.9rem 0 0.3rem; color: #1f2937; }
+  p { margin: 0.45rem 0; }
+  ul, ol { margin: 0.4rem 0 0.6rem 1.3rem; }
+  li { margin: 0.2rem 0; }
+  code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; }
+  pre {
+    background: #0f172a; color: #e5e7eb; padding: 0.9rem 1rem; border-radius: 8px;
+    overflow: auto; margin: 0.5rem 0 0.8rem; font-size: 0.86rem; line-height: 1.5;
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  .note, .warn, .danger, .ok, .info {
+    border-left: 4px solid; padding: 0.7rem 0.9rem; border-radius: 6px; margin: 0.6rem 0;
+  }
+  .note { background: #f8fafc; border-color: #94a3b8; }
+  .warn { background: var(--warn-bg); border-color: var(--warn); }
+  .danger { background: var(--danger-bg); border-color: var(--danger); }
+  .ok { background: var(--ok-bg); border-color: var(--ok); }
+  .info { background: var(--info-bg); border-color: var(--info); }
+  .tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 0.1rem 0.4rem; border-radius: 4px; vertical-align: middle; margin-right: 0.3rem; }
+  .tag-sev-high { background: #fee2e2; color: #991b1b; }
+  .tag-sev-med { background: #fef3c7; color: #92400e; }
+  .tag-sev-low { background: #e0e7ff; color: #3730a3; }
+  .tag-sev-info { background: #e5e7eb; color: #374151; }
+  table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 0.9rem; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--border); padding: 0.45rem 0.55rem; text-align: left; vertical-align: top; }
+  th { background: #f3f4f6; font-weight: 600; }
+  .muted { color: var(--muted); }
+  .k { white-space: nowrap; }
+  mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
+  section[data-searchable].hidden-by-search { display: none; }
+  .file-ref { font-size: 0.85rem; color: var(--muted); }
+  @media (max-width: 800px) {
+    body { flex-direction: column; height: auto; overflow: auto; }
+    nav.toc { width: 100%; max-width: none; resize: vertical; height: 40vh; border-right: none; border-bottom: 3px solid var(--green); }
+    main { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Table of contents">
+  <h2>WKPicture</h2>
+  <div class="search-wrap">
+    <input id="search" type="search" placeholder="Search TOC &amp; content…" aria-label="Search documentation" />
+    <div id="search-meta" class="search-meta"></div>
+  </div>
+  <ul id="toc-list">
+    <li data-target="overview"><a href="#overview">Overview</a></li>
+    <li data-target="files"><a href="#files">Files &amp; dependencies</a></li>
+    <li data-target="quick-start"><a href="#quick-start">Quick start</a></li>
+    <li data-target="usage" class="has-sub"><a href="#usage">How to use (detailed)</a></li>
+    <li data-target="usage-props" class="sub"><a href="#usage-props">Props reference</a></li>
+    <li data-target="usage-basic" class="sub"><a href="#usage-basic">Basic &lt;img&gt;-only</a></li>
+    <li data-target="usage-sources" class="sub"><a href="#usage-sources">Responsive &lt;picture&gt; sources</a></li>
+    <li data-target="usage-hero" class="sub"><a href="#usage-hero">Hero / LCP pattern</a></li>
+    <li data-target="usage-dynamic" class="sub"><a href="#usage-dynamic">Dynamic props &amp; resets</a></li>
+    <li data-target="usage-placeholder" class="sub"><a href="#usage-placeholder">Placeholder &amp; runtime fallback</a></li>
+    <li data-target="features" class="has-sub"><a href="#features">Feature list</a></li>
+    <li data-target="features-fallback" class="sub"><a href="#features-fallback">A/B/C fallback chain</a></li>
+    <li data-target="features-state" class="sub"><a href="#features-state">State &amp; render model</a></li>
+    <li data-target="features-util" class="sub"><a href="#features-util">Runtime placeholder util</a></li>
+    <li data-target="gotchas" class="has-sub"><a href="#gotchas">Gotchas &amp; warnings</a></li>
+    <li data-target="gotchas-browser" class="sub"><a href="#gotchas-browser">Browser &lt;picture&gt; semantics</a></li>
+    <li data-target="gotchas-component" class="sub"><a href="#gotchas-component">Component-specific behavior</a></li>
+    <li data-target="gotchas-dev" class="sub"><a href="#gotchas-dev">Dev console &amp; diagnostics</a></li>
+    <li data-target="fixes" class="has-sub"><a href="#fixes">Fixes needed &amp; proposals</a></li>
+    <li data-target="fix-high" class="sub"><a href="#fix-high">High / correctness</a></li>
+    <li data-target="fix-medium" class="sub"><a href="#fix-medium">Medium / robustness &amp; UX</a></li>
+    <li data-target="fix-low" class="sub"><a href="#fix-low">Low / cleanup &amp; API</a></li>
+    <li data-target="verification"><a href="#verification">Verification checklist</a></li>
+  </ul>
+</nav>
+
+<main id="content">
+  <header id="top">
+    <h1>WKPicture component</h1>
+    <p class="subtitle">Image primitive for <code>&lt;picture&gt;</code> + <code>&lt;img&gt;</code> with multi-stage fallback and runtime canvas placeholder. Documentation is based on the current implementation in this folder.</p>
+    <div class="file-ref">
+      Component: <code>app/components/base/WKPicture.vue</code> &nbsp;|&nbsp; Util: <code>app/utils/drawPlaceholderToCanvas.ts</code>
+    </div>
+  </header>
+
+  <section id="overview" data-searchable>
+    <h2>Overview</h2>
+    <p><code>WKPicture</code> wraps a native <code>&lt;picture&gt;</code> so callers can provide responsive <code>&lt;source&gt;</code> candidates and a guaranteed fallback chain instead of a broken-image icon. It is designed for conversion/marketing surfaces where a missing asset must degrade gracefully while still surfacing developer diagnostics in dev mode.</p>
+    <div class="ok"><strong>Current status (from implementation):</strong> the source-failure and primary-src-failure paths are wired end-to-end, and a terminal runtime canvas/SVG placeholder is generated when both network images fail. Residual issues remain (see <a href="#fixes">Fixes needed &amp; proposals</a>); this doc calls them out explicitly.</div>
+    <h3>Fallback tiers at a glance</h3>
+    <table>
+      <thead><tr><th>Tier</th><th>Rendered URL comes from</th><th>When chosen</th></tr></thead>
+      <tbody>
+        <tr><td>1 (highest)</td><td><code>runtimePlaceholderSrc</code> (data URL)</td><td>After stage C successfully renders a runtime placeholder</td></tr>
+        <tr><td>2</td><td><code>props.fallback</code></td><td>No effective <code>src</code>, or <code>primarySrcFailed === true</code></td></tr>
+        <tr><td>3</td><td>normalized <code>props.src</code></td><td>Normal case: <code>props.src</code> is non-empty and not marked failed</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">Implemented in <code>resolvedImgSrc</code> (computed) and driven by <code>handleError</code> state transitions.</p>
+  </section>
+
+  <section id="files" data-searchable>
+    <h2>Files &amp; dependencies</h2>
+    <table>
+      <thead><tr><th>File</th><th>Role</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>app/components/base/WKPicture.vue</code></td><td>Component implementation</td><td>Exports <code>ImageSource</code> type; default export is the SFC. Uses Nuxt/Vue auto-imported <code>ref</code>, <code>computed</code>, <code>watch</code>.</td></tr>
+        <tr><td><code>app/utils/drawPlaceholderToCanvas.ts</code></td><td>Runtime placeholder generator</td><td>Builds an SVG, rasterizes via canvas, returns PNG <code>data:image/png;base64,...</code>. Requires DOM (<code>document</code>, <code>Image</code>, canvas) — must run client-side.</td></tr>
+        <tr><td><code>app/components/monkey-forest/CampaignHero.vue</code></td><td>Current consumer (example)</td><td>Passes <code>:src</code>, <code>:sources</code>, <code>:alt</code>, <code>class="hero__new"</code>. As of this snapshot it uses test/missing asset paths — verify before relying on it as a canonical example.</td></tr>
+        <tr><td><code>public/images/placeholder.svg</code></td><td>Default fallback asset</td><td>Default <code>fallback</code> prop value is <code>/images/placeholder.svg</code>. If this 404s, stage C attempts the runtime canvas placeholder.</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><strong>SSR:</strong> the script does not access <code>window</code>/<code>document</code> during setup. DOM access happens only inside <code>drawPlaceholderToCanvas</code>, which is called from an <code>@error</code> handler (client event). The template is safe to server-render.</div>
+  </section>
+
+  <section id="quick-start" data-searchable>
+    <h2>Quick start</h2>
+    <pre><code>&lt;script setup lang="ts"&gt;
+import WKPicture from '~/components/base/WKPicture.vue'
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;WKPicture
+    src="/images/hero-1200.webp"
+    alt="Shaded rice-field seating near Monkey Forest exit"
+    fallback="/images/placeholder.svg"
+  /&gt;
+&lt;/template&gt;</code></pre>
+    <p>If <code>/images/hero-1200.webp</code> fails, the component tries <code>fallback</code>. If the fallback also fails, it renders a generated runtime placeholder (canvas → PNG data URL) using the <code>alt</code> text as the title.</p>
+  </section>
+
+  <section id="usage" data-searchable>
+    <h2>How to use (detailed)</h2>
+
+    <section id="usage-props" data-searchable>
+      <h3>Props reference</h3>
+      <table>
+        <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Required</th><th>Behavior / notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="k"><code>src</code></td>
+            <td><code>string | null</code></td>
+            <td><code>undefined</code></td>
+            <td>No</td>
+            <td>Primary <code>&lt;img src&gt;</code>. Trimmed internally; empty/whitespace-only becomes "no src" and resolves to <code>fallback</code> (tier 2) immediately. Can be used with or without <code>sources</code>.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>alt</code></td>
+            <td><code>string</code></td>
+            <td>—</td>
+            <td><strong>Yes</strong></td>
+            <td>Forwarded to <code>&lt;img alt&gt;</code>. Also passed as <code>title</code> to the runtime placeholder generator when stage C runs.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>fallback</code></td>
+            <td><code>string</code></td>
+            <td><code>'/images/placeholder.svg'</code></td>
+            <td>No</td>
+            <td>Image shown when <code>src</code> is empty or when the primary <code>src</code> fails (stage B). If this URL also fails, stage C renders a runtime placeholder.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>sources</code></td>
+            <td><code>ImageSource[]</code></td>
+            <td><code>() =&gt; []</code></td>
+            <td>No</td>
+            <td>Responsive candidates rendered as <code>&lt;source&gt;</code> elements inside <code>&lt;picture&gt;</code>. Omitted entirely once any source fails (<code>pictureSourceFailed</code>), for the lifetime of the instance until props change.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>sizes</code></td>
+            <td><code>string</code></td>
+            <td><code>undefined</code></td>
+            <td>No</td>
+            <td>Forwarded to <code>&lt;img sizes&gt;</code>. Note: <code>&lt;img&gt;</code> has no <code>srcset</code> in this component, so this attribute is a no-op for selection; meaningful <code>sizes</code> belong on <code>ImageSource.sizes</code> per source when used with source <code>srcset</code>.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>loading</code></td>
+            <td><code>'lazy' | 'eager'</code></td>
+            <td><code>'lazy'</code></td>
+            <td>No</td>
+            <td>Forwarded to <code>&lt;img&gt;</code>.</td>
+          </tr>
+          <tr>
+            <td class="k"><code>decoding</code></td>
+            <td><code>'sync' | 'async' | 'auto'</code></td>
+            <td><code>'async'</code></td>
+            <td>No</td>
+            <td>Forwarded to <code>&lt;img&gt;</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4><code>ImageSource</code> type</h4>
+      <p>Exported from <code>WKPicture.vue</code>:</p>
+      <pre><code>export type ImageSource = {
+  srcset: string; // required — comma-separated candidate list
+  media?: string;  // e.g. "(min-width: 768px)"
+  type?: string;   // e.g. "image/webp", "image/avif"
+  sizes?: string;  // slot size hint for this source
+};</code></pre>
+      <div class="note">Mirrors native <code>&lt;source&gt;</code> attributes 1:1. Ordering of <code>sources</code> follows browser <code>&lt;picture&gt;</code> selection rules (first matching source wins) — order intentionally.</div>
+    </section>
+
+    <section id="usage-basic" data-searchable>
+      <h3>Example: basic &lt;img&gt;-only (no sources)</h3>
+      <pre><code>&lt;WKPicture
+  src="/images/monkey-forest-exit-1200.webp"
+  alt="Exit path at Monkey Forest"
+  fallback="/images/placeholder.svg"
+/&gt;</code></pre>
+      <p><strong>Behavior:</strong></p>
+      <ul>
+        <li><code>src</code> loads → shown.</li>
+        <li><code>src</code> 404s → stage B sets <code>primarySrcFailed</code>, <code>resolvedImgSrc</code> becomes <code>fallback</code>, <code>&lt;img&gt;</code> retried.</li>
+        <li><code>fallback</code> 404s → stage C generates a runtime placeholder data URL with <code>alt</code> as title.</li>
+        <li><code>src</code> is empty/null/whitespace → <code>fallback</code> is used immediately (no error event required).</li>
+      </ul>
+    </section>
+
+    <section id="usage-sources" data-searchable>
+      <h3>Example: responsive &lt;picture&gt; sources</h3>
+      <pre><code>&lt;script setup lang="ts"&gt;
+import WKPicture, { type ImageSource } from '~/components/base/WKPicture.vue'
+
+const heroSources: ImageSource[] = [
+  {
+    srcset: '/images/hero-768.webp',
+    media: '(max-width: 768px)',
+    type: 'image/webp',
+  },
+  {
+    srcset: '/images/hero-1200.webp',
+    media: '(max-width: 1200px)',
+    type: 'image/webp',
+  },
+  {
+    srcset: '/images/hero-1536.webp',
+    media: '(min-width: 1201px)',
+    type: 'image/webp',
+  },
+]
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;WKPicture
+    :sources="heroSources"
+    src="/images/hero-1200.webp"
+    alt="Reward after visiting Monkey Forest"
+    fallback="/images/placeholder.svg"
+  /&gt;
+&lt;/template&gt;</code></pre>
+      <p><strong>Behavior:</strong> the browser selects one matching <code>&lt;source&gt;</code> (or falls through to <code>&lt;img src&gt;</code> if none match/supported). On a selected-source 404, stage A disables <em>all</em> sources for this instance (<code>pictureSourceFailed = true</code>) and re-keys the <code>&lt;img&gt;</code> so selection re-runs against <code>&lt;img src&gt;</code>. Subsequent breakpoints will not use <code>&lt;source&gt;</code> entries until <code>props.src</code> or <code>props.sources</code> changes (watcher reset).</p>
+      <div class="warn"><strong>Order matters:</strong> <code>&lt;picture&gt;</code> picks the first matching source. The example above tiles ranges in ascending order. Overlapping/conflicting media queries can make the "wrong" candidate win — this is browser behavior, not a component bug.</div>
+    </section>
+
+    <section id="usage-hero" data-searchable>
+      <h3>Example: hero / LCP-oriented usage</h3>
+      <pre><code>&lt;WKPicture
+  class="hero__image"
+  :src="heroSrc"
+  :sources="heroSources"
+  :alt="t('campaign.hero_alt')"
+  loading="eager"
+  decoding="async"
+  fallback="/images/placeholder.svg"
+/&gt;</code></pre>
+      <ul>
+        <li>Set <code>loading="eager"</code> for above-the-fold/LCP imagery.</li>
+        <li><code>alt</code> should be meaningful (and localized if the image conveys content) — it is also used as the runtime placeholder title.</li>
+        <li><strong>Not currently supported as props:</strong> <code>fetchpriority</code>, <code>width</code>, <code>height</code>. These matter for LCP prioritization and CLS reservation on 4G; see <a href="#fix-low">proposed fixes</a> if needed.</li>
+      </ul>
+      <p class="muted">Real consumer in repo: <code>app/components/monkey-forest/CampaignHero.vue</code> (currently in test state with non-existent <code>*x.webp</code> paths and <code>loading="lazy"</code> — treat as integration reference, not a production-ready example).</p>
+    </section>
+
+    <section id="usage-dynamic" data-searchable>
+      <h3>Example: dynamic props &amp; resets</h3>
+      <pre><code>&lt;script setup lang="ts"&gt;
+import { ref } from 'vue'
+import WKPicture from '~/components/base/WKPicture.vue'
+
+const src = ref('/images/a.webp')
+function swap() { src.value = '/images/b.webp' }
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;WKPicture :src="src" alt="Dynamic image" /&gt;
+  &lt;button @click="swap"&gt;Swap&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+      <p><strong>Reset behavior:</strong> a watcher on <code>[props.src, props.sources]</code> (non-deep, non-immediate) resets:</p>
+      <ul>
+        <li><code>runtimePlaceholderSrc = ''</code></li>
+        <li><code>primarySrcFailed = false</code></li>
+        <li><code>failedImgSrc = ''</code></li>
+        <li><code>pictureSourceFailed = false</code></li>
+        <li><code>retryKey = 0</code></li>
+      </ul>
+      <p>So after a failure, changing <code>src</code> (or replacing the <code>sources</code> array reference) gives the component a clean slate to try again.</p>
+      <div class="warn"><strong>Reference identity matters:</strong> because the watcher is not deep, mutating the same <code>sources</code> array in-place (e.g. <code>push</code>, <code>[0].srcset = ...</code>) or passing a new inline array literal on every render may not trigger the intended reset. Pass a stable array and replace its reference when the set of sources changes.</div>
+    </section>
+
+    <section id="usage-placeholder" data-searchable>
+      <h3>Placeholder &amp; runtime fallback</h3>
+      <p><strong>Static fallback file (tier 2):</strong> default is <code>/images/placeholder.svg</code>. Override with <code>fallback</code> when a domain-specific placeholder is preferred.</p>
+      <p><strong>Runtime placeholder (tier 3, terminal):</strong> if the URL that ends up being requested still fails at stage C, <code>handleError</code> calls:</p>
+      <pre><code>const placeholderSrc = await drawPlaceholderToCanvas(el, { title: el.alt });</code></pre>
+      <p>The util (<code>app/utils/drawPlaceholderToCanvas.ts</code>) generates an SVG label, decodes it through an <code>Image</code>, draws to a <code>&lt;canvas&gt;</code>, and returns <code>canvas.toDataURL('image/png')</code>. Defaults inside the util: background <code>#efefef</code>, title format <code>uppercase</code>, title color <code>#7a7a7a</code>, canvas size derived from the element (with fallbacks/clamps).</p>
+      <div class="info"><strong>Why async:</strong> stage C awaits image decode and canvas work, so it includes a stale-input guard — if <code>props.src</code>, <code>props.fallback</code>, or <code>failedImgSrc</code> changed while awaiting, the generated placeholder is discarded to avoid flashing a stale result.</div>
+    </section>
+  </section>
+
+  <section id="features" data-searchable>
+    <h2>Feature list</h2>
+
+    <section id="features-fallback" data-searchable>
+      <h3>A/B/C fallback chain (<code>handleError</code>)</h3>
+      <table>
+        <thead><tr><th>Step</th><th>Trigger (as implemented)</th><th>State changes</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Guard 0</strong></td>
+            <td><code>runtimePlaceholderSrc</code> is set and <code>imgUrl (el.currentSrc)</code> equals it</td>
+            <td>none</td>
+            <td>Logs error and returns. Prevents infinite regeneration if the generated placeholder itself fails to load.</td>
+          </tr>
+          <tr>
+            <td><strong>Stage A</strong><br/><span class="muted">source failed</span></td>
+            <td><code>props.sources.length &gt; 0</code> &amp;&amp; <code>!pictureSourceFailed</code> &amp;&amp; <code>imgUrl !== el.src</code></td>
+            <td><code>pictureSourceFailed = true</code>, <code>retryKey++</code></td>
+            <td>Removes <code>&lt;source&gt;</code> elements (<code>v-if</code> off) and recreates <code>&lt;img&gt;</code> via <code>:key</code> so browser re-runs selection against <code>&lt;img src&gt;</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Stage B</strong><br/><span class="muted">primary src failed</span></td>
+            <td><code>primarySrcAtFailure</code> (trimmed <code>props.src</code>) is non-empty &amp;&amp; <code>imgUrl === el.src</code> &amp;&amp; <code>el.src !== fallbackUrl</code></td>
+            <td><code>failedImgSrc = imgUrl</code>, <code>primarySrcFailed = true</code>, <code>retryKey++</code></td>
+            <td><code>resolvedImgSrc</code> switches to <code>props.fallback</code>; <code>&lt;img&gt;</code> retries with fallback URL.</td>
+          </tr>
+          <tr>
+            <td><strong>Stage C</strong><br/><span class="muted">last resort</span></td>
+            <td>Anything not handled by A/B (fallback failed, no primary src, or other)</td>
+            <td><code>failedImgSrc = imgUrl</code>; on success + stale-check pass: <code>runtimePlaceholderSrc = dataUrl</code>, <code>retryKey++</code></td>
+            <td>Generates runtime placeholder (PNG data URL). Rendered at tier 1 of <code>resolvedImgSrc</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>URL comparison model:</strong> <code>imgUrl</code> is <code>el.currentSrc</code> (absolute). Stage A/B compare against <code>el.src</code> (absolute DOM-reflected URL). Stage B compares the fallback by normalizing it with <code>new URL(fallbackSrc, el.ownerDocument.baseURI).href</code> so relative fallbacks can be compared correctly.</p>
+    </section>
+
+    <section id="features-state" data-searchable>
+      <h3>State &amp; render model</h3>
+      <table>
+        <thead><tr><th>Ref / computed</th><th>Type / shape</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>runtimePlaceholderSrc</code></td><td><code>string</code></td><td>Generated data URL (tier 1). Set only in stage C on success.</td></tr>
+          <tr><td><code>primarySrcFailed</code></td><td><code>boolean</code></td><td>Marks declared <code>props.src</code> as failed so <code>resolvedImgSrc</code> returns fallback.</td></tr>
+          <tr><td><code>failedImgSrc</code></td><td><code>string</code></td><td>Records last failed URL; written in B/C and reset on watcher. <strong>Not read by render logic</strong> (used in stage C stale guard and indirectly as diagnostic context).</td></tr>
+          <tr><td><code>pictureSourceFailed</code></td><td><code>boolean</code></td><td>Disables rendering of <code>&lt;source&gt;</code> elements once any source path has failed.</td></tr>
+          <tr><td><code>retryKey</code></td><td><code>number</code> (starts at 0)</td><td><code>:key</code> on <code>&lt;img&gt;</code>; increment forces a fresh element so browser reselects/reloads.</td></tr>
+          <tr><td><code>normalizedImgSrc</code></td><td>computed <code>string</code></td><td><code>props.src?.trim() || ''</code>.</td></tr>
+          <tr><td><code>shouldRenderPictureSources</code></td><td>computed <code>boolean</code></td><td><code>sources.length &gt; 0 &amp;&amp; !pictureSourceFailed</code>.</td></tr>
+          <tr><td><code>resolvedImgSrc</code></td><td>computed <code>string</code></td><td>Priority: runtime placeholder → (<code>!src || primarySrcFailed ? fallback : src</code>).</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Template highlights:</strong> <code>&lt;source&gt;</code> list is <code>v-if="shouldRenderPictureSources"</code> with <code>:key="i"</code>. <code>&lt;img&gt;</code> binds <code>:key="retryKey"</code>, <code>:src="resolvedImgSrc"</code>, required <code>:alt</code>, optional <code>sizes/loading/decoding</code>, and hooks <code>@error="handleError"</code>, <code>@load="handleLoad"</code>.</p>
+      <p><strong>Prop-change reset:</strong> watcher on <code>() =&gt; [props.src, props.sources]</code> resets all failure/runtime state and <code>retryKey</code> to 0.</p>
+    </section>
+
+    <section id="features-util" data-searchable>
+      <h3>Runtime placeholder util (<code>drawPlaceholderToCanvas.ts</code>)</h3>
+      <ul>
+        <li><strong>API:</strong> <code>drawPlaceholderToCanvas(img: HTMLImageElement, options?: PlaceholderOptions): Promise&lt;string&gt;</code></li>
+        <li><strong>Options:</strong> <code>backgroundColor</code>, <code>title</code>, <code>titleFormat</code> (<code>'uppercase' | 'lowercase' | 'title-case'</code>), <code>titleColor</code>.</li>
+        <li><strong>Size inference:</strong> uses <code>img.getAttribute('width'|'height')</code>, <code>clientWidth/Height</code>, and a 3:2 aspect fallback; clamps width <code>120..2400</code>, height <code>120..1600</code>.</li>
+        <li><strong>Rendering:</strong> creates SVG markup with escaped/wrapped title, loads it as a blob URL into an <code>Image</code>, draws to a 2D canvas, returns PNG data URL, revokes object URL in <code>finally</code>.</li>
+        <li><strong>Failure modes:</strong> throws on missing canvas context, image decode error, or empty <code>toDataURL</code> result.</li>
+      </ul>
+    </section>
+  </section>
+
+  <section id="gotchas" data-searchable>
+    <h2>Gotchas &amp; warnings</h2>
+
+    <section id="gotchas-browser" data-searchable>
+      <h3>Browser &lt;picture&gt; semantics (relevant to this component)</h3>
+      <ul>
+        <li><strong><code>&lt;picture&gt;</code> selects a resource once per selection pass.</strong> <code>el.currentSrc</code> is the browser-chosen (absolute) URL; <code>&lt;img src&gt;</code> is not an automatic error fallback.</li>
+        <li><strong>A <code>&lt;source&gt;</code> 404 fires <code>error</code> on the <code>&lt;img&gt;</code> but does not auto-fall back.</strong> Inputs must change to force reselection — WKPicture does this by removing sources (<code>pictureSourceFailed</code>) and recreating the <code>&lt;img&gt;</code> (<code>retryKey++</code>).</li>
+        <li><strong><code>&lt;img&gt;</code> must be the last child of <code>&lt;picture&gt;</code>.</strong> The component satisfies this; if callers misuse slots in a fork, selection breaks.</li>
+        <li><strong>Source order and media ranges are the caller's responsibility.</strong> Overlaps, gaps, or wrong ordering can select unexpected candidates.</li>
+        <li><strong><code>type</code> support is browser-evaluated.</strong> Unsupported types (e.g. AVIF in older browsers) are skipped without an error event.</li>
+      </ul>
+    </section>
+
+    <section id="gotchas-component" data-searchable>
+      <h3>Component-specific behavior</h3>
+      <ul>
+        <li><strong>One source failure disables <em>all</em> sources for the instance.</strong> After stage A sets <code>pictureSourceFailed</code>, the component stops rendering every <code>&lt;source&gt;</code> until <code>props.src</code> or <code>props.sources</code> identity changes. This is intentional for simplicity but means one bad breakpoint degrades the rest.</li>
+        <li><strong>Failure is sticky within a prop state.</strong> There is no automatic retry on network recovery; only a prop change (watcher) resets state.</li>
+        <li><strong><code>sizes</code> prop on <code>&lt;img&gt;</code> is effectively inert here.</strong> The <code>&lt;img&gt;</code> has no <code>srcset</code>, so <code>&lt;img sizes&gt;</code> does not influence selection. Use <code>ImageSource.sizes</code> for source candidates when applicable.</li>
+        <li><strong><code>sources</code> watcher is not deep and compares references.</strong> In-place mutation or inline array literals can skip the reset, leaving stale failure flags against new content. Prefer replacing the array reference.</li>
+        <li><strong>No <code>width</code>/<code>height</code>/<code>fetchpriority</code>/<code>class</code>-passthrough prop API.</strong> Layout sizing/priority must be handled via CSS/attributes outside the declared prop surface today (attributes may fall through depending on usage, but are not part of the contract). See fixes.</li>
+        <li><strong>Alt text becomes placeholder title.</strong> Stage C passes <code>{ title: el.alt }</code> to the util; very long or missing alt strings affect the generated placeholder's readability.</li>
+        <li><strong>Runtime placeholder is a PNG data URL.</strong> Large dimensions increase string size; this is a terminal fallback, not a primary delivery format.</li>
+        <li><strong>Stage B increments <code>retryKey</code> even though <code>src</code> changes.</strong> Redundant but harmless given <code>resolvedImgSrc</code> flips from primary to fallback.</li>
+      </ul>
+    </section>
+
+    <section id="gotchas-dev" data-searchable>
+      <h3>Dev console &amp; diagnostics</h3>
+      <ul>
+        <li><code>console.error/warn/log</code> calls are gated by <code>import.meta.dev</code> in <code>handleError</code>/<code>handleLoad</code>.</li>
+        <li>Stage A emits an error including the failed URL and the retry target (<code>resolvedImgSrc</code> at that moment).</li>
+        <li>Stage B/C emit an error for the failed <code>resolvedImgSrc</code>.</li>
+        <li>Stage C emits <code>console.warn</code> ("Both image sources failed; rendering a runtime placeholder.") on success path and <code>console.error</code> if placeholder rendering throws.</li>
+        <li><strong><code>handleLoad</code> logs the loaded URL in dev</strong>, including full <code>data:image/png;base64,...</code> strings for runtime placeholders — this can be very noisy.</li>
+        <li>On a broken image, the browser may also emit its own network/console errors (404) independent of component logging.</li>
+      </ul>
+    </section>
+  </section>
+
+  <section id="fixes" data-searchable>
+    <h2>Fixes needing implementation (with proposed fixes)</h2>
+    <p>The items below are grounded in the current code. Each includes impact, location, and a concrete proposed change. Severity is about correctness/robustness for a production funnel, not just style.</p>
+
+    <section id="fix-high" data-searchable>
+      <h3>High / correctness</h3>
+
+      <h4><span class="tag tag-sev-high">High</span> 1. Guard 0 keys on <code>el.currentSrc</code> (can miss empty selection) — loop/extra work risk</h4>
+      <p><strong>Where:</strong> <code>handleError</code>, guard 0.</p>
+      <p><strong>Issue:</strong> the terminal guard checks <code>imgUrl === runtimePlaceholderSrc.value</code> where <code>imgUrl = el.currentSrc || ''</code>. If the runtime placeholder somehow fails with an empty <code>currentSrc</code>, the guard won't match and stage C may attempt regeneration (<code>retryKey++</code>) repeatedly. <code>el.src</code> reflects the attribute/data URL and is a stable identity check for the active element.</p>
+      <p><strong>Proposed fix:</strong></p>
+      <pre><code>// Guard 0 — terminal: runtime placeholder itself failed
+if (runtimePlaceholderSrc.value &amp;&amp; el.src === runtimePlaceholderSrc.value) {
+  if (import.meta.dev) {
+    console.error('[WKPicture] Runtime placeholder image failed to load.');
+  }
+  return;
+}</code></pre>
+
+      <h4><span class="tag tag-sev-high">High</span> 2. <code>new URL(fallbackSrc, ...)</code> is outside <code>try</code> — possible unhandled rejection</h4>
+      <p><strong>Where:</strong> stage B, before the <code>if</code> that decides stage B vs C.</p>
+      <p><strong>Issue:</strong> <code>handleError</code> is <code>async</code>. A malformed/unsupported <code>props.fallback</code> (or an unexpected base URI edge case) can throw synchronously from <code>new URL(...)</code>, resulting in an unhandled promise rejection and no fallback progression.</p>
+      <p><strong>Proposed fix:</strong> compute <code>fallbackUrl</code> defensively inside a try/catch and degrade to stage C on failure.</p>
+      <pre><code>const primarySrcAtFailure = normalizedImgSrc.value;
+let fallbackUrl = '';
+try {
+  fallbackUrl = new URL(props.fallback, el.ownerDocument.baseURI).href;
+} catch {
+  // Malformed fallback URL — skip stage B comparison and fall through to stage C.
+  fallbackUrl = '';
+}
+
+if (primarySrcAtFailure &amp;&amp; imgUrl === el.src &amp;&amp; fallbackUrl &amp;&amp; el.src !== fallbackUrl) {
+  // stage B...
+  return;
+}
+// stage C...</code></pre>
+
+      <h4><span class="tag tag-sev-high">High</span> 3. Runtime placeholder can render at alt-text/broken-image height (util sizing)</h4>
+      <p><strong>Where:</strong> <code>app/utils/drawPlaceholderToCanvas.ts</code> (<code>width</code>/<code>height</code> inference from <code>img.clientWidth/clientHeight</code> and attribute fallbacks).</p>
+      <p><strong>Issue:</strong> stage C runs after an image error. A broken <code>&lt;img&gt;</code> often has a small intrinsic/layout height (e.g. alt-text line height) rather than the intended media box, especially when height is percentage/auto in CSS. That can produce a very thin placeholder instead of a usable block.</p>
+      <p><strong>Proposed fix (pragmatic):</strong> prefer layout/attribute/container signals and enforce a sane minimum aspect-aware height. One approach:</p>
+      <pre><code>// In drawPlaceholderToCanvas
+const attrW = Number(img.getAttribute('width')) || 0;
+const attrH = Number(img.getAttribute('height')) || 0;
+const rect = img.getBoundingClientRect();
+const cssW = Math.round(rect.width) || img.clientWidth || attrW || 0;
+const cssH = Math.round(rect.height) || img.clientHeight || attrH || 0;
+
+// If the element collapsed (broken-image/alt-text box), fall back to container or 3:2.
+const container = img.parentElement?.getBoundingClientRect();
+const baseW = cssW || Math.round(container?.width || 0) || 1200;
+const baseH = (cssH &amp;&amp; cssH &gt; 40) ? cssH : Math.round(baseW * 2 / 3);
+
+const width = Math.max(120, Math.min(baseW, 2400));
+const height = Math.max(120, Math.min(baseH, 1600));</code></pre>
+      <p class="muted">Exact thresholds depend on design intent; the key is to avoid trusting a collapsed broken-image box. Consider also accepting explicit <code>width/height</code> options in the util for callers that know the intended ratio.</p>
+
+      <h4><span class="tag tag-sev-high">High</span> 4. Stage C does not disable sources — extra request in collision/re-entry paths</h4>
+      <p><strong>Where:</strong> stage C body (after generating placeholder).</p>
+      <p><strong>Issue:</strong> in some paths (e.g. stage A skipped because <code>imgUrl === el.src</code> in a same-URL collision case, or any future re-entry where <code>pictureSourceFailed</code> is still false), <code>&lt;source&gt;</code> elements may remain in the DOM. Even when <code>resolvedImgSrc</code> becomes a data URL, a surviving matching <code>&lt;source&gt;</code> can win selection and trigger another error before A cleans up — self-healing but wasteful.</p>
+      <p><strong>Proposed fix:</strong> force sources off when committing a terminal placeholder.</p>
+      <pre><code>if (/* stale checks pass */) {
+  pictureSourceFailed.value = true; // ensure no &lt;source&gt; can compete with the placeholder
+  runtimePlaceholderSrc.value = placeholderSrc;
+  retryKey.value++;
+}</code></pre>
+    </section>
+
+    <section id="fix-medium" data-searchable>
+      <h3>Medium / robustness &amp; UX</h3>
+
+      <h4><span class="tag tag-sev-med">Medium</span> 5. <code>retryKey</code> starts at 0 — potential duplicate-key warning</h4>
+      <p><strong>Where:</strong> <code>const retryKey = ref(0)</code> and template <code>:key="retryKey"</code> on <code>&lt;img&gt;</code>.</p>
+      <p><strong>Issue:</strong> <code>&lt;source&gt;</code> nodes are rendered in a <code>v-if</code> block and the <code>&lt;img&gt;</code> is a sibling under <code>&lt;picture&gt;</code>. Depending on compiled structure, key <code>0</code> can collide with compiler-generated fragment/vnode keys in dev warnings. It is low-risk behaviorally but noisy.</p>
+      <p><strong>Proposed fix:</strong></p>
+      <pre><code>const retryKey = ref(1);
+// watcher reset: retryKey.value = 1;</code></pre>
+
+      <h4><span class="tag tag-sev-med">Medium</span> 6. <code>handleLoad</code> logs full data URLs in dev</h4>
+      <p><strong>Where:</strong> <code>handleLoad</code>.</p>
+      <p><strong>Issue:</strong> runtime placeholders produce large base64 PNG data URLs; logging the entire string degrades devtools usability.</p>
+      <p><strong>Proposed fix:</strong></p>
+      <pre><code>function handleLoad() {
+  if (import.meta.dev) {
+    const el = (event?.target as HTMLImageElement | undefined) ?? null;
+    // If not changing the signature, just guard on the resolved src:
+    const loaded = resolvedImgSrc.value;
+    const label = loaded.startsWith('data:')
+      ? `${loaded.slice(0, 32)}… (${loaded.length} chars)`
+      : loaded;
+    console.log(`[WKPicture] image loaded: ${label}`);
+  }
+}</code></pre>
+      <p class="muted">Alternative: accept the load event parameter: <code>function handleLoad(event: Event)</code> and log <code>(event.target as HTMLImageElement).currentSrc</code> with the same truncation.</p>
+
+      <h4><span class="tag tag-sev-med">Medium</span> 7. No guard for late events from a detached <code>&lt;img&gt;</code></h4>
+      <p><strong>Where:</strong> top of <code>handleError</code> (and optionally <code>handleLoad</code>).</p>
+      <p><strong>Issue:</strong> <code>retryKey++</code> replaces the element. A late <code>error</code>/<code>load</code> from a detached node is unlikely in the current flow but cheap to ignore.</p>
+      <p><strong>Proposed fix:</strong></p>
+      <pre><code>async function handleError(event: Event) {
+  const el = event.target as HTMLImageElement;
+  if (!el.isConnected) return;
+  // ...
+}</code></pre>
+
+      <h4><span class="tag tag-sev-med">Medium</span> 8. <code>sources</code> reset depends on reference identity, not deep changes</h4>
+      <p><strong>Where:</strong> prop watcher.</p>
+      <p><strong>Issue:</strong> in-place mutations or repeatedly recreated inline arrays can fail to reset failure state or cause unintended churn.</p>
+      <p><strong>Proposed fix (choose one, document the contract):</strong></p>
+      <pre><code>// Option A (contract): document "replace the array reference to reset".
+// Option B (defensive): deep-watch or watch a serialized key — careful of perf/cycles.
+watch(
+  () =&gt; [props.src, JSON.stringify(props.sources)] as const,
+  () =&gt; { /* reset */ }
+);
+// Option C: expose/emit nothing, but normalize in parent composables.</code></pre>
+      <p class="muted">Option A is simplest and consistent with Vue prop patterns; Option B trades simplicity for resilience. Pick one explicitly.</p>
+
+      <h4><span class="tag tag-sev-med">Medium</span> 9. Canvas SVG→raster round-trip is heavier than needed</h4>
+      <p><strong>Where:</strong> <code>drawPlaceholderToCanvas.ts</code>.</p>
+      <p><strong>Issue:</strong> the util builds SVG, decodes via <code>Image</code>, draws to canvas, exports PNG data URL. For an on-page placeholder, returning an SVG data URL (or object URL) avoids rasterization cost and scaling blur while keeping implementation simple. Canvas is only necessary if a raster PNG is strictly required.</p>
+      <p><strong>Proposed fix (if PNG not required):</strong></p>
+      <pre><code>const svg = `&lt;svg ...&gt;...&lt;/svg&gt;`;
+return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;</code></pre>
+      <p class="muted">If you keep canvas, consider caching/memoizing by <code>(width,height,title,colors)</code> to avoid regenerating identical placeholders.</p>
+    </section>
+
+    <section id="fix-low" data-searchable>
+      <h3>Low / cleanup &amp; API</h3>
+
+      <h4><span class="tag tag-sev-low">Low</span> 10. <code>failedImgSrc</code> is not used by rendering</h4>
+      <p><strong>Where:</strong> state declaration, stage B/C assignments, watcher reset, stage C stale guard.</p>
+      <p><strong>Issue:</strong> it participates in the stale guard (useful) but is otherwise not consumed. Naming/comments imply a broader role than it has.</p>
+      <p><strong>Proposed fix:</strong> either (a) rename to reflect purpose (e.g. <code>lastFailedUrlForGuard</code>) or (b) remove and capture <code>const failedAt = imgUrl</code> locally in stage C, using a separate monotonic token/counter ref if needed for async invalidation.</p>
+
+      <h4><span class="tag tag-sev-low">Low</span> 11. Header/template comments are stale or slightly misleading</h4>
+      <p><strong>Examples:</strong> "AppImage.vue" in header comment (line 8) while file is <code>WKPicture.vue</code>; template comment "sources are only considered when we have a valid src" does not match the actual guard (<code>shouldRenderPictureSources</code> only checks <code>sources.length</code> and <code>!pictureSourceFailed</code>); mixed-language inline comments.</p>
+      <p><strong>Proposed fix:</strong> update comments to describe current behavior (A/B/C, <code>resolvedImgSrc</code> tiers, and that source rendering is independent of <code>src</code> presence except through runtime behavior) and keep terminology consistent.</p>
+
+      <h4><span class="tag tag-sev-low">Low</span> 12. <code>ImageSource</code> is exported from a <code>.vue</code> SFC</h4>
+      <p><strong>Issue:</strong> works in many setups but can be awkward for type-only imports, tooling, and reuse outside Vue SFC context.</p>
+      <p><strong>Proposed fix:</strong> move to <code>app/components/base/wk-picture.types.ts</code> (or similar) and re-export/import as needed.</p>
+      <pre><code>// wk-picture.types.ts
+export type ImageSource = {
+  srcset: string;
+  media?: string;
+  type?: string;
+  sizes?: string;
+};</code></pre>
+
+      <h4><span class="tag tag-sev-low">Low</span> 13. Missing performance/layout props: <code>fetchpriority</code>, <code>width</code>, <code>height</code></h4>
+      <p><strong>Issue:</strong> for hero/LCP images on constrained networks, <code>fetchpriority="high"</code> and intrinsic dimensions (<code>width</code>/<code>height</code>) are important for prioritization and CLS prevention. Not exposing them limits the component as a general image primitive.</p>
+      <p><strong>Proposed fix:</strong></p>
+      <pre><code>// props
+fetchpriority?: 'high' | 'low' | 'auto';
+width?: number | string;
+height?: number | string;
+
+// template &lt;img&gt;
+:fetchpriority="fetchpriority"
+:width="width"
+:height="height"</code></pre>
+      <p class="muted">Also consider forwarding arbitrary <code>img</code> attributes via <code>useAttrs()</code> / <code>inheritAttrs</code> strategy if the component should remain flexible.</p>
+
+      <h4><span class="tag tag-sev-low">Low</span> 14. <code>primarySrcFailed</code> naming vs behavior scope</h4>
+      <p><strong>Issue:</strong> the flag means "declared src failed, so prefer fallback tier" (see stage B). After fallback also fails, stage C takes over with runtime placeholder — the flag remains conceptually true but tier 1 supersedes it. This is fine, but a name like <code>preferFallbackSrc</code> could be clearer. Pure readability; no behavior change required.</p>
+    </section>
+  </section>
+
+  <section id="verification" data-searchable>
+    <h2>Verification checklist</h2>
+    <p>Use these scenarios to validate behavior after changes. Observe both rendered image and dev console.</p>
+    <table>
+      <thead><tr><th>#</th><th>Setup</th><th>Expected path</th><th>Expected visible result</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Valid <code>sources</code> candidate matches</td><td>No error</td><td>Selected source image renders</td></tr>
+        <tr><td>2</td><td>Selected source 404, valid <code>src</code></td><td>A</td><td>Sources removed, <code>src</code> renders; dev error + retry log</td></tr>
+        <tr><td>3</td><td>Selected source 404, <code>src</code> 404, valid fallback</td><td>A → B</td><td>Fallback renders</td></tr>
+        <tr><td>4</td><td>No sources, <code>src</code> 404, valid fallback</td><td>B</td><td>Fallback renders</td></tr>
+        <tr><td>5</td><td>Source 404, <code>src</code> 404, fallback 404</td><td>A → B → C</td><td>Runtime placeholder renders (data URL); dev warning on placeholder render</td></tr>
+        <tr><td>6</td><td>Empty/missing <code>src</code>, fallback 404</td><td>C</td><td>Runtime placeholder renders</td></tr>
+        <tr><td>7</td><td>Change <code>props.src</code> after failure</td><td>watcher reset</td><td>State cleared (<code>runtimePlaceholderSrc</code>, failure flags, <code>retryKey</code>), new src attempted</td></tr>
+        <tr><td>8</td><td>Change <code>props.sources</code> by replacing array reference</td><td>watcher reset</td><td>Sources eligible again (<code>pictureSourceFailed</code> cleared)</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><strong>Suggested automated/static checks:</strong> run <code>pnpm typecheck</code> for the repo (first run may surface unrelated issues), and inspect the Network panel for the expected request sequence (no repeated placeholder regeneration loop in case 5/6).</div>
+  </section>
+
+  <footer class="muted" style="margin-top:2rem; font-size:0.85rem; border-top:1px solid var(--border); padding-top:0.75rem;">
+    Generated as a single-file, self-contained HTML document. Content reflects the implementation present in <code>app/components/base/WKPicture.vue</code> and <code>app/utils/drawPlaceholderToCanvas.ts</code> at the time of writing.
+  </footer>
+</main>
+
+<script>
+(function () {
+  const input = document.getElementById('search');
+  const meta = document.getElementById('search-meta');
+  const tocLinks = Array.from(document.querySelectorAll('#toc-list a'));
+  const tocItems = Array.from(document.querySelectorAll('#toc-list li[data-target]'));
+  const sections = Array.from(document.querySelectorAll('section[data-searchable]'));
+  const original = new Map();
+
+  sections.forEach(sec => original.set(sec.id, sec.innerHTML));
+
+  function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function clearMarks() {
+    sections.forEach(sec => { sec.innerHTML = original.get(sec.id); sec.classList.remove('hidden-by-search'); });
+  }
+
+  function applySearch(q) {
+    clearMarks();
+    const query = q.trim().toLowerCase();
+    if (!query) {
+      tocItems.forEach(li => li.classList.remove('hidden'));
+      meta.textContent = '';
+      return;
+    }
+
+    const terms = query.split(/\s+/).filter(Boolean);
+    let visibleSections = 0;
+
+    sections.forEach(sec => {
+      const text = sec.textContent.toLowerCase();
+      const match = terms.every(t => text.includes(t));
+      if (!match) {
+        sec.classList.add('hidden-by-search');
+      } else {
+        visibleSections++;
+        let html = sec.innerHTML;
+        terms.forEach(t => {
+          const re = new RegExp('(' + escapeRegExp(t) + ')', 'gi');
+          html = html.replace(re, '<mark>$1</mark>');
+        });
+        sec.innerHTML = html;
+      }
+    });
+
+    const visibleIds = new Set(sections.filter(s => !s.classList.contains('hidden-by-search')).map(s => s.id));
+    tocItems.forEach(li => {
+      const target = li.getAttribute('data-target');
+      const selfVisible = visibleIds.has(target);
+      // also show if any descendant/related sub-section id starts with target (simple containment by document order)
+      let relatedVisible = selfVisible;
+      if (!relatedVisible) {
+        for (const id of visibleIds) {
+          if (id === target || id.startsWith(target + '-')) { relatedVisible = true; break; }
+        }
+      }
+      li.classList.toggle('hidden', !relatedVisible);
+    });
+
+    meta.textContent = visibleSections + ' section(s) match';
+  }
+
+  input.addEventListener('input', (e) => applySearch(e.target.value));
+})();
+</script>
+</body>
+</html>

@@ -103,9 +103,10 @@ const SITE_PAGES = [
   { path: '/', key: 'nav.home' },
   { path: '/menu', key: 'nav.menu' },
   { path: '/promotions', key: 'nav.promos' },
-  { path: '/after-monkey-forest', key: 'nav.afterForest' },
+  { path: '/monkey-forest', key: 'nav.afterForest' },
   { path: '/about', key: 'nav.about' },
   { path: '/contact', key: 'nav.contact' },
+  {path:'monkey-forest-exit',key:'nav.afterForest'},
 ] as const
 
 /*

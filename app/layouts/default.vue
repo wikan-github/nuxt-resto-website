@@ -36,25 +36,44 @@
              reload). It's faster and smoother. Use it for INTERNAL links.
              Use <a href="..."> for EXTERNAL links (other websites).
         -->
-        <NuxtLink to="/" class="logo-link">
-          <img src="/images/logo.png" alt="Tropical View Ubud" class="logo-img" />
+        <NuxtLink
+          to="/"
+          class="logo-link"
+        >
+          <img
+            src="/images/logo.png"
+            alt="Tropical View Ubud"
+            class="logo-img"
+          />
         </NuxtLink>
 
         <!-- Navigation links -->
         <nav>
           <ul class="nav-links">
             <!-- i18n: Translates "Home" nav link label via nav.home key -->
-            <li><NuxtLink to="/">{{ $t('nav.home') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/">{{ $t('nav.home') }}</NuxtLink>
+            </li>
             <!-- i18n: Translates "Menu" nav link label via nav.menu key -->
-            <li><NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/menu">{{ $t('nav.menu') }}</NuxtLink>
+            </li>
             <!-- i18n: Translates "Promos" nav link label via nav.promos key -->
-            <li><NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/promotions">{{ $t('nav.promos') }}</NuxtLink>
+            </li>
             <!-- i18n: Monkey Forest landing page via nav.afterForest key -->
-            <li><NuxtLink to="/after-monkey-forest">{{ $t('nav.afterForest') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/monkey-forest">{{ $t('nav.afterForest') }}</NuxtLink>
+            </li>
             <!-- i18n: Translates "About Us" nav link label via nav.about key -->
-            <li><NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/about">{{ $t('nav.about') }}</NuxtLink>
+            </li>
             <!-- i18n: Translates "Contact Us" nav link label via nav.contact key -->
-            <li><NuxtLink to="/contact">{{ $t('nav.contact') }}</NuxtLink></li>
+            <li>
+              <NuxtLink to="/contact">{{ $t('nav.contact') }}</NuxtLink>
+            </li>
           </ul>
         </nav>
 
@@ -80,15 +99,40 @@
              `v-if="cartItemCount > 0"` hides the badge when cart is empty.
         -->
         <!-- i18n: Translates "Open cart" aria-label for accessibility via nav.openCart key -->
-        <button class="cart-icon-btn" @click="openCart" :aria-label="$t('nav.openCart')">
+        <button
+          class="cart-icon-btn"
+          @click="openCart"
+          :aria-label="$t('nav.openCart')"
+        >
           <!-- Simple cart icon using SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle
+              cx="9"
+              cy="21"
+              r="1"
+            />
+            <circle
+              cx="20"
+              cy="21"
+              r="1"
+            />
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
           </svg>
           <!-- Animated badge showing item count -->
-          <span v-if="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+          <span
+            v-if="cartItemCount > 0"
+            class="cart-badge"
+          >{{ cartItemCount }}</span>
         </button>
 
         <!-- CTA (Call to Action) button — links to WhatsApp -->
@@ -103,7 +147,7 @@
           target="_blank"
           rel="noopener"
         >
-        <!-- i18n: Translates "Reserve Now" CTA button text via nav.reserve key -->
+          <!-- i18n: Translates "Reserve Now" CTA button text via nav.reserve key -->
           {{ $t('nav.reserve') }}
         </a>
       </div>
@@ -166,8 +210,15 @@
             and re-measures automatically when its content changes size
             (e.g., switching language EN ↔ ID changes the paragraph length).
           -->
-          <div class="footer-brand" ref="brandEl">
-            <img src="/images/logo.png" alt="Tropical View Ubud" class="logo-img" />
+          <div
+            class="footer-brand"
+            ref="brandEl"
+          >
+            <img
+              src="/images/logo.png"
+              alt="Tropical View Ubud"
+              class="logo-img"
+            />
             <!-- i18n: Translates the footer brand description paragraph via footer.description key -->
             <p>{{ $t('footer.description') }}</p>
           </div>
@@ -178,7 +229,10 @@
             COMPARED against the brand column height — whichever of the
             two is taller becomes the Google Map's maximum height.
           -->
-          <div class="footer-col" ref="contactEl">
+          <div
+            class="footer-col"
+            ref="contactEl"
+          >
             <!-- i18n: Translates "Contact Us" footer section heading via footer.contactUs key -->
             <h4>{{ $t('footer.contactUs') }}</h4>
             <!--
@@ -231,7 +285,10 @@
           <!-- `:style` binds an inline style ONLY when `mapWrapperStyle`
                is defined (desktop). Inline style beats the stylesheet's
                fallback height, and disappears on stacked layouts. -->
-          <div class="footer-map" :style="mapWrapperStyle">
+          <div
+            class="footer-map"
+            :style="mapWrapperStyle"
+          >
             <iframe
               :src="restaurant?.mapEmbedUrl"
               width="100%"
@@ -286,111 +343,114 @@
   `useCart()` provides `cartItemCount` (for the badge) and `openCart` (for the click handler).
   These are used in the template above (cart icon button).
 -->
-<script setup lang="ts">
-// ── Get cart state and functions from the composable ──
-// 📚 The cart icon in the header needs `cartItemCount` for the badge
-//    and `openCart` for the click handler.
-const { cartItemCount, openCart } = useCart()
+<script
+  setup
+  lang="ts"
+>
+  // ── Get cart state and functions from the composable ──
+  // 📚 The cart icon in the header needs `cartItemCount` for the badge
+  //    and `openCart` for the click handler.
+  const { cartItemCount, openCart } = useCart()
 
-// ── Restaurant info from the SQLite-backed API ──
-// 📚 Header CTA (WhatsApp reservation link), footer contact values and the
-//    Google Map embed URL all come from the `restaurant` table now.
-const { restaurant, waMeUrl } = useRestaurant()
+  // ── Restaurant info from the SQLite-backed API ──
+  // 📚 Header CTA (WhatsApp reservation link), footer contact values and the
+  //    Google Map embed URL all come from the `restaurant` table now.
+  const { restaurant, waMeUrl } = useRestaurant()
 
-/*
-  ╔═════════════════════════════════════════════════════════════════════╗
-  ║ DYNAMIC GOOGLE MAP HEIGHT                                            ║
-  ║ Goal: the map must never be taller than the text next to it.         ║
-  ║ The script measures the BRAND and CONTACT columns, takes whichever   ║
-  ║ is TALLER (`Math.max`), and pins that height onto the map wrapper.   ║
-  ╚═════════════════════════════════════════════════════════════════════╝
-*/
-
-// Template ref → the brand column element (bound via ref="brandEl" above).
-// `ref<HTMLElement | null>(null)` types it as "an HTMLElement or nothing"
-// — it starts as null and is filled by Vue once the template mounts.
-const brandEl = ref<HTMLElement | null>(null)
-
-// Template ref → the contact column element (bound via ref="contactEl").
-// Measured the same way so both columns can be compared fairly.
-const contactEl = ref<HTMLElement | null>(null)
-
-// Reactive holder for the computed max height (in pixels).
-// `null` means "no inline height" → CSS fallback (300px) applies instead.
-const mapMaxHeight = ref<number | null>(null)
-
-// Breakpoint guard matching main.css: the footer grid is 3 columns
-// side-by-side only at ≥992px. Below that, brand/contact/map STACK
-// vertically, so capping the map by a short stacked column would
-// squash it — we fall back to the stylesheet's fixed 300px height.
-const DESKTOP_MIN_WIDTH = 992
-
-/**
- * Measures both text columns and updates `mapMaxHeight`.
- * Called on mount, on window resize, and by the ResizeObserver.
- */
-function updateMapHeight(): void {
-  // Safety: never touch `window` during SSR/prerender (no browser there),
-  // and skip entirely when the grid is stacked (<992px).
-  if (!import.meta.client || window.innerWidth < DESKTOP_MIN_WIDTH) {
-    // Clear any previously applied cap so the CSS fallback takes over.
-    mapMaxHeight.value = null
-    // Stop here — no measurement needed outside desktop layout.
-    return
-  }
-  // `offsetHeight` = real rendered height including padding (px).
-  // `?? 0` guards against the refs not being attached yet.
-  const brandHeight = brandEl.value?.offsetHeight ?? 0
-  // Same measurement for the contact column.
-  const contactHeight = contactEl.value?.offsetHeight ?? 0
-  // THE CORE RULE: the taller of the two wins.
-  const tallest = Math.max(brandHeight, contactHeight)
-  // Apply it, unless both measured 0 (refs missing) → keep fallback.
-  mapMaxHeight.value = tallest > 0 ? tallest : null
-}
-
-// Handle to the ResizeObserver so we can disconnect it on unmount
-// (prevents memory leaks when navigating between pages).
-let mapResizeObserver: ResizeObserver | null = null
-
-// Runs once after the component's HTML exists in the DOM —
-// the earliest moment the template refs point at real elements.
-onMounted(() => {
-  // First measurement right away, so the map is sized before paint settles.
-  updateMapHeight()
   /*
-    📚 LEARNING — ResizeObserver:
-    Fires whenever an observed element's SIZE changes — covering window
-    resizes, font loading, AND i18n language switches (EN ↔ ID produce
-    different text lengths). Far more precise than watching the window,
-    because it reacts to the actual columns we care about.
+    ╔═════════════════════════════════════════════════════════════════════╗
+    ║ DYNAMIC GOOGLE MAP HEIGHT                                            ║
+    ║ Goal: the map must never be taller than the text next to it.         ║
+    ║ The script measures the BRAND and CONTACT columns, takes whichever   ║
+    ║ is TALLER (`Math.max`), and pins that height onto the map wrapper.   ║
+    ╚═════════════════════════════════════════════════════════════════════╝
   */
-  mapResizeObserver = new ResizeObserver(updateMapHeight)
-  // Observe each column only if the ref actually resolved to an element.
-  if (brandEl.value) mapResizeObserver.observe(brandEl.value)
-  if (contactEl.value) mapResizeObserver.observe(contactEl.value)
-  // Window listener as a safety net for breakpoint crossings where the
-  // columns themselves might not resize but the layout mode does.
-  window.addEventListener('resize', updateMapHeight)
-})
 
-// Cleanup BEFORE the component is removed — standard hygiene for
-// observers and listeners added in onMounted.
-onBeforeUnmount(() => {
-  // Stop observing; without this the observer would keep listening
-  // to detached elements (a classic memory leak).
-  mapResizeObserver?.disconnect()
-  // Remove the window listener so no stale callbacks fire later.
-  window.removeEventListener('resize', updateMapHeight)
-})
+  // Template ref → the brand column element (bound via ref="brandEl" above).
+  // `ref<HTMLElement | null>(null)` types it as "an HTMLElement or nothing"
+  // — it starts as null and is filled by Vue once the template mounts.
+  const brandEl = ref<HTMLElement | null>(null)
 
-/*
-  📚 LEARNING — Computed style binding:
-  Returns `{ height: 'NNNpx' }` while `mapMaxHeight` has a value
-  (desktop), or `undefined` otherwise — Vue omits undefined bindings,
-  so the wrapper falls back to plain CSS automatically.
-*/
-const mapWrapperStyle = computed<{ height: string } | undefined>(() =>
-  mapMaxHeight.value !== null ? { height: `${mapMaxHeight.value}px` } : undefined
-)
+  // Template ref → the contact column element (bound via ref="contactEl").
+  // Measured the same way so both columns can be compared fairly.
+  const contactEl = ref<HTMLElement | null>(null)
+
+  // Reactive holder for the computed max height (in pixels).
+  // `null` means "no inline height" → CSS fallback (300px) applies instead.
+  const mapMaxHeight = ref<number | null>(null)
+
+  // Breakpoint guard matching main.css: the footer grid is 3 columns
+  // side-by-side only at ≥992px. Below that, brand/contact/map STACK
+  // vertically, so capping the map by a short stacked column would
+  // squash it — we fall back to the stylesheet's fixed 300px height.
+  const DESKTOP_MIN_WIDTH = 992
+
+  /**
+   * Measures both text columns and updates `mapMaxHeight`.
+   * Called on mount, on window resize, and by the ResizeObserver.
+   */
+  function updateMapHeight(): void {
+    // Safety: never touch `window` during SSR/prerender (no browser there),
+    // and skip entirely when the grid is stacked (<992px).
+    if (!import.meta.client || window.innerWidth < DESKTOP_MIN_WIDTH) {
+      // Clear any previously applied cap so the CSS fallback takes over.
+      mapMaxHeight.value = null
+      // Stop here — no measurement needed outside desktop layout.
+      return
+    }
+    // `offsetHeight` = real rendered height including padding (px).
+    // `?? 0` guards against the refs not being attached yet.
+    const brandHeight = brandEl.value?.offsetHeight ?? 0
+    // Same measurement for the contact column.
+    const contactHeight = contactEl.value?.offsetHeight ?? 0
+    // THE CORE RULE: the taller of the two wins.
+    const tallest = Math.max(brandHeight, contactHeight)
+    // Apply it, unless both measured 0 (refs missing) → keep fallback.
+    mapMaxHeight.value = tallest > 0 ? tallest : null
+  }
+
+  // Handle to the ResizeObserver so we can disconnect it on unmount
+  // (prevents memory leaks when navigating between pages).
+  let mapResizeObserver: ResizeObserver | null = null
+
+  // Runs once after the component's HTML exists in the DOM —
+  // the earliest moment the template refs point at real elements.
+  onMounted(() => {
+    // First measurement right away, so the map is sized before paint settles.
+    updateMapHeight()
+    /*
+      📚 LEARNING — ResizeObserver:
+      Fires whenever an observed element's SIZE changes — covering window
+      resizes, font loading, AND i18n language switches (EN ↔ ID produce
+      different text lengths). Far more precise than watching the window,
+      because it reacts to the actual columns we care about.
+    */
+    mapResizeObserver = new ResizeObserver(updateMapHeight)
+    // Observe each column only if the ref actually resolved to an element.
+    if (brandEl.value) mapResizeObserver.observe(brandEl.value)
+    if (contactEl.value) mapResizeObserver.observe(contactEl.value)
+    // Window listener as a safety net for breakpoint crossings where the
+    // columns themselves might not resize but the layout mode does.
+    window.addEventListener('resize', updateMapHeight)
+  })
+
+  // Cleanup BEFORE the component is removed — standard hygiene for
+  // observers and listeners added in onMounted.
+  onBeforeUnmount(() => {
+    // Stop observing; without this the observer would keep listening
+    // to detached elements (a classic memory leak).
+    mapResizeObserver?.disconnect()
+    // Remove the window listener so no stale callbacks fire later.
+    window.removeEventListener('resize', updateMapHeight)
+  })
+
+  /*
+    📚 LEARNING — Computed style binding:
+    Returns `{ height: 'NNNpx' }` while `mapMaxHeight` has a value
+    (desktop), or `undefined` otherwise — Vue omits undefined bindings,
+    so the wrapper falls back to plain CSS automatically.
+  */
+  const mapWrapperStyle = computed<{ height: string } | undefined>(() =>
+    mapMaxHeight.value !== null ? { height: `${mapMaxHeight.value}px` } : undefined
+  )
 </script>

@@ -21,8 +21,10 @@ one resolver API, one tracking API, one stats API.
   WebP+SVG), offer figure, `CampaignOfferCard`, `CampaignSocialProof`,
   `CampaignWalkingRoute`, `CampaignMiniFaq`, `CampaignStickyWhatsappBar`.
   No map iframe, no external scripts (4G budget). Query parsing + WA builder in `<script setup>`.
-- `app/pages/after-monkey-forest.vue:1-287` — older sibling funnel (hero,
+- `app/pages/monkey-forest.vue:1-287` — older sibling funnel (hero,
   ticket banner, benefits, location+map iframe, final CTA, inline offer bar).
+  Renamed from `after-monkey-forest.vue` on 2026-10-15 (old URLs 301 via
+  `routeRules` in `nuxt.config.ts`).
 - `app/components/campaign/HeroAfterMonkeyForest.vue` — campaign hero (used by after-monkey-forest).
 - `app/components/campaign/OfferCard.vue` — offer card; accepts optional
   `utmSource/utmMedium/utmCampaign` props appended to the WA message.
@@ -57,6 +59,9 @@ one resolver API, one tracking API, one stats API.
 - Staff check-in UI does not exist (API + columns ready).
 
 ## Changelog
+- 2026-10-15 — Renamed `after-monkey-forest.vue` → `monkey-forest.vue`;
+  updated nav (`default.vue`), breadcrumb, `FloatingWhatsApp` route check
+  (single `includes('monkey-forest')`), added 301 `routeRules` for old URLs.
 - 2026-10-14 — Created `monkey-forest-exit.vue`, `[placement].get.ts` (renamed
   from `[slug]`), `PromotionSeeder` sanctuary-combo, `OfferCard` UTM props — exit-funnel P0.
 - 2026-10-14 — Added `promotion_redemption` table + migration, track/stats APIs,
