@@ -39,6 +39,8 @@
       @click=""
     >{{ waStickyBarText }}</a>
   </div>
+
+  <!-- saya akan gunakan grid layout untuk stickybar ini -->
 </template>
 
 <style
