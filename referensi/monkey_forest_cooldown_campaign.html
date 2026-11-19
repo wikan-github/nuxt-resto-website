@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finished Monkey Forest? Cool Down Now | Tropical View Ubud</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #166534;
+            --primary-green-dark: #14532d;
+            --accent-gold: #fbbf24;
+            --accent-gold-hover: #f59e0b;
+            --bg-cream: #fafaf9;
+            --card-white: #ffffff;
+            --text-dark: #1c1917;
+            --text-muted: #57534e;
+            --emerald-badge-bg: #d1fae5;
+            --emerald-badge-text: #065f46;
+            --amber-badge-bg: #fef3c7;
+            --amber-badge-text: #92400e;
+            --purple-badge-bg: #f3e8ff;
+            --purple-badge-text: #6b21a8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            padding-bottom: 90px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Distance Banner (Mobile-First Grid -> 3-Col Desktop Grid) */
+        .top-banner {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: var(--primary-green-dark);
+            color: #fef3c7;
+            padding: 10px 14px;
+            min-height: 85px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: stretch; /* Makes left & right columns match full container height */
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Left Column: Blinking Signal */
+        .top-banner-left {
+            display: flex;
+            align-items: center; /* Keeps text/dot vertically centered inside stretched box */
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #86efac;
+            border: 2px dashed #4ade80; /* Learning guide border */
+            border-radius: 10px;
+            padding: 8px 12px;
+            background-color: rgba(74, 222, 128, 0.08);
+        }
+
+        /* Middle Column: Flexible Sticky Title/Message */
+        .top-banner-middle {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.35;
+            color: #fef3c7;
+            word-wrap: break-word;
+            padding: 6px;
+        }
+
+        /* Right Column: CTA Box */
+        .top-banner-right {
+            display: flex;
+            align-items: center; /* Keeps CTA button vertically centered inside stretched box */
+            justify-content: center;
+            border: 2px dashed #fbbf24; /* Learning guide border */
+            border-radius: 10px;
+            padding: 8px 12px;
+            background-color: rgba(251, 191, 36, 0.08);
+        }
+
+        .pulse-dot-container {
+            position: relative;
+            display: flex;
+            height: 10px;
+            width: 10px;
+            flex-shrink: 0;
+        }
+
+        .pulse-dot-ping {
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+            background-color: #4ade80;
+            opacity: 0.75;
+        }
+
+        .pulse-dot {
+            position: relative;
+            border-radius: 50%;
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .pickup-btn-mini {
+            background-color: var(--accent-gold);
+            color: var(--primary-green-dark);
+            font-size: 12px;
+            font-weight: 800;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .pickup-btn-mini:hover {
+            background-color: var(--accent-gold-hover);
+        }
+
+        /* Desktop Breakpoint (>= 768px): Exact 150px | Fluid | 300px & 100px Min-Height */
+        @media (min-width: 768px) {
+            .top-banner {
+                min-height: 100px;
+                padding: 14px 24px;
+                grid-template-columns: minmax(150px, auto) 1fr minmax(300px, auto);
+                gap: 16px;
+            }
+
+            .top-banner-left {
+                font-size: 13px;
+            }
+
+            .top-banner-middle {
+                grid-column: auto;
+                font-size: 15px;
+            }
+
+            .pickup-btn-mini {
+                width: 100%;
+                max-width: 300px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+        }
+
+        /* Hero Header Section */
+        .hero {
+            position: relative;
+            background-color: var(--primary-green-dark);
+            color: #ffffff;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .hero-img-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .hero-bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(20,83,45,0.1) 0%, rgba(20,83,45,0.4) 50%, rgba(20,83,45,0.75) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 480px;
+            margin: -80px auto 0;
+            padding: 0 20px 36px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(20, 83, 45, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #dcfce7;
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            color: var(--accent-gold);
+            text-decoration: underline;
+            text-decoration-color: rgba(251, 191, 36, 0.5);
+            text-underline-offset: 4px;
+        }
+
+        .hero-desc {
+            color: #e7e5e4;
+            font-size: 14px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Hero Primary Invitation Card */
+        .invitation-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            border-radius: 16px;
+            padding: 20px;
+            color: #0c0a09;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+            border: 2px solid #fde68a;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            animation: pulse-border 2s infinite;
+        }
+
+        .invitation-card:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: #fde68a; }
+            50% { border-color: #ffffff; }
+        }
+
+        .invitation-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .step-badge {
+            background-color: #0c0a09;
+            color: #fbbf24;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .free-pill {
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #1c1917;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .invitation-card h3 {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .invitation-card p {
+            font-size: 12px;
+            color: #1c1917;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .invitation-card-footer {
+            background-color: rgba(12, 10, 9, 0.1);
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Feature Grid Strip */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background-color: var(--card-white);
+            padding: 12px 6px;
+            border-radius: 12px;
+            border: 1px solid #e7e5e4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .feature-card i {
+            font-size: 18px;
+        }
+
+        .feature-card span {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        /* Free Shuttle Banner */
+        .shuttle-banner {
+            background-color: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .shuttle-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shuttle-icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .shuttle-text h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #064e3b;
+        }
+
+        .shuttle-text p {
+            font-size: 11px;
+            color: #047857;
+        }
+
+        .btn-pickup-action {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .btn-pickup-action:hover {
+            background-color: var(--primary-green-dark);
+        }
+
+        /* Section Layouts */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-step {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .step-amber { color: #d97706; }
+        .step-purple { color: #7e22ce; }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .category-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .package-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Package Cards */
+        .package-card {
+            background-color: var(--card-white);
+            border: 2px solid #e7e5e4;
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .package-card.selected {
+            border-color: var(--primary-green);
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.12);
+        }
+
+        .package-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .pkg-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .package-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .package-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .package-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid #f5f5f4;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .pkg-cta-text {
+            color: var(--primary-green);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Bottom Fixed CTA Toolbar */
+        .bottom-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e7e5e4;
+            padding: 12px;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+        }
+
+        .bottom-cta-inner {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .wa-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background-color: #16a34a;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .wa-button:active {
+            transform: scale(0.98);
+            background-color: #15803d;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            border: none;
+            background: #f5f5f4;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .guest-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .guest-btn {
+            background-color: #f5f5f4;
+            border: 1px solid #e7e5e4;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .guest-btn.active {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            border-color: var(--primary-green);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Sticky Distance Banner -->
+    <div class="top-banner">
+        <!-- Left Section: Blinking Signal (min 150px on desktop) -->
+        <div class="top-banner-left">
+            <div class="pulse-dot-container">
+                <div class="pulse-dot-ping"></div>
+                <div class="pulse-dot"></div>
+            </div>
+            <span>LIVE • 50m Exit</span>
+        </div>
+
+        <!-- Middle Section: Grows vertically & horizontally -->
+        <div class="top-banner-middle">
+            📍 <b>Finished Monkey Forest?</b> Keep your ticket & walk in for a <b>FREE Cold Drink!</b>
+        </div>
+
+        <!-- Right Section: CTA Box (min 300px on desktop) -->
+        <div class="top-banner-right">
+            <button onclick="openPickupModal()" class="pickup-btn-mini">
+                <i class="fa-solid fa-car"></i> Request Free Gate Pickup
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Container -->
+    <header class="hero">
+        <div class="hero-img-wrapper">
+            <img 
+                src="monkey-forest-reward-768.webp" 
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80';"
+                alt="Tropical View - Just Finish Monkey Forest Cool Down" 
+                class="hero-bg-img">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-door-open" style="color: var(--accent-gold);"></i> Tropical View Kitchen • Bar • Coffee
+            </div>
+
+            <h1 class="hero-title">
+                Finished Monkey Forest? <br>
+                <span>Keep your ticket & get a free drink.</span>
+            </h1>
+
+            <p class="hero-desc">
+                Just 50 meters from the exit gate! Simply bring your entry ticket, walk into <strong>Tropical View</strong>, and cool down by the rice paddies.
+            </p>
+
+            <!-- PRIMARY INVITATION CARD -->
+            <div onclick="selectPackage('free-tea-invitation')" id="card-free-tea-invitation" class="invitation-card">
+                <div class="invitation-card-top">
+                    <span class="step-badge">Your Exit Reward</span>
+                    <span class="free-pill">100% Free</span>
+                </div>
+                
+                <h3>🥤 Keep Your Ticket & Walk In for a FREE Drink!</h3>
+                <p>
+                    No booking required—just show your Monkey Forest Sanctuary ticket at the door to claim your complimentary ice-cold drink!
+                </p>
+                
+                <div class="invitation-card-footer">
+                    <span><i class="fa-solid fa-ticket"></i> Keep your sanctuary ticket</span>
+                    <span>Walk In / Message Us <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-container">
+
+        <!-- Quick Value Props Strip -->
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-person-walking-arrow-right" style="color: var(--primary-green);"></i>
+                <span>50m Exit</span>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-wheat-awn" style="color: #16a34a;"></i>
+                <span>Paddy View</span>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-utensils" style="color: #d97706;"></i>
+                <span>Fresh Food</span>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-spa" style="color: #9333ea;"></i>
+                <span>Foot Spa</span>
+            </div>
+        </div>
+
+        <!-- Shuttle Pickup Callout Banner -->
+        <div class="shuttle-banner">
+            <div class="shuttle-left">
+                <div class="shuttle-icon-wrap">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+                <div class="shuttle-text">
+                    <h4>Too tired to walk 50 meters?</h4>
+                    <p>We'll pick you up at the gate for free!</p>
+                </div>
+            </div>
+            <button onclick="openPickupModal()" class="btn-pickup-action">
+                Pick Me Up
+            </button>
+        </div>
+
+        <!-- SECTION 2: LUNCH & DINING PACKAGES -->
+        <section>
+            <div class="section-header">
+                <div>
+                    <div class="section-step step-amber">Step 2 • Refine & Refuel</div>
+                    <h2 class="section-title">Rice Paddy Lunch & Bites</h2>
+                </div>
+                <span class="category-badge" style="background-color: var(--emerald-badge-bg); color: var(--emerald-badge-text);">
+                    Scenic Seating
+                </span>
+            </div>
+
+            <div class="package-list">
+                <!-- Lunch Package 1 -->
+                <div onclick="selectPackage('lunch-paddy-express')" id="card-lunch-paddy-express" class="package-card">
+                    <div class="package-top">
+                        <span class="pkg-badge" style="background-color: var(--amber-badge-bg); color: var(--amber-badge-text);">Popular Lunch</span>
+                        <h3 class="package-title">Paddy Refresher Lunch Special</h3>
+                    </div>
+                    <p class="package-desc">
+                        Choice of Main Course (Balinese Nasi Goreng, Fresh Poke Bowl, or Gourmet Burger) + Free Ice-Cold Tea + Reserved front-row rice field seating.
+                    </p>
+                    <div class="package-footer">
+                        <span><i class="fa-solid fa-chair" style="color: #d97706;"></i> Reserved Table</span>
+                        <span class="pkg-cta-text">Select Lunch <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i></span>
+                    </div>
+                </div>
+
+                <!-- Lunch Package 2 -->
+                <div onclick="selectPackage('lunch-bites-chill')" id="card-lunch-bites-chill" class="package-card">
+                    <div class="package-top">
+                        <span class="pkg-badge" style="background-color: #f5f5f4; color: #44403c;">Light Bites</span>
+                        <h3 class="package-title">Tropical Snack & Juice Lounge</h3>
+                    </div>
+                    <p class="package-desc">
+                        Fresh Gelato Bowl or Tropical Fruit Platter + Fresh Cold Coconut Water + Free Ice Tea. Perfect for a lighter cool-down break.
+                    </p>
+                    <div class="package-footer">
+                        <span><i class="fa-solid fa-ice-cream" style="color: #16a34a;"></i> Chill & Recharge</span>
+                        <span class="pkg-cta-text">Select Snack <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SPA & MASSAGE PACKAGES -->
+        <section>
+            <div class="section-header">
+                <div>
+                    <div class="section-step step-purple">Step 3 • Total Recovery</div>
+                    <h2 class="section-title">Spa & Foot Massage</h2>
+                </div>
+                <span class="category-badge" style="background-color: var(--purple-badge-bg); color: var(--purple-badge-text);">
+                    In-House Spa
+                </span>
+            </div>
+
+            <div class="package-list">
+                <!-- Spa Package 1: Express Foot -->
+                <div onclick="selectPackage('express-foot')" id="card-express-foot" class="package-card">
+                    <div class="package-top">
+                        <span class="pkg-badge" style="background-color: var(--purple-badge-bg); color: var(--purple-badge-text);">30 Mins</span>
+                        <h3 class="package-title">Express Foot & Leg Recovery</h3>
+                    </div>
+                    <p class="package-desc">
+                        Targeted cooling mint foot rub for swollen legs after trails + FREE Ice-Cold Tea + Paddy View relaxation room access.
+                    </p>
+                    <div class="package-footer">
+                        <span><i class="fa-solid fa-shoe-prints" style="color: #9333ea;"></i> Walking Relief</span>
+                        <span class="pkg-cta-text">Select Spa <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i></span>
+                    </div>
+                </div>
+
+                <!-- Spa Package 2: Combo Meal + Spa -->
+                <div onclick="selectPackage('oasis-combo')" id="card-oasis-combo" class="package-card">
+                    <div class="package-top">
+                        <span class="pkg-badge" style="background-color: var(--amber-badge-bg); color: var(--amber-badge-text);">90 Mins Total</span>
+                        <h3 class="package-title">Full Paddy Oasis: Massage & Meal</h3>
+                    </div>
+                    <p class="package-desc">
+                        45-Min full Balinese massage + Choice of fresh Paddy lunch + FREE Iced Tea + Phone charging station & AC lounge.
+                    </p>
+                    <div class="package-footer">
+                        <span><i class="fa-solid fa-spa" style="color: #d97706;"></i> Full Meal & Spa</span>
+                        <span class="pkg-cta-text">Select Combo <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sticky Floating Bottom CTA Bar -->
+    <div class="bottom-cta-bar">
+        <div class="bottom-cta-inner">
+            <a id="wa-cta-btn" href="#" target="_blank" class="wa-button">
+                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i>
+                <span id="cta-action-text">Tell Us You Finished Monkey Forest</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Free Pickup Modal Overlay -->
+    <div id="pickup-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button onclick="closePickupModal()" class="modal-close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="modal-title">Request Free Gate Pick-Up</h3>
+            <p class="modal-sub">We'll drive 50 meters to collect you at the exit gate in 2 minutes!</p>
+
+            <label style="font-size: 12px; font-weight: 700; display: block; margin-bottom: 8px;">How many guests?</label>
+            <div class="guest-selector">
+                <button onclick="setGuestCount(1)" class="guest-btn">1 Guest</button>
+                <button onclick="setGuestCount(2)" class="guest-btn active">2 Guests</button>
+                <button onclick="setGuestCount(3)" class="guest-btn">3 Guests</button>
+                <button onclick="setGuestCount(4)" class="guest-btn">4+ Guests</button>
+            </div>
+
+            <a id="modal-wa-link" href="#" target="_blank" class="wa-button" style="font-size: 14px;">
+                <i class="fa-brands fa-whatsapp"></i> Send Pickup Request
+            </a>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        // WhatsApp Business Phone Number
+        const WHATSAPP_NUMBER = "628123456789";
+
+        let selectedPackageKey = 'free-tea-invitation';
+        let selectedGuestCount = 2;
+
+        const packageData = {
+            'free-tea-invitation': {
+                name: 'Free Drink Ticket Reward',
+                ctaText: 'Claim Free Drink With Ticket',
+                message: "Hi! I finished Monkey Forest Sanctuary and kept my ticket. I'm walking in (or need pickup) to claim my FREE drink!"
+            },
+            'lunch-paddy-express': {
+                name: 'Paddy Refresher Lunch Special',
+                ctaText: 'Reserve Paddy View Lunch Table',
+                message: "Hi! I just finished Monkey Forest and would like to reserve a rice paddy view table for the Paddy Refresher Lunch Special + Free Ice Tea."
+            },
+            'lunch-bites-chill': {
+                name: 'Tropical Snack & Juice Lounge',
+                ctaText: 'Reserve Snack & Chill Spot',
+                message: "Hi! We just finished Monkey Forest and want to stop by for tropical gelato/bites & Free Ice-Cold Tea."
+            },
+            'express-foot': {
+                name: 'Express Foot & Leg Recovery (30m)',
+                ctaText: 'Book 30m Foot Recovery Massage',
+                message: "Hi! My legs are tired after Monkey Forest. I'd like to book the 30-Min Express Foot Recovery Massage + claim my FREE Ice-Cold Tea."
+            },
+            'oasis-combo': {
+                name: 'Full Paddy Oasis Combo',
+                ctaText: 'Book Full Massage & Lunch Combo',
+                message: "Hi! We just stepped out of Monkey Forest and want to book the 90-Min Full Paddy Oasis (Massage + Lunch Combo) + Free Ice Tea."
+            }
+        };
+
+        function selectPackage(key) {
+            selectedPackageKey = key;
+
+            // Highlight chosen package card visually
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const selectedCard = document.getElementById(`card-${key}`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            // Update main WhatsApp link
+            updateWhatsAppButton();
+        }
+
+        function updateWhatsAppButton() {
+            const data = packageData[selectedPackageKey];
+            const actionTextElem = document.getElementById('cta-action-text');
+            const waBtnElem = document.getElementById('wa-cta-btn');
+
+            if (actionTextElem && data) {
+                actionTextElem.textContent = data.ctaText;
+            }
+
+            if (waBtnElem && data) {
+                const encodedMessage = encodeURIComponent(data.message);
+                waBtnElem.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            }
+        }
+
+        function openPickupModal() {
+            const modal = document.getElementById('pickup-modal');
+            if (modal) {
+                modal.classList.add('open');
+            }
+            updateModalWhatsAppLink();
+        }
+
+        function closePickupModal() {
+            const modal = document.getElementById('pickup-modal');
+            if (modal) {
+                modal.classList.remove('open');
+            }
+        }
+
+        function setGuestCount(count) {
+            selectedGuestCount = count;
+            const buttons = document.querySelectorAll('.guest-btn');
+            buttons.forEach((btn, idx) => {
+                if (idx + 1 === count || (count >= 4 && idx === 3)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            updateModalWhatsAppLink();
+        }
+
+        function updateModalWhatsAppLink() {
+            const modalLink = document.getElementById('modal-wa-link');
+            if (modalLink) {
+                const pickupMsg = `Hi! I am right outside the Monkey Forest Exit Gate with ${selectedGuestCount} guest(s). Could you please send a shuttle driver to pick us up for the Cooldown Spa & Restaurant?`;
+                modalLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(pickupMsg)}`;
+            }
+        }
+
+        // Initialize state on DOM load
+        window.addEventListener('DOMContentLoaded', () => {
+            selectPackage('free-tea-invitation');
+        });
+    </script>
+</body>
+</html>

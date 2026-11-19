@@ -21,17 +21,17 @@ import InvitationCard from './InvitationCard.vue';
 
   const rewardImages: ImageSource[] = [
     {
-      srcset: '/images/monkey-forest-reward-768x.webp',
+      srcset: '/images/monkey-forest-reward-768.webp',
       media: '(max-width:768px)',
       type: 'image/webp',
     },
     {
-      srcset: '/images/monkey-forest-reward-1200x.webp',
+      srcset: '/images/monkey-forest-reward-1200.webp',
       media: '(max-width:1200px)',
       type: 'image/webp',
     },
     {
-      srcset: '/images/monkey-forest-reward-1536x.webp',
+      srcset: '/images/monkey-forest-reward-1536.webp',
       media: '(min-width:1201px)',
       type: 'image/webp',
     }
@@ -66,6 +66,7 @@ import InvitationCard from './InvitationCard.vue';
       <WKPicture
         id="reward_img"
         :src="imgReward"
+        :sources="rewardImages"
         :alt
         loading="eager"
       />

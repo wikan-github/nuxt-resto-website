@@ -25,10 +25,10 @@
   lang="ts"
 >
   import CampaignHero from '~/components/monkey-forest/CampaignHero.vue';
-import StickyOfferBar from '~/components/monkey-forest/StickyOfferBar.vue';
+  import StickyTopBar from '~/components/monkey-forest/StickyTopBar.vue';
 
   definePageMeta({
-    layout:'monkey-forest-exit'
+    layout: 'monkey-forest-exit'
   });
 
 </script>
@@ -36,15 +36,17 @@ import StickyOfferBar from '~/components/monkey-forest/StickyOfferBar.vue';
 <template>
   <main>
     <!-- Sticky offer bar for mobile view -->
-    <StickyOfferBar
-    @claim-click=""
+    <StickyTopBar
+      @claim-click=""
       discount-label="Diskon 20% - Free Es Teh"
       walk-destination=" 1 menit berjalan"
-      whatsapp-url="https://www.wa.me/" 
-      wa-sticky-bar-text = "Ambil"
-    ></StickyOfferBar>
+      whatsapp-url="https://www.wa.me/"
+      wa-sticky-bar-text="Ambil"
+    />
+
+
     <!-- Campaign Hero -->
-     <CampaignHero />
+    <CampaignHero />
 
     <p>Campaign Hero now</p>
 
@@ -52,5 +54,4 @@ import StickyOfferBar from '~/components/monkey-forest/StickyOfferBar.vue';
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
