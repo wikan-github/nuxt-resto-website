@@ -8,10 +8,18 @@
 
 
   const props = defineProps<{
+    /** Main text displayed on sticky bar */
     stickyBarText: string,
-    whatsappUrl: string,
-    waStickyBarText: string
+    /** Text displayed on the sticky bar's call-to-action button. */
+    ctaText: string 
   }>();
+
+  const displayedStickyBarText = computed(
+    ()=> props.stickyBarText?.trim() || 'Show Your Ticket, Get Free Drink !!'
+  );
+  const displayedCTAText = computed(
+    ()=> props.ctaText?.trim() || 'Claim'  
+  );
 
   // Prevents accidental DOM event listeners from being attached (Vue knows it's a custom event)
   // [] means the event carries no payload (no extra data).
@@ -24,11 +32,12 @@
 </script>
 
 <template>
-  <div
+  <!-- <div
     v-show="visible"
     class="sticky-bar"
     role="banner"
   >
+
     <span class="sticky-bar__msg">
       <div id="signal">O</div>
       <span class="sticky-bar__text">{{stickyBarText}}</span>
@@ -38,15 +47,72 @@
       class="sticky-bar__cta"
       @click=""
     >{{ waStickyBarText }}</a>
-  </div>
+  </div> -->
 
   <!-- saya akan gunakan grid layout untuk stickybar ini -->
+   <div class="stickybar_container">
+    <div id="sticky_blinking">O</div>
+    <div class="sticky_message">{{ displayedStickyBarText }}</div>
+    <div class="sticky_cta">
+      <div class="cta_button">
+        {{ displayedCTAText }}
+      </div>
+    </div>
+   </div>
 </template>
 
 <style
   lang="css"
   scoped
 >
+
+.stickybar_container {
+  min-height: 25px;
+  display: grid;
+  /* grid-template-columns:minmax(50px, max-content) minmax(0,1fr) minmax(150px,max-content); */
+  grid-template-columns:25px 1fr 100px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--color-forest);
+  font-size: 0.9rem;
+  color: white;
+}
+
+#sticky_blinking {
+  border: solid 1px red;
+}
+.sticky_message {
+  /* border: solid 1px yellow; */
+  display: grid;
+  place-items: center;
+  line-height: 1.2;
+}
+
+.sticky_cta {
+  /* border: solid 1px violet; */
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 3px;
+  /* column-gap: 12px; */
+  /* place-items: stretch; */
+}
+
+.cta_button {
+  display: grid;
+  place-items: center; /* buat isi dalamnya center, dalam hal ini isi CTA */
+  /* width: 100%; */
+  /* height: 100%; */
+  background: var(--color-amber);
+  color: var(--color-white);
+  /* padding: 6px 12px; */
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  /* font-weight: 800; */
+  /* text-transform: uppercase; */
+}
+
+
 .sticky-bar {
   display: flex;
   align-items: center;

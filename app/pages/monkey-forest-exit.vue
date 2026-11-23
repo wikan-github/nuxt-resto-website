@@ -38,10 +38,8 @@
     <!-- Sticky offer bar for mobile view -->
     <StickyTopBar
       @claim-click=""
-      discount-label="Diskon 20% - Free Es Teh"
-      walk-destination=" 1 menit berjalan"
-      whatsapp-url="https://www.wa.me/"
-      wa-sticky-bar-text="Ambil"
+      sticky-bar-text=""
+      cta-text="Get My Drink"
     />
 
 

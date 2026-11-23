@@ -21,17 +21,17 @@ import InvitationCard from './InvitationCard.vue';
 
   const rewardImages: ImageSource[] = [
     {
-      srcset: '/images/monkey-forest-reward-768.webp',
+      srcset: '/images/Tropical-View50-768.webp',
       media: '(max-width:768px)',
       type: 'image/webp',
     },
     {
-      srcset: '/images/monkey-forest-reward-1200.webp',
+      srcset: '/images/Tropical-View50-1200.webp',
       media: '(max-width:1200px)',
       type: 'image/webp',
     },
     {
-      srcset: '/images/monkey-forest-reward-1536.webp',
+      srcset: '/images/Tropical-View50-1536.webp',
       media: '(min-width:1201px)',
       type: 'image/webp',
     }
@@ -55,7 +55,7 @@ import InvitationCard from './InvitationCard.vue';
         type: 'image/webp'
       }
     ]; */
-  const imgReward: string = '/images/monkey-forest-reward.webp';
+  const fallbackImgReward: string = '/images/Tropical-View-Monkey-Forest-Adventure-1536.webp';
   const alt = 'Reward after visiting Monkey Forest in Tropical View Ubud';
 
 </script>
@@ -65,11 +65,12 @@ import InvitationCard from './InvitationCard.vue';
     <div class="hero__media">
       <WKPicture
         id="reward_img"
-        :src="imgReward"
+        
         :sources="rewardImages"
         :alt
         loading="eager"
       />
+      <!-- :src="fallbackImgReward" -->
       <div
         id="overlay_shape"
         class="hero__overlay"
