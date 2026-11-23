@@ -3,6 +3,7 @@
   lang="ts"
 >
   import { onMounted } from "vue";
+import BlinkingDot from "../base/BlinkingDot.vue";
   onMounted(() => { });
   const visible = ref(true);
 
@@ -51,11 +52,13 @@
 
   <!-- saya akan gunakan grid layout untuk stickybar ini -->
    <div class="stickybar_container">
-    <div id="sticky_blinking">O</div>
+    <div class="sticky_blinking">
+      <BlinkingDot />
+    </div>
     <div class="sticky_message">{{ displayedStickyBarText }}</div>
     <div class="sticky_cta">
       <div class="cta_button">
-        {{ displayedCTAText }}
+        <span>{{ displayedCTAText }}</span>
       </div>
     </div>
    </div>
@@ -67,10 +70,10 @@
 >
 
 .stickybar_container {
-  min-height: 25px;
+  min-height: 35px;
   display: grid;
   /* grid-template-columns:minmax(50px, max-content) minmax(0,1fr) minmax(150px,max-content); */
-  grid-template-columns:25px 1fr 100px;
+  grid-template-columns:35px 1fr 100px;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -79,35 +82,43 @@
   color: white;
 }
 
-#sticky_blinking {
-  border: solid 1px red;
+.sticky_blinking {
+  /* border: solid 1px red; */
+  display: grid;
+  place-items: center;
 }
 .sticky_message {
   /* border: solid 1px yellow; */
   display: grid;
-  place-items: center;
-  line-height: 1.2;
+  align-items: center;
+  text-align: justify;
+
+  /* Stretch the grid item to fill the available horizontal space. */
+  justify-items: stretch;
+  /* place-items: center; */
+  /* line-height: 1.2; */
 }
 
 .sticky_cta {
   /* border: solid 1px violet; */
   display: grid;
   grid-template-columns: 1fr;
-  padding: 3px;
+  padding: 5px;
   /* column-gap: 12px; */
   /* place-items: stretch; */
 }
 
 .cta_button {
-  display: grid;
-  place-items: center; /* buat isi dalamnya center, dalam hal ini isi CTA */
-  /* width: 100%; */
-  /* height: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   background: var(--color-amber);
   color: var(--color-white);
-  /* padding: 6px 12px; */
   border-radius: var(--radius-sm);
   font-size: 13px;
+  line-height: 1;
   /* font-weight: 800; */
   /* text-transform: uppercase; */
 }

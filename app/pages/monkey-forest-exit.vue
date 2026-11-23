@@ -30,6 +30,15 @@
   definePageMeta({
     layout: 'monkey-forest-exit'
   });
+  const loremText ='Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore natus minima vel deleniti, possimus commodi illo neque quasi ullam suscipit? Facere eum incidunt qui laborum iure vero quasi asperiores deleniti.';
+  
+  const translatedStickyBarText = computed (
+    () => loremText
+  );
+
+  const translatedCTAText = computed (
+    () => "Get My Drink"
+  );
 
 </script>
 
@@ -38,9 +47,10 @@
     <!-- Sticky offer bar for mobile view -->
     <StickyTopBar
       @claim-click=""
-      sticky-bar-text=""
-      cta-text="Get My Drink"
+      :sticky-bar-text= translatedStickyBarText
+      :cta-text= translatedCTAText
     />
+
 
 
     <!-- Campaign Hero -->
